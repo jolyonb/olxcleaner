@@ -9,6 +9,6 @@ def report_errors(errorstore):
     """Gives a simple report of all errors that were found"""
     if errorstore.errors:
         for error in errorstore.errors:
-            print(f"{error.level} ({error.filename}): {error.description}")
+            print(f"{error.level} ({error.filename}): {error.description} ({error.name})")
     else:
         print("No errors found!")
