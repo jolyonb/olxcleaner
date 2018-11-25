@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 output.py
@@ -10,7 +9,7 @@ def print_tree(course, maxdepth=None):
     """
     Outputs a tree version of the course structure to screen.
 
-    :param course: edXcourse object
+    :param course: EdxCourse object
     :param maxdepth: Maximum depth to display:
         0 = course
         1 = chapter

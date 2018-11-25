@@ -5,14 +5,22 @@ xml-clean.py
 
 A validator for XML edX courses
 """
-from edxloader import load_course
-from output import print_tree
+from errors.errorstore import ErrorStore
+from loader.xml import load_course
+from reporting.structure import print_tree
+from reporting.errors import report_errors
 
 # Point to a course
 working = "../course/course.xml"
 
+# Construct the error store
+errorstore = ErrorStore()
+
 # Load the course
-course = load_course(working)
+course = load_course(working, errorstore)
 
 # Print the structure
-print_tree(course, 2)
+#print_tree(course)
+
+# Report any errors that were found
+report_errors(errorstore)
