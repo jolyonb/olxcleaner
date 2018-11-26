@@ -124,7 +124,7 @@ class UnexpectedContent(CourseError):
     """A tag that shouldn't contain text does for some reason"""
     def __init__(self, filename=None, message=None):
         super().__init__(filename, message)
-        self._level = ErrorLevel.WARNING
+        self._level = ErrorLevel.ERROR
 
 class NonFlatURLName(CourseError):
     """A URL name is not flat; i.e., it contains a : to indicate subdirectories"""
