@@ -18,6 +18,6 @@ def report_summary(errorstore):
     counter = errorstore.summary()
     for level in ErrorLevel:
         if level.name in counter:
-            print(f"{level.name}: {counter[level.name]}")
+            print(f"{level.name}s: {counter[level.name]}")
     if not counter:
         print("No errors found!")

@@ -125,3 +125,15 @@ class UnexpectedContent(CourseError):
     def __init__(self, filename=None, message=None):
         super().__init__(filename, message)
         self._level = ErrorLevel.WARNING
+
+class NonFlatURLName(CourseError):
+    """A URL name is not flat; i.e., it contains a : to indicate subdirectories"""
+    def __init__(self, filename=None, message=None):
+        super().__init__(filename, message)
+        self._level = ErrorLevel.WARNING
+
+class NonFlatFilename(CourseError):
+    """A filename pointer for an HTML file is not flat; i.e., it contains a : to indicate subdirectories"""
+    def __init__(self, filename=None, message=None):
+        super().__init__(filename, message)
+        self._level = ErrorLevel.WARNING

@@ -8,8 +8,13 @@ import os
 from lxml import etree
 from lxml.etree import XMLSyntaxError
 from loader.objects import EdxCourse
-from loader.utils import file_exists
 from errors.errors import *
+
+def file_exists(filename):
+    """Returns True if filename exists, or False if not"""
+    if os.path.isfile(filename):
+        return True
+    return False
 
 def load_course(filename, errorstore, quiet):
     """
@@ -20,13 +25,19 @@ def load_course(filename, errorstore, quiet):
     :param quiet: Flag for quiet mode
     :return: EdxCourse object, or None on failure
     """
-    if not quiet:
-        print(f"Loading {filename}")
+    # If we've been given a directory, add on 'course.xml'
+    if os.path.isdir(filename):
+        if not quiet:
+            print(f"Received directory: {filename}. Looking for 'course.xml'...")
+        filename = os.path.join(filename, "course.xml")
 
     # Ensure the file exists
     if not file_exists(filename):
         errorstore.add_error(CourseXMLDoesNotExist(filename))
         return
+
+    if not quiet:
+        print(f"Loading {filename}")
 
     # Change to the relevant directory
     directory, file = os.path.split(filename)
@@ -90,11 +101,17 @@ def traverse_course(edxobj, node, filename, errorstore, pointer=False):
             return
 
         # We have a valid pointer tag
-        new_file = edxobj.type + "/" + edxobj.attributes['url_name'] + ".xml"
+        urlname = edxobj.attributes['url_name']
+        if ":" in urlname:
+            msg = (f"The <{node.tag}> tag with url_name {urlname} "
+                   "uses obsolete colon notation in the url_name to point to a subdirectory")
+            errorstore.add_error(NonFlatURLName(filename, msg))
+            urlname = urlname.replace(":", "/")
+        new_file = edxobj.type + "/" + urlname + ".xml"
 
         # Ensure the file exists
         if not file_exists(new_file):
-            msg = (f"The tag <{node.tag}> with url_name {edxobj.attributes['url_name']} points to "
+            msg = (f"The <{node.tag}> tag with url_name {edxobj.attributes['url_name']} points to "
                    f"the file {new_file} that does not exist")
             errorstore.add_error(FileDoesNotExist(filename, msg))
             return
@@ -126,7 +143,17 @@ def traverse_course(edxobj, node, filename, errorstore, pointer=False):
 
     # Special case: HTML files can point to an actual HTML file with their 'filename' attribute
     if node.tag == "html" and "filename" in edxobj.attributes:
-        new_file = "html/" + edxobj.attributes['filename'] + ".html"
+        filename = edxobj.attributes['filename']
+        if ":" in filename:
+            if 'url_name' in edxobj.attributes:
+                msg = (f"The <html> tag with url_name {edxobj.attributes['url_name']} "
+                       "uses obsolete colon notation to point to a subdirectory for filename {filename}")
+            else:
+                msg = (f"An <html> tag with no "
+                       "uses obsolete colon notation to point to a subdirectory for filename {filename}")
+            errorstore.add_error(NonFlatFilename(filename, msg))
+            filename = filename.replace(":", "/")
+        new_file = "html/" + filename + ".html"
 
         # Ensure the file exists
         if not file_exists(new_file):
@@ -134,7 +161,7 @@ def traverse_course(edxobj, node, filename, errorstore, pointer=False):
                 msg = (f"The tag <{node.tag}> with url_name {edxobj.attributes['url_name']} points to "
                        f"the file {new_file} that does not exist")
             else:
-                msg = (f"The tag <{node.tag}> with no url_name points to "
+                msg = (f"A tag <{node.tag}> with no url_name points to "
                        f"the file {new_file} that does not exist")
             errorstore.add_error(FileDoesNotExist(filename, msg))
             return
@@ -178,14 +205,22 @@ def traverse_course(edxobj, node, filename, errorstore, pointer=False):
     else:
         # Check for content in non-content tag
         if node.text and node.text.strip():
-            msg = (f"The <{node.tag}> tag with url_name '{edxobj.attributes['url_name']}' "
-                   f"should not contain any text ({node.text.strip()[:10]})")
+            if 'url_name' in edxobj.attributes:
+                msg = (f"The <{node.tag}> tag with url_name '{edxobj.attributes['url_name']}' "
+                       f"should not contain any text ({node.text.strip()[:10]})")
+            else:
+                msg = (f"A <{node.tag}> tag with no url_name "
+                       f"should not contain any text ({node.text.strip()[:10]})")
             errorstore.add_error(UnexpectedContent(filename, msg))
         else:
             for child in node:
                 if child.tail and child.tail.strip():
-                    msg = (f"The <{node.tag}> tag with url_name '{edxobj.attributes['url_name']}' "
+                    if 'url_name' in edxobj.attributes:
+                        msg = (f"The <{node.tag}> tag with url_name '{edxobj.attributes['url_name']}' "
                            f"should not contain any text ({child.tail.strip()[:10]})")
+                    else:
+                        msg = (f"A <{node.tag}> tag with no url_name "
+                               f"should not contain any text ({child.tail.strip()[:10]})")
                     errorstore.add_error(UnexpectedContent(filename, msg))
                     break
 
@@ -200,6 +235,10 @@ def traverse_course(edxobj, node, filename, errorstore, pointer=False):
                 edxobj.add_child(newobj)
                 traverse_course(newobj, child, filename, errorstore)
             else:
-                msg = (f"A <{child.tag}> tag was unexpectedly found inside the <{node.tag}> tag with "
-                       f"url_name {edxobj.attributes['url_name']}")
+                if 'url_name' in edxobj.attributes:
+                    msg = (f"A <{child.tag}> tag was unexpectedly found inside the <{node.tag}> tag with "
+                           f"url_name {edxobj.attributes['url_name']}")
+                else:
+                    msg = (f"A <{child.tag}> tag was unexpectedly found inside a <{node.tag}> tag with "
+                           f"no url_name")
                 errorstore.add_error(UnexpectedTag(filename, msg))

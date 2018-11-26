@@ -21,7 +21,7 @@ def handle_arguments():
 
     # Required arguments
     # Location of course.xml
-    parser.add_argument("filename", help="Location of course.xml")
+    parser.add_argument("-c", "--course", help="Location of course.xml (default=./course.xml)", default="course.xml")
 
     # Optional arguments
     # Output file for structure
@@ -45,7 +45,7 @@ def handle_arguments():
                         help="Level of errors at which to declare failure: 0=DEBUG, 1=INFO, 2=WARNING, 3=ERROR (default), 4=NEVER")
 
     # Ignore list
-    parser.add_argument('-i', '--ignore', nargs='+', help='List of errors to ignore (use as last argument)')
+    parser.add_argument('-i', '--ignore', nargs='+', help='List of errors to ignore')
 
     # Parse the command line
     return parser.parse_args()
@@ -63,7 +63,7 @@ current_dir = os.getcwd()
 errorstore = ErrorStore(args.ignore)
 
 # Load the course
-course = load_course(args.filename, errorstore, args.quiet)
+course = load_course(args.course, errorstore, args.quiet)
 
 # Report any errors that were found
 if not args.quiet:
@@ -73,7 +73,7 @@ if not args.quiet:
         report_summary(errorstore)
 
 # Output the structure to file
-if args.tree:
+if args.tree and course is not None:
     if not args.quiet:
         print(f"Writing structure to {args.tree}")
     os.chdir(current_dir)
