@@ -12,3 +12,8 @@ def report_errors(errorstore):
             print(f"{error.level} ({error.filename}): {error.description} ({error.name})")
     else:
         print("No errors found!")
+
+def error_summary(errorstore):
+    """Reports summary statistics on the errors found"""
+    # TODO: Write this. Best done with a tally from the collections library?
+    pass

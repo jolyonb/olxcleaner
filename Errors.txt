@@ -1,16 +1,4 @@
-To be implemented"
-
-On course load:
-- course.xml is not named course.xml
-- error loading XML file (or HTML file)
-- forbidden/unknown tag inside tag
-- pointer tag does not point to an existing file
-- content contained in non-content tag
-- pointer tag points to file that doesn't open with matching tag
-- tag is not a pointer tag, but target file exists anyway
-- target tag contains an unnecessary url_name attribute
-- course.xml is a pointer file containing three attributes, or not a pointer file
-- course.xml is empty?
+To be implemented:
 
 On policy load:
 - policy file not found
@@ -30,5 +18,5 @@ On parsing:
 - python wrapped in CDATA
 - python has correct script type
 - everything works when using expect values in customresponse
-
-How does the thing deal with comments?
+- course tag has three required attributes
+- unexpected content in tags

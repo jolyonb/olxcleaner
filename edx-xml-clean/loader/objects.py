@@ -25,6 +25,8 @@ class EdxObject(object):
     obsolete_msg = None
     # What is the name of the directory that stores this content type?
     type = None
+    # Can this tag be empty?
+    can_be_empty = False
 
     @property
     def allowed_children(self):
@@ -53,15 +55,18 @@ class EdxObject(object):
             name = self.attributes.get("url_name")
         return f"<{self.type}: {name}>"
 
-    @property
-    def is_pointer(self):
+    def is_pointer(self, attribs=None):
         """
         Returns True if the attributes allow this node to point to a new file
+
+        Uses attribs if not none, or self.attributes is so
         """
+        if attribs is None:
+            attribs = self.attributes
         # Follows pointer convention in edX: is_pointer_tag in
         # https://github.com/edx/edx-platform/blob/master/common/lib/xmodule/xmodule/xml_module.py
         # Also needs to have no children and no text
-        return set(self.attributes.keys()) == self.pointer_attr and self.can_be_pointer
+        return set(attribs.keys()) == self.pointer_attr and self.can_be_pointer
 
 class EdxCourse(EdxObject):
     """edX course object"""
@@ -106,37 +111,43 @@ class EdxVertical(EdxObject):
                 'lti': EdxLti,
                 'lti_consumer': EdxLtiConsumer}
 
-class EdxVideo(EdxObject):
-    """edX video object"""
-    type = "video"
-    depth = 4
-
 class EdxDiscussion(EdxObject):
     """edX discussion object"""
     type = "discussion"
     depth = 4
+    can_be_empty = True
 
 class EdxLti(EdxObject):
     """edX lti object (obsolete)"""
     type = "lti"
     depth = 4
     obsolete_msg = "<lti> entries are obsolete and should be replaced by <lti_consumer>"
+    can_be_empty = True
 
 class EdxLtiConsumer(EdxObject):
     """edX lti_consumer object"""
     can_be_pointer = False
     type = "lti_consumer"
     depth = 4
+    can_be_empty = True
 
 class EdxContent(EdxObject):
     """Abstract class for edX content objects"""
     content_store = True
     depth = 4
+    content = None  # Contains the content of the tag, including the tag itself
 
 class EdxHtml(EdxContent):
     """edX html object"""
     type = "html"
+    html_content = False  # Was the content set by slurping up an HTML file directly?
+    # If True, content does not contain the wrapping html tag
 
 class EdxProblem(EdxContent):
     """edX problem object"""
     type = "problem"
+
+class EdxVideo(EdxContent):
+    """edX video object"""
+    type = "video"
+    can_be_empty = True

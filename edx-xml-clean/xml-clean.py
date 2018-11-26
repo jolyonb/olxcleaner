@@ -13,6 +13,8 @@ from reporting.errors import report_errors
 # Point to a course
 working = "../course/course.xml"
 
+# TODO: Implement argparse for filename loading and options
+
 # Construct the error store
 errorstore = ErrorStore()
 
@@ -20,7 +22,12 @@ errorstore = ErrorStore()
 course = load_course(working, errorstore)
 
 # Print the structure
-#print_tree(course)
+print_tree(course)
 
 # Report any errors that were found
 report_errors(errorstore)
+
+vert = course.children[0].children[0].children[0]
+
+for child in vert.children:
+    print(child.content)
