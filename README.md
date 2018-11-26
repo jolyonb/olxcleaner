@@ -4,7 +4,7 @@ Validates the XML code for an edX course
 
 Version 0.0.1
 
-Copyright Jolyon Bloomfield 2018
+Copyright (C) 2018 Jolyon Bloomfield
 
 ## Links
 
@@ -38,5 +38,5 @@ Run the file `./edx-xml-clean/edx-xml-clean.py` with the following command line 
 * `-q`: Quiet mode. Does not output anything to the screen.
 * `-e`: Suppress error listing. Implied by `-q`.
 * `-s`: Suppress summary of errors. Implied by `-q`.
-* `-f`: Select the error level at which to exit with an error code. 0 = DEBUG, 1 = INFO, 2 = WARNING, 3 = ERROR (default), 4 = NEVER. Exit code is set to -1 if an error at the specified level or higher is present.
+* `-f`: Select the error level at which to exit with an error code. 0 = DEBUG, 1 = INFO, 2 = WARNING, 3 = ERROR (default), 4 = NEVER. Exit code is set to `1` if an error at the specified level or higher is present.
 * `-i`: Specify a space-separated list of error names to ignore. See [Error Listing](errors.md).
