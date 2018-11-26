@@ -2,7 +2,7 @@
 
 Validates the XML code for an edX course
 
-version 0.0.1
+Version 0.0.1
 
 Copyright Jolyon Bloomfield 2018
 
@@ -10,6 +10,7 @@ Copyright Jolyon Bloomfield 2018
 
 * [Error Listing](errors.md)
 * [Wishlist](wishlist.md)
+* [License](LICENSE)
 
 ## Requirements
 
