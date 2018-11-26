@@ -5,11 +5,12 @@ output.py
 Routines to represent the structure of a course in various ways
 """
 
-def print_tree(course, maxdepth=None):
+def write_tree(course, filename, maxdepth=None):
     """
-    Outputs a tree version of the course structure to screen.
+    Outputs a tree version of the course structure to file.
 
     :param course: EdxCourse object
+    :param filename: File to output to
     :param maxdepth: Maximum depth to display:
         0 = course
         1 = chapter
@@ -20,19 +21,21 @@ def print_tree(course, maxdepth=None):
         in-between the integers here.
     :return: None
     """
-    _print_tree(course, maxdepth)
+    with open(filename, "w") as f:
+        _write_tree(course, f, maxdepth)
 
-def _print_tree(obj, maxdepth, indent=0):
+def _write_tree(obj, handle, maxdepth, indent=0):
     """
     Recursively outputs a tree version of the course structure to screen.
 
     :param obj: Current object to display
-    :param indent: Current indentation level
+    :param handle: File handle to output to
     :param maxdepth: The maximum depth to display
+    :param indent: Current indentation level
     :return: None
     """
     if maxdepth is not None and obj.depth > maxdepth:
         return
-    print(f'{" " * indent * 4}{obj}')
+    handle.write(f'{" " * indent * 4}{obj}\n')
     for child in obj.children:
-        _print_tree(child, maxdepth, indent + 1)
+        _write_tree(child, handle, maxdepth, indent + 1)

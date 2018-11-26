@@ -1,28 +1,86 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-xml-clean.py
+edX XML Cleaner
 
 A validator for XML edX courses
+
+Copyright Jolyon Bloomfield 2018
 """
+import sys
+import os
+import argparse
 from errors.errorstore import ErrorStore
 from loader.xml import load_course
-from reporting.structure import print_tree
-from reporting.errors import report_errors
+from reporting.structure import write_tree
+from reporting.errors import report_errors, report_summary
 
-# Point to a course
-working = "../course/course.xml"
+def handle_arguments():
+    """Look after all command-line arguments"""
+    parser = argparse.ArgumentParser(description="edX XML cleaner -- A validator for XML edX courses")
 
-# TODO: Implement argparse for filename loading and options
+    # Required arguments
+    # Location of course.xml
+    parser.add_argument("filename", help="Location of course.xml")
+
+    # Optional arguments
+    # Output file for structure
+    parser.add_argument("-t", "--tree", help="File to output course structure to")
+
+    # Level to output structure to
+    parser.add_argument("-l", "--level", help="Depth level to output structure to",
+                        default=4, choices=[0, 1, 2, 3, 4], type=int)
+
+    # Quiet mode
+    parser.add_argument("-q", "--quiet", help="Quiet mode (no screen output)", action="store_true")
+
+    # Error output
+    parser.add_argument("-e", "--noerrors", help="Suppress error output", action="store_true")
+
+    # Error summary
+    parser.add_argument("-s", "--nosummary", help="Suppress error summary", action="store_true")
+
+    # Failure level
+    parser.add_argument("-f", "--failure", default=3, choices=[0, 1, 2, 3, 4], type=int,
+                        help="Level of errors at which to declare failure: 0=DEBUG, 1=INFO, 2=WARNING, 3=ERROR (default), 4=NEVER")
+
+    # Ignore list
+    parser.add_argument('-i', '--ignore', nargs='+', help='List of errors to ignore (use as last argument)')
+
+    # Parse the command line
+    return parser.parse_args()
+
+# Read the command line arguments
+args = handle_arguments()
+
+if not args.quiet:
+    print('edX XML cleaner -- A validator for XML edX courses')
+
+# Save current directory
+current_dir = os.getcwd()
 
 # Construct the error store
-errorstore = ErrorStore()
+errorstore = ErrorStore(args.ignore)
 
 # Load the course
-course = load_course(working, errorstore)
-
-# Print the structure
-print_tree(course)
+course = load_course(args.filename, errorstore, args.quiet)
 
 # Report any errors that were found
-report_errors(errorstore)
+if not args.quiet:
+    if not args.noerrors:
+        report_errors(errorstore)
+    if not args.nosummary:
+        report_summary(errorstore)
+
+# Output the structure to file
+if args.tree:
+    if not args.quiet:
+        print(f"Writing structure to {args.tree}")
+    os.chdir(current_dir)
+    write_tree(course, args.tree, args.level)
+
+# Exit with the appropriate error level
+if errorstore.return_error(args.failure):
+    sys.exit(1)
+else:
+    sys.exit(0)

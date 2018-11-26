@@ -3,3 +3,4 @@ venv
 course
 *.DS_Store
 *__pycache__
+tree.txt

@@ -39,6 +39,10 @@ class CourseError(object):
         return self._level.name
 
     @property
+    def level_val(self):
+        return self._level.value
+
+    @property
     def name(self):
         return type(self).__name__
 

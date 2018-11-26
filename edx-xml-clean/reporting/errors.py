@@ -4,16 +4,20 @@ errors.py
 
 Routines to report on errors found in a course
 """
+from errors.errors import ErrorLevel
 
 def report_errors(errorstore):
     """Gives a simple report of all errors that were found"""
     if errorstore.errors:
         for error in errorstore.errors:
             print(f"{error.level} ({error.filename}): {error.description} ({error.name})")
-    else:
-        print("No errors found!")
 
-def error_summary(errorstore):
+def report_summary(errorstore):
     """Reports summary statistics on the errors found"""
-    # TODO: Write this. Best done with a tally from the collections library?
-    pass
+    print("Summary:")
+    counter = errorstore.summary()
+    for level in ErrorLevel:
+        if level.name in counter:
+            print(f"{level.name}: {counter[level.name]}")
+    if not counter:
+        print("No errors found!")

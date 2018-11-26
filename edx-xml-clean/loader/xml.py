@@ -11,15 +11,17 @@ from loader.objects import EdxCourse
 from loader.utils import file_exists
 from errors.errors import *
 
-def load_course(filename, errorstore):
+def load_course(filename, errorstore, quiet):
     """
     Loads a course, given a filename for the appropriate course.xml file.
 
     :param filename: Path and filename for course.xml (or equivalent)
     :param errorstore: ErrorStore object to store errors
+    :param quiet: Flag for quiet mode
     :return: EdxCourse object, or None on failure
     """
-    print(f"Loading {filename}")
+    if not quiet:
+        print(f"Loading {filename}")
 
     # Ensure the file exists
     if not file_exists(filename):
