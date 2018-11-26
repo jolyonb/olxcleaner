@@ -26,8 +26,3 @@ print_tree(course)
 
 # Report any errors that were found
 report_errors(errorstore)
-
-vert = course.children[0].children[0].children[0]
-
-for child in vert.children:
-    print(child.content)
