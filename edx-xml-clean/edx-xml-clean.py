@@ -10,6 +10,7 @@ Copyright Jolyon Bloomfield 2018
 import sys
 import os
 import argparse
+from __version__ import version
 from errors.errorstore import ErrorStore
 from loader.xml import load_course
 from reporting.structure import write_tree
@@ -54,7 +55,7 @@ def handle_arguments():
 args = handle_arguments()
 
 if not args.quiet:
-    print('edX XML cleaner -- A validator for XML edX courses')
+    print(f'edX XML cleaner {version} -- A validator for XML edX courses')
 
 # Save current directory
 current_dir = os.getcwd()
