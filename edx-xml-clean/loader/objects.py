@@ -23,10 +23,12 @@ class EdxObject(object):
     can_be_pointer = True
     # If this object is obsolete, what message should be displayed?
     obsolete_msg = None
-    # What is the name of the directory that stores this content type?
+    # What is the name of the tag? (Also the directory that stores this content type)
     type = None
     # Can this tag be empty?
     can_be_empty = False
+    # Does this tag need a display_name attribute?
+    display_name = False
 
     @property
     def allowed_children(self):
@@ -83,6 +85,7 @@ class EdxChapter(EdxObject):
     """edX chapter object"""
     type = 'chapter'
     depth = 1
+    display_name = True
 
     @property
     def allowed_children(self):
@@ -92,6 +95,7 @@ class EdxSequential(EdxObject):
     """edX sequential object"""
     type = "sequential"
     depth = 2
+    display_name = True
 
     @property
     def allowed_children(self):
@@ -101,6 +105,7 @@ class EdxVertical(EdxObject):
     """edX vertical object"""
     type = "vertical"
     depth = 3
+    display_name = True
 
     @property
     def allowed_children(self):
@@ -123,6 +128,7 @@ class EdxLti(EdxObject):
     depth = 4
     obsolete_msg = "<lti> entries are obsolete and should be replaced by <lti_consumer>"
     can_be_empty = True
+    display_name = True
 
 class EdxLtiConsumer(EdxObject):
     """edX lti_consumer object"""
@@ -130,6 +136,7 @@ class EdxLtiConsumer(EdxObject):
     type = "lti_consumer"
     depth = 4
     can_be_empty = True
+    display_name = True
 
 class EdxContent(EdxObject):
     """Abstract class for edX content objects"""
@@ -142,12 +149,15 @@ class EdxHtml(EdxContent):
     type = "html"
     html_content = False  # Was the content set by slurping up an HTML file directly?
     # If True, content does not contain the wrapping html tag
+    display_name = True
 
 class EdxProblem(EdxContent):
     """edX problem object"""
     type = "problem"
+    display_name = True
 
 class EdxVideo(EdxContent):
     """edX video object"""
     type = "video"
     can_be_empty = True
+    display_name = True

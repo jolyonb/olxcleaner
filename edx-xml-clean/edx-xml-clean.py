@@ -27,6 +27,7 @@ from errors.errorstore import ErrorStore
 from loader.xml import load_course
 from reporting.structure import write_tree
 from reporting.errors import report_errors, report_summary
+from parser import scan_course
 
 def handle_arguments():
     """Look after all command-line arguments"""
@@ -77,6 +78,13 @@ errorstore = ErrorStore(args.ignore)
 
 # Load the course
 course = load_course(args.course, errorstore, args.quiet)
+
+if course:
+    # Load the policy file
+    # TODO
+
+    # Parse the course for errors
+    scan_course(course, errorstore)
 
 # Report any errors that were found
 if not args.quiet:
