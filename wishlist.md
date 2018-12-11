@@ -37,3 +37,5 @@ This is just a list of things that it would be nice to have in this program.
 - lti_consumer uses valid passport credentials
 - Date fields in policy all evaluate using edX date evaluator
 - Policy file chapter/sequential entries correspond to existing url_names
+- Check that all release dates fall inside the course start and end dates
+- Check that various open/close dates appear in order!

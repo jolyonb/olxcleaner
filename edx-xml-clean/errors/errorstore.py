@@ -26,5 +26,14 @@ class ErrorStore(object):
         return max_level >= error_level
 
     def summary(self):
-        """Returns a summary of the number of errors at each level"""
-        return Counter([error.level for error in self.errors])
+        """
+        Returns a dictionary keyed by error levels containing a counter
+        of errors at that level keyed by error names
+        """
+        # Get a count of each level of error
+        levelcounter = Counter([error.level for error in self.errors])
+        # For each level, get a count of each type of error
+        errors = {}
+        for level in levelcounter:
+            errors[level] = Counter([error.name for error in self.errors if error.level == level])
+        return errors
