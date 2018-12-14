@@ -29,6 +29,8 @@ class EdxObject(object):
     can_be_empty = False
     # Does this tag need a display_name attribute?
     display_name = False
+    # Does this tag need a url_name attribute?
+    needs_url_name = True
 
     @property
     def allowed_children(self):
@@ -121,6 +123,7 @@ class EdxDiscussion(EdxObject):
     type = "discussion"
     depth = 4
     can_be_empty = True
+    needs_url_name = False
 
 class EdxLti(EdxObject):
     """edX lti object (obsolete)"""

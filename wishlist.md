@@ -27,7 +27,7 @@ This is just a list of things that it would be nice to have in this program.
 
 ### On parsing:
 
-- Obsolete components
+- Obsolete components (eg, discussions in discussion directory)
 - Course tag has the three required attributes
 - Test internal links, including static folder image, css, js, and textbook pdfs (policy)
 - Test that python code runs
