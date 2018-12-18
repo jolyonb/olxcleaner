@@ -39,8 +39,8 @@ def find_url_names(course, errorstore):
     for edxobj in traverse(course):
         url_name = edxobj.attributes.get('url_name')
 
-        if url_name is None and edxobj.needs_url_name:
-            if not edxobj.broken:
+        if url_name is None:
+            if edxobj.needs_url_name and not edxobj.broken:
                 # Report the error
                 msg = f"A <{edxobj.type}> tag has no url_name"
                 errorstore.add_error(MissingURLName(edxobj.filenames[0], msg))
