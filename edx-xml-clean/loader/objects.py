@@ -31,6 +31,8 @@ class EdxObject(object):
     display_name = False
     # Does this tag need a url_name attribute?
     needs_url_name = True
+    # Is this element broken (and hence needs no further errors reported?)
+    broken = False
 
     @property
     def allowed_children(self):

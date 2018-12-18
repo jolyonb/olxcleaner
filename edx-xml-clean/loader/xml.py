@@ -98,6 +98,7 @@ def traverse_course(edxobj, node, filename, errorstore, pointer=False):
             msg = (f"The tag <{node.tag}> with url_name {edxobj.attributes['url_name']} "
                    "appears to be pointing to itself")
             errorstore.add_error(SelfPointer(filename, msg))
+            node.broken = True
             return
 
         # We have a valid pointer tag
@@ -114,6 +115,7 @@ def traverse_course(edxobj, node, filename, errorstore, pointer=False):
             msg = (f"The <{node.tag}> tag with url_name {edxobj.attributes['url_name']} points to "
                    f"the file {new_file} that does not exist")
             errorstore.add_error(FileDoesNotExist(filename, msg))
+            node.broken = True
             return
 
         try:
@@ -132,6 +134,7 @@ def traverse_course(edxobj, node, filename, errorstore, pointer=False):
         msg = (f"The <{node.tag}> tag with url_name '{edxobj.attributes['url_name']}' "
                f"in {filename} looks like it is an invalid pointer tag")
         errorstore.add_error(InvalidPointer(filename, msg))
+        node.broken = True
         return
 
     # At this stage, we've checked for pointer tags and associated errors
@@ -173,6 +176,7 @@ def traverse_course(edxobj, node, filename, errorstore, pointer=False):
             etree.fromstring(html, parser)
         except Exception as e:
             errorstore.add_error(InvalidHTML(filename, e.args[0]))
+            node.broken = True
             return
         else:
             edxobj.content = html
@@ -217,7 +221,7 @@ def traverse_course(edxobj, node, filename, errorstore, pointer=False):
                 if child.tail and child.tail.strip():
                     if 'url_name' in edxobj.attributes:
                         msg = (f"The <{node.tag}> tag with url_name '{edxobj.attributes['url_name']}' "
-                           f"should not contain any text ({child.tail.strip()[:10]})")
+                               f"should not contain any text ({child.tail.strip()[:10]})")
                     else:
                         msg = (f"A <{node.tag}> tag with no url_name "
                                f"should not contain any text ({child.tail.strip()[:10]})")

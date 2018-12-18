@@ -40,9 +40,10 @@ def find_url_names(course, errorstore):
         url_name = edxobj.attributes.get('url_name')
 
         if url_name is None and edxobj.needs_url_name:
-            # Report the error
-            msg = f"A <{edxobj.type}> tag has no url_name"
-            errorstore.add_error(MissingURLName(edxobj.filenames[0], msg))
+            if not edxobj.broken:
+                # Report the error
+                msg = f"A <{edxobj.type}> tag has no url_name"
+                errorstore.add_error(MissingURLName(edxobj.filenames[0], msg))
         else:
             # Record the name
             if url_name in results:
@@ -67,8 +68,9 @@ def find_display_names(course, errorstore):
     for edxobj in traverse(course):
         display_name = edxobj.attributes.get('display_name')
         if edxobj.display_name and (display_name is None or display_name == ""):
-            if 'url_name' in edxobj.attributes:
-                msg = f"The tag {edxobj} is missing the display_name attribute"
-            else:
-                msg = f"A <{edxobj.type}> tag with no url_name is missing the display_name attribute"
-            errorstore.add_error(MissingDisplayName(edxobj.filenames[-1], msg))
+            if not edxobj.broken:
+                if 'url_name' in edxobj.attributes:
+                    msg = f"The tag {edxobj} is missing the display_name attribute"
+                else:
+                    msg = f"A <{edxobj.type}> tag with no url_name is missing the display_name attribute"
+                errorstore.add_error(MissingDisplayName(edxobj.filenames[-1], msg))
