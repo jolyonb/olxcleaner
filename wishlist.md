@@ -25,6 +25,11 @@ This is just a list of things that it would be nice to have in this program.
 - Error loading grading policy json
 - Policy file has wrong course name
 
+### On updates load:
+
+- Update file not found
+- Error loading update json
+
 ### On parsing:
 
 - Obsolete components (eg, discussions in discussion directory)
@@ -39,3 +44,4 @@ This is just a list of things that it would be nice to have in this program.
 - Policy file chapter/sequential entries correspond to existing url_names
 - Check that all release dates fall inside the course start and end dates
 - Check that various open/close dates appear in order!
+- Check that each update has the required elements, and that display text parses as html correctly

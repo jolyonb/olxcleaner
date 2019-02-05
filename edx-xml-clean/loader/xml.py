@@ -121,7 +121,7 @@ def traverse_course(edxobj, node, filename, errorstore, pointer=False):
         try:
             new_node = etree.parse(new_file).getroot()
         except XMLSyntaxError as e:
-            errorstore.add_error(InvalidXML(filename, e.args[0]))
+            errorstore.add_error(InvalidXML(new_file, e.args[0]))
             return
         else:
             traverse_course(edxobj, new_node, new_file, errorstore, pointer=True)
