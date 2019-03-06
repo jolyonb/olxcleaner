@@ -34,7 +34,7 @@ This is just a list of things that it would be nice to have in this program.
 
 - Obsolete components (eg, discussions in discussion directory)
 - Course tag has the three required attributes
-- Test internal links, including static folder image, css, js, and textbook pdfs (policy)
+- Test internal links, including all static folder links and textbook pdfs (policy)
 - Test that python code runs
 - Test that customgraders work when using expect calues in customresponse
 - Python code is wrapped in CDATA
@@ -45,3 +45,4 @@ This is just a list of things that it would be nice to have in this program.
 - Check that all release dates fall inside the course start and end dates
 - Check that various open/close dates appear in order!
 - Check that each update has the required elements, and that display text parses as html correctly
+- FBE tags set up correctly
