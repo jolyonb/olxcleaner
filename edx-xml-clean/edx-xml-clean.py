@@ -20,14 +20,12 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 import sys
-import os
 import argparse
 from __version__ import version
-from errors.errorstore import ErrorStore
-from loader.xml import load_course
+
+from validator import validate
 from reporting.structure import write_tree
 from reporting.errors import report_errors, report_summary
-from parser import scan_course
 
 def handle_arguments():
     """Look after all command-line arguments"""
@@ -70,21 +68,8 @@ args = handle_arguments()
 if not args.quiet:
     print(f'edX XML cleaner {version} -- A validator for XML edX courses')
 
-# Save current directory
-current_dir = os.getcwd()
-
-# Construct the error store
-errorstore = ErrorStore(args.ignore)
-
-# Load the course
-course = load_course(args.course, errorstore, args.quiet)
-
-if course:
-    # Load the policy file
-    # TODO
-
-    # Parse the course for errors
-    scan_course(course, errorstore)
+# Validate the course
+course, errorstore = validate(args.course, args.quiet, args.ignore)
 
 # Report any errors that were found
 if not args.quiet:
@@ -97,7 +82,6 @@ if not args.quiet:
 if args.tree and course is not None:
     if not args.quiet:
         print(f"Writing structure to {args.tree}")
-    os.chdir(current_dir)
     write_tree(course, args.tree, args.level)
 
 # Exit with the appropriate error level

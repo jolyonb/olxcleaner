@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-edxloader.py
+xml.py
 
 Routines to load the XML of an edX course into a structure
 """
 import os
 from lxml import etree
 from lxml.etree import XMLSyntaxError
-from loader.objects import EdxCourse
+from loader.objects import EdxObject
 from errors.errors import *
 
 def file_exists(filename):
@@ -56,7 +56,7 @@ def load_course(filename, errorstore, quiet):
         return
 
     # Initialize the course object
-    course = EdxCourse()
+    course = EdxObject.get_object('course')
 
     # Load the course!
     traverse_course(course, tree.getroot(), file, errorstore)
@@ -84,7 +84,7 @@ def traverse_course(edxobj, node, filename, errorstore, pointer=False):
         return
 
     # Start by copying the attributes from the node into the object
-    edxobj.set_attribs(node.attrib)
+    edxobj.add_attribs(node.attrib)
     # Set the filename for the object
     edxobj.add_filename(filename)
 
@@ -235,7 +235,7 @@ def traverse_course(edxobj, node, filename, errorstore, pointer=False):
                 pass
             elif child.tag in edxobj.allowed_children:
                 # Recurse on that node
-                newobj = edxobj.allowed_children[child.tag]()
+                newobj = EdxObject.get_object(child.tag)
                 edxobj.add_child(newobj)
                 traverse_course(newobj, child, filename, errorstore)
             else:

@@ -40,3 +40,5 @@ Run the file `./edx-xml-clean/edx-xml-clean.py` with the following command line 
 * `-s`: Suppress summary of errors. Implied by `-q`.
 * `-f`: Select the error level at which to exit with an error code. 0 = DEBUG, 1 = INFO, 2 = WARNING, 3 = ERROR (default), 4 = NEVER. Exit code is set to `1` if an error at the specified level or higher is present.
 * `-i`: Specify a space-separated list of error names to ignore. See [Error Listing](errors.md).
+
+The cleaner includes modules that parse a course into python objects. This can be useful if you want to scan a course to generate a report. An example that does so, outputting a LaTeX file, is given in `crawler.py`.
