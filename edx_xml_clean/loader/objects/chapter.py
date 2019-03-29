@@ -1,19 +1,19 @@
 """
-sequential.py
+chapter.py
 
-Object description for an OLX sequential tag
+Object description for an OLX chapter tag
 """
-from loader.objects.common import EdxObject
+from edx_xml_clean.loader.objects.common import EdxObject
 
-class EdxSequential(EdxObject):
-    """edX sequential object"""
-    type = "sequential"
-    depth = 2
+class EdxChapter(EdxObject):
+    """edX chapter object"""
+    type = 'chapter'
+    depth = 1
     display_name = True
 
     @property
     def allowed_children(self):
-        return ['vertical']
+        return ['sequential']
 
     def validate(self, errorstore):
         """

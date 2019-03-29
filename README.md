@@ -4,7 +4,7 @@ Validates the XML code for an edX course
 
 Version 0.0.1
 
-Copyright (C) 2018 Jolyon Bloomfield
+Copyright (C) 2018-2019 Jolyon Bloomfield
 
 ## Links
 
@@ -20,7 +20,7 @@ This code uses features of python 3.6.
 
 Currently, you need to clone the repository; no installer is provided.
 
-Run the file `./edx-xml-clean/edx-xml-clean.py` with the following command line options:
+Run the file `./edx-xml-clean.py` with the following command line options:
 
 ```bash
 ./edx-xml-clean.py [-h] 

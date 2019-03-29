@@ -4,7 +4,7 @@ parser.py
 
 Contains routines to parse a course for errors after loading
 """
-from errors.errors import MissingURLName, DuplicateURLName, MissingDisplayName
+from edx_xml_clean.errors.errors import MissingURLName, DuplicateURLName, MissingDisplayName
 
 def traverse(edxobj):
     """
@@ -57,12 +57,13 @@ def find_url_names(course, errorstore):
     # Return the dictionary
     return results
 
-def find_display_names(course, errorstore):
+def find_display_names(course, errorstore, url_names):
     """
     Searches the course for missing display_name attributes
 
     :param course: EdxCourse object with a loaded course
     :param errorstore: ErrorStore object where errors are reported
+    :param url_names: Dictionary of url_name to objects
     :return: None
     """
     for edxobj in traverse(course):

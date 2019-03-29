@@ -1,31 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-edX XML Cleaner
+edx-xml-clean.py
 
-A validator for XML edX courses
-Copyright (C) 2018 Jolyon Bloomfield
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
+Sample validation script
 """
 import sys
 import argparse
-from __version__ import version
 
-from validator import validate
-from reporting.structure import write_tree
-from reporting.errors import report_errors, report_summary
+from edx_xml_clean.__version__ import version
+from edx_xml_clean import validate
+from edx_xml_clean.reporting.structure import write_tree
+from edx_xml_clean.reporting.errors import report_errors, report_summary
 
 def handle_arguments():
     """Look after all command-line arguments"""

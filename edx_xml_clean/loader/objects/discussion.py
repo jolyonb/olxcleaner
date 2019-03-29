@@ -1,15 +1,16 @@
 """
-video.py
+discussion.py
 
-Object description for an OLX video tag
+Object description for an OLX discussion tag
 """
-from loader.objects.common import EdxContent
+from edx_xml_clean.loader.objects.common import EdxObject
 
-class EdxVideo(EdxContent):
-    """edX video object"""
-    type = "video"
+class EdxDiscussion(EdxObject):
+    """edX discussion object"""
+    type = "discussion"
+    depth = 4
     can_be_empty = True
-    display_name = True
+    needs_url_name = False
 
     def validate(self, errorstore):
         """

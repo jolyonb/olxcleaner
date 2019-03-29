@@ -1,15 +1,15 @@
 """
-lti_consumer.py
+lti.py
 
-Object description for an OLX lti_consumer tag
+Object description for an OLX lti tag
 """
-from loader.objects.common import EdxObject
+from edx_xml_clean.loader.objects.common import EdxObject
 
-class EdxLtiConsumer(EdxObject):
-    """edX lti_consumer object"""
-    can_be_pointer = False
-    type = "lti_consumer"
+class EdxLti(EdxObject):
+    """edX lti object (obsolete)"""
+    type = "lti"
     depth = 4
+    obsolete_msg = "<lti> entries are obsolete and should be replaced by <lti_consumer>"
     can_be_empty = True
     display_name = True
 

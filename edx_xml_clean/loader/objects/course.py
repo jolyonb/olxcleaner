@@ -3,7 +3,7 @@ course.py
 
 Object description for an OLX course tag
 """
-from loader.objects.common import EdxObject
+from edx_xml_clean.loader.objects.common import EdxObject
 
 class EdxCourse(EdxObject):
     """edX course object"""

@@ -7,8 +7,9 @@ Routines to load the XML of an edX course into a structure
 import os
 from lxml import etree
 from lxml.etree import XMLSyntaxError
-from loader.objects import EdxObject
-from errors.errors import *
+
+from edx_xml_clean.loader.objects import EdxObject
+from edx_xml_clean.errors.errors import *
 
 def file_exists(filename):
     """Returns True if filename exists, or False if not"""
