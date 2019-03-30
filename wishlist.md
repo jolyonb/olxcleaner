@@ -46,3 +46,4 @@ This is just a list of things that it would be nice to have in this program.
 - Check that various open/close dates appear in order!
 - Check that each update has the required elements, and that display text parses as html correctly
 - FBE tags set up correctly
+- Check that sequential format tags are in the grading policy

@@ -4,13 +4,13 @@ parser submodule
 
 Handles global error sleuthing
 """
-from edx_xml_clean.parser.parser import find_url_names, find_display_names
+from edx_xml_clean.parser.parser import (
+    find_url_names,
+    check_display_names,
+    merge_policy,
+    validate_grading_policy
+)
 
 checkers = [
-    find_display_names
-]
-
-__all__ = [
-    "find_url_names",
-    "checkers"
+    check_display_names
 ]

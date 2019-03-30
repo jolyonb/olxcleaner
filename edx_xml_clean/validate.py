@@ -6,7 +6,13 @@ Workhorse function that validates an OLX course
 import os
 from edx_xml_clean.errorstore import ErrorStore
 from edx_xml_clean.loader import load_course, load_policy
-from edx_xml_clean.parser import find_url_names, checkers
+from edx_xml_clean.parser import (
+    find_url_names,
+    merge_policy,
+    validate_grading_policy,
+    checkers
+)
+from edx_xml_clean.utils import traverse
 
 def validate(filename, quiet=True, ignore=None):
     """
@@ -32,20 +38,23 @@ def validate(filename, quiet=True, ignore=None):
     if not course:
         return course, errorstore
 
-    # Validation Step #2: Load and validate the policy files
+    # Validation Step #2: Load the policy files
     policy, grading_policy = load_policy(directory, course, errorstore)
-    # TODO: validate policy files
 
     # Validation Step #3: Construct a dictionary of url_names
     url_names = find_url_names(course, errorstore)
 
-    # Validation Step #4: Copy policy data into object attributes
-    # TODO
+    # Validation Step #4: Merge policy data into object attributes
+    merge_policy(policy, url_names, errorstore)
 
-    # Validation Step #5: Make every object validate itself
-    # TODO
+    # Validation Step #5: Validate grading policy
+    validate_grading_policy(grading_policy, errorstore)
 
-    # Validation Step #6: Parse the course for global errors
+    # Validation Step #6: Make every object validate itself
+    for edxobj in traverse(course):
+        edxobj.validate(errorstore)
+
+    # Validation Step #7: Parse the course for global errors
     for checker in checkers:
         checker(course, errorstore, url_names)
 
