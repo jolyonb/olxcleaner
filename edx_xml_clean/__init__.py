@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 import os
-from edx_xml_clean.errors import ErrorStore
+from edx_xml_clean.errorstore import ErrorStore
 from edx_xml_clean.loader import load_course, load_policy
 from edx_xml_clean.parser import find_url_names, checkers
 
@@ -51,6 +51,7 @@ def validate(filename, quiet=True, ignore=None):
     url_names = find_url_names(course, errorstore)
 
     # Validation Step #4: Copy policy data into object attributes
+    # TODO
 
     # Validation Step #5: Make every object validate itself
     # TODO

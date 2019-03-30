@@ -9,7 +9,23 @@ from lxml import etree
 from lxml.etree import XMLSyntaxError
 
 from edx_xml_clean.objects import EdxObject
-from edx_xml_clean.errors.errors import *
+from edx_xml_clean.loader.xml_exceptions import (
+    CourseXMLDoesNotExist,
+    InvalidXML,
+    CourseXMLName,
+    TagMismatch,
+    SelfPointer,
+    FileDoesNotExist,
+    NonFlatURLName,
+    NonFlatFilename,
+    InvalidPointer,
+    UnexpectedTag,
+    InvalidHTML,
+    ExtraURLName,
+    UnexpectedContent,
+    EmptyTag,
+    PossiblePointer
+)
 
 def file_exists(filename):
     """Returns True if filename exists, or False if not"""

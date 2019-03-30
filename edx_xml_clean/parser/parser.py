@@ -4,7 +4,11 @@ parser.py
 
 Contains routines to parse a course for errors after loading
 """
-from edx_xml_clean.errors.errors import MissingURLName, DuplicateURLName, MissingDisplayName
+from edx_xml_clean.parser.parser_exceptions import (
+    MissingURLName,
+    DuplicateURLName,
+    MissingDisplayName
+)
 
 def traverse(edxobj):
     """

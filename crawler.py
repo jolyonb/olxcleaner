@@ -14,7 +14,7 @@ import datetime
 import re
 
 from edx_xml_clean.loader.xml import load_course
-from edx_xml_clean.errors.errorstore import ErrorStore
+from edx_xml_clean.errorstore import ErrorStore
 
 def handle_arguments():
     """Look after all command-line arguments"""
