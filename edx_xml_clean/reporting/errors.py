@@ -4,7 +4,7 @@ errors.py
 
 Routines to report on errors found in a course
 """
-from edx_xml_clean.errors.errors import ErrorLevel
+from edx_xml_clean.exceptions import ErrorLevel
 
 def report_errors(errorstore):
     """Gives a simple report of all errors that were found"""

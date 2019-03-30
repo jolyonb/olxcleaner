@@ -9,7 +9,6 @@ class EdxLti(EdxObject):
     """edX lti object (obsolete)"""
     type = "lti"
     depth = 4
-    obsolete_msg = "<lti> entries are obsolete and should be replaced by <lti_consumer>"
     can_be_empty = True
     display_name = True
 

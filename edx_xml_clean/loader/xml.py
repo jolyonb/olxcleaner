@@ -5,6 +5,7 @@ xml.py
 Routines to load the XML of an edX course into a structure
 """
 import os
+from os.path import isfile
 from lxml import etree
 from lxml.etree import XMLSyntaxError
 
@@ -27,47 +28,32 @@ from edx_xml_clean.loader.xml_exceptions import (
     PossiblePointer
 )
 
-def file_exists(filename):
-    """Returns True if filename exists, or False if not"""
-    if os.path.isfile(filename):
-        return True
-    return False
-
-def load_course(filename, errorstore, quiet):
+def load_course(directory, filename, errorstore, quiet):
     """
     Loads a course, given a filename for the appropriate course.xml file.
 
-    :param filename: Path and filename for course.xml (or equivalent)
+    :param directory: Path for course.xml (or equivalent)
+    :param filename: Filename for course.xml (or equivalent)
     :param errorstore: ErrorStore object to store errors
     :param quiet: Flag for quiet mode
     :return: EdxCourse object, or None on failure
     """
-    # If we've been given a directory, add on 'course.xml'
-    if os.path.isdir(filename):
-        if not quiet:
-            print(f"Received directory: {filename}. Looking for 'course.xml'...")
-        filename = os.path.join(filename, "course.xml")
-
     # Ensure the file exists
-    if not file_exists(filename):
-        errorstore.add_error(CourseXMLDoesNotExist(filename))
+    fullpath = os.path.join(directory, filename)
+    if not isfile(fullpath):
+        errorstore.add_error(CourseXMLDoesNotExist(fullpath))
         return
 
     if not quiet:
-        print(f"Loading {filename}")
-
-    # Change to the relevant directory
-    directory, file = os.path.split(filename)
-    if directory:
-        os.chdir(directory)
+        print(f"Loading {fullpath}")
 
     # Check file name
-    if file != "course.xml":
+    if filename != "course.xml":
         errorstore.add_error(CourseXMLName(filename))
 
     # Obtain the XML for the course.xml file
     try:
-        tree = etree.parse(file)
+        tree = etree.parse(fullpath)
     except XMLSyntaxError as e:
         errorstore.add_error(InvalidXML(filename, e.args[0]))
         return
@@ -76,11 +62,11 @@ def load_course(filename, errorstore, quiet):
     course = EdxObject.get_object('course')
 
     # Load the course!
-    traverse_course(course, tree.getroot(), file, errorstore)
+    traverse_course(course, tree.getroot(), directory, filename, errorstore)
 
     return course
 
-def traverse_course(edxobj, node, filename, errorstore, pointer=False):
+def traverse_course(edxobj, node, directory, filename, errorstore, pointer=False):
     """
     Takes in the current EdxObject, the current lxml element, and the
     current filename. Reads from the element into the object, creating
@@ -88,6 +74,7 @@ def traverse_course(edxobj, node, filename, errorstore, pointer=False):
 
     :param edxobj: The current EdxObject
     :param node: The current lxml element
+    :param directory: The course directory
     :param filename: The current filename
     :param errorstore: An ErrorStore object that is collecting errors
     :param pointer: True if we've arrived at this node due to a pointer tag
@@ -128,7 +115,7 @@ def traverse_course(edxobj, node, filename, errorstore, pointer=False):
         new_file = edxobj.type + "/" + urlname + ".xml"
 
         # Ensure the file exists
-        if not file_exists(new_file):
+        if not isfile(os.path.join(directory, new_file)):
             msg = (f"The <{node.tag}> tag with url_name {edxobj.attributes['url_name']} points to "
                    f"the file {new_file} that does not exist")
             errorstore.add_error(FileDoesNotExist(filename, msg))
@@ -136,12 +123,12 @@ def traverse_course(edxobj, node, filename, errorstore, pointer=False):
             return
 
         try:
-            new_node = etree.parse(new_file).getroot()
+            new_node = etree.parse(os.path.join(directory, new_file)).getroot()
         except XMLSyntaxError as e:
             errorstore.add_error(InvalidXML(new_file, e.args[0]))
             return
         else:
-            traverse_course(edxobj, new_node, new_file, errorstore, pointer=True)
+            traverse_course(edxobj, new_node, directory, new_file, errorstore, pointer=True)
             return
 
     # Next, check if the tag shouldn't be empty, and hence should be a pointer
@@ -169,14 +156,14 @@ def traverse_course(edxobj, node, filename, errorstore, pointer=False):
                 msg = (f"The <html> tag with url_name {edxobj.attributes['url_name']} "
                        "uses obsolete colon notation to point to a subdirectory for filename {filename}")
             else:
-                msg = (f"An <html> tag with no "
+                msg = (f"An <html> tag with no url_name "
                        "uses obsolete colon notation to point to a subdirectory for filename {filename}")
             errorstore.add_error(NonFlatFilename(filename, msg))
             filename = filename.replace(":", "/")
         new_file = "html/" + filename + ".html"
 
         # Ensure the file exists
-        if not file_exists(new_file):
+        if not isfile(os.path.join(directory, new_file)):
             if 'url_name' in edxobj.attributes:
                 msg = (f"The tag <{node.tag}> with url_name {edxobj.attributes['url_name']} points to "
                        f"the file {new_file} that does not exist")
@@ -187,7 +174,7 @@ def traverse_course(edxobj, node, filename, errorstore, pointer=False):
             return
 
         try:
-            with open(new_file) as f:
+            with open(os.path.join(directory, new_file)) as f:
                 html = f.read()
             parser = etree.HTMLParser()
             etree.fromstring(html, parser)
@@ -215,7 +202,7 @@ def traverse_course(edxobj, node, filename, errorstore, pointer=False):
     # Check to see if there is a pointer target file that is not being used
     if not pointer and 'url_name' in edxobj.attributes and edxobj.can_be_pointer:
         new_file = edxobj.type + "/" + edxobj.attributes['url_name'] + ".xml"
-        if file_exists(new_file):
+        if isfile(os.path.join(directory, new_file)):
             msg = (f"The <{node.tag}> tag with url_name '{edxobj.attributes['url_name']}' "
                    f"is not a pointer, but a file that it could point to exists ({new_file})")
             errorstore.add_error(PossiblePointer(filename, msg))
@@ -254,7 +241,7 @@ def traverse_course(edxobj, node, filename, errorstore, pointer=False):
                 # Recurse on that node
                 newobj = EdxObject.get_object(child.tag)
                 edxobj.add_child(newobj)
-                traverse_course(newobj, child, filename, errorstore)
+                traverse_course(newobj, child, directory, filename, errorstore)
             else:
                 if 'url_name' in edxobj.attributes:
                     msg = (f"A <{child.tag}> tag was unexpectedly found inside the <{node.tag}> tag with "
