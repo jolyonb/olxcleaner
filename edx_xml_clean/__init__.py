@@ -18,8 +18,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 import os
-from edx_xml_clean.errors.errorstore import ErrorStore
-from edx_xml_clean.loader.xml import load_course
+from edx_xml_clean.errors import ErrorStore
+from edx_xml_clean.loader import load_course, load_policy
 from edx_xml_clean.parser import find_url_names, checkers
 
 def validate(filename, quiet=True, ignore=None):
@@ -44,16 +44,18 @@ def validate(filename, quiet=True, ignore=None):
     if not course:
         return course, errorstore
 
-    # Validation Step #2: Load the policy file
+    # Validation Step #2: Load and validate the policy file
     # TODO
 
-    # Validation Step #3: Make every object validate itself
-    # TODO
-
-    # Validation Step #4: Construct a dictionary of url_names
+    # Validation Step #3: Construct a dictionary of url_names
     url_names = find_url_names(course, errorstore)
 
-    # Validation Step #5: Parse the course for global errors
+    # Validation Step #4: Copy policy data into object attributes
+
+    # Validation Step #5: Make every object validate itself
+    # TODO
+
+    # Validation Step #6: Parse the course for global errors
     for checker in checkers:
         checker(course, errorstore, url_names)
 

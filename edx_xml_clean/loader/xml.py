@@ -8,7 +8,7 @@ import os
 from lxml import etree
 from lxml.etree import XMLSyntaxError
 
-from edx_xml_clean.loader.objects import EdxObject
+from edx_xml_clean.objects import EdxObject
 from edx_xml_clean.errors.errors import *
 
 def file_exists(filename):

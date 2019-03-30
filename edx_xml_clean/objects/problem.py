@@ -1,14 +1,13 @@
 """
-video.py
+problem.py
 
-Object description for an OLX video tag
+Object description for an OLX problem tag
 """
-from edx_xml_clean.loader.objects.common import EdxContent
+from edx_xml_clean.objects.common import EdxContent
 
-class EdxVideo(EdxContent):
-    """edX video object"""
-    type = "video"
-    can_be_empty = True
+class EdxProblem(EdxContent):
+    """edX problem object"""
+    type = "problem"
     display_name = True
 
     def validate(self, errorstore):

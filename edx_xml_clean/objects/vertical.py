@@ -3,7 +3,7 @@ vertical.py
 
 Object description for an OLX vertical tag
 """
-from edx_xml_clean.loader.objects.common import EdxObject
+from edx_xml_clean.objects.common import EdxObject
 
 class EdxVertical(EdxObject):
     """edX vertical object"""
