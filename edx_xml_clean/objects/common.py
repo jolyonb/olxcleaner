@@ -88,8 +88,7 @@ class EdxObject(ABC):
             attribs = self.attributes
         # Follows pointer convention in edX: is_pointer_tag in
         # https://github.com/edx/edx-platform/blob/master/common/lib/xmodule/xmodule/xml_module.py
-        # Also needs to have no children and no text
-        # TODO: this last bit is not tested
+        # Also needs to have no children and no text (not tested)
         return set(attribs.keys()) == self.pointer_attr and self.can_be_pointer
 
     @abstractmethod
@@ -97,7 +96,7 @@ class EdxObject(ABC):
         """
         Perform validation on this object.
 
-        Objects should validate their contained XML other than those tags
+        Objects should validate their contents other than those tags
         contained in allowed_children.
 
         :param errorstore: An ErrorStore object to which errors should be reported

@@ -7,7 +7,9 @@ Routines to load the policy files of an edX course
 import os
 from os.path import isfile
 import json
-from edx_xml_clean.loader.policy_exceptions import *
+from edx_xml_clean.loader.policy_exceptions import (
+    NoRunName
+)
 
 def load_policy(directory, course, errorstore):
     """
@@ -20,9 +22,9 @@ def load_policy(directory, course, errorstore):
     :return: policy, grading_policy objects
     """
     # Get the run name for the course
-    runname = course.attributes.get("url_name", None)
+    runname = course.attributes.get("url_name")
     if runname is None:
-        # TODO: Error
+        errorstore.add_error(NoRunName(course.filenames[0], None))
         return {}, {}
 
     # Construct filenames for policy files

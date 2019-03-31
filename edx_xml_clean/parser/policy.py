@@ -1,15 +1,13 @@
-# -*- coding: utf-8 -*-
 """
-parser.py
+policy.py
 
-Contains routines to parse a course for errors after loading
+Validation routines related to the policy file
 """
+from edx_xml_clean.utils import traverse
 from edx_xml_clean.parser.parser_exceptions import (
     MissingURLName,
-    DuplicateURLName,
-    MissingDisplayName
+    DuplicateURLName
 )
-from edx_xml_clean.utils import traverse
 
 def find_url_names(course, errorstore):
     """
@@ -42,26 +40,6 @@ def find_url_names(course, errorstore):
 
     # Return the dictionary
     return results
-
-def check_display_names(course, errorstore, url_names):
-    """
-    Searches the course for missing display_name attributes
-
-    :param course: EdxCourse object with a loaded course
-    :param errorstore: ErrorStore object where errors are reported
-    :param url_names: Dictionary of url_name to objects
-    :return: None
-    """
-    for edxobj in traverse(course):
-        display_name = edxobj.attributes.get('display_name')
-        if edxobj.display_name and (display_name is None or display_name == ""):
-            if not edxobj.broken:
-                if 'url_name' in edxobj.attributes:
-                    msg = f"The tag {edxobj} is missing the display_name attribute"
-                else:
-                    msg = f"A <{edxobj.type}> tag with no url_name is missing the display_name attribute"
-                errorstore.add_error(MissingDisplayName(edxobj.filenames[-1], msg))
-        # TODO: Check to make sure that objects that shouldn't have a display_name don't have one
 
 def merge_policy(policy, url_names, errorstore):
     """
@@ -108,11 +86,12 @@ def merge_policy(policy, url_names, errorstore):
             # Copy the data
             edxobj.attributes[element] = policy[entry][element]
 
-def validate_grading_policy(grading_policy, errorstore):
+def validate_grading_policy(grading_policy, course, errorstore):
     """
     Validates the grading policy of the course
 
     :param grading_policy: Grading policy file json
+    :param course: EdxCourse object
     :param errorstore: ErrorStore object where errors are reported
     :return: None
     """

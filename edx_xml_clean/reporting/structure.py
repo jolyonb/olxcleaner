@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-output.py
+structure.py
 
-Routines to represent the structure of a course in various ways
+Routines to represent the structure of a course
 """
 
 def write_tree(course, filename, maxdepth=None):

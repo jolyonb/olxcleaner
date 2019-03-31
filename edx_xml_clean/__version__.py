@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-version.py
+__version__.py
 
 Contains the project version
 """

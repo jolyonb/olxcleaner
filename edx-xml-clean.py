@@ -40,7 +40,14 @@ def handle_arguments():
 
     # Failure level
     parser.add_argument("-f", "--failure", default=3, choices=[0, 1, 2, 3, 4], type=int,
-                        help="Level of errors at which to declare failure: 0=DEBUG, 1=INFO, 2=WARNING, 3=ERROR (default), 4=NEVER")
+                        help="Level of errors at which to declare failure: 0=DEBUG, 1=INFO, "
+                             "2=WARNING, 3=ERROR (default), 4=NEVER")
+
+    # Steps to run
+    parser.add_argument("-p", "--steps", default=7, choices=[1, 2, 3, 4, 5, 6, 7, 8], type=int,
+                        help="Validation steps to take: 1=load course, 2=load policies, 3=check url_names, "
+                             "4=validate policy, 5=validate grading policy, 6=validate tags, "
+                             "7=perform global validation, 8=perform detailed global validation")
 
     # Ignore list
     parser.add_argument('-i', '--ignore', nargs='+', help='List of errors to ignore')
@@ -55,7 +62,7 @@ if not args.quiet:
     print(f'edX XML cleaner {version} -- A validator for XML edX courses')
 
 # Validate the course
-course, errorstore = validate(args.course, args.quiet, args.ignore)
+course, errorstore = validate(args.course, args.steps, args.quiet, args.ignore)
 
 # Report any errors that were found
 if not args.quiet:

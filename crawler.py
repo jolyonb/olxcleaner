@@ -13,8 +13,7 @@ import argparse
 import datetime
 import re
 
-from edx_xml_clean.loader.xml import load_course
-from edx_xml_clean.errorstore import ErrorStore
+from edx_xml_clean import validate
 
 def handle_arguments():
     """Look after all command-line arguments"""
@@ -31,7 +30,7 @@ def handle_arguments():
 args = handle_arguments()
 
 # Load the course
-course = load_course(args.course, ErrorStore([]), True)
+course, errorstore = validate(args.course, steps=1, quiet=True)
 
 # Make sure we have a course to crawl
 if not course:

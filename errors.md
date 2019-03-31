@@ -27,6 +27,8 @@ Each error has a name that can be used in the `-i` flag to ignore it.
 
 - `DuplicateURLName`: Two tags have the same `url_name` attribute. This confuses edX, and can lead to the wrong content loading.
 
+- `NoRunName`: The course tag has no `url_name`, and hence no run name. This is a required parameter for a course.
+
 
 ## Warnings
 
