@@ -4,6 +4,7 @@ exceptions.py
 
 Contains base classes and supporting structures for describing errors
 """
+from abc import ABC, abstractmethod
 from enum import Enum
 
 class ErrorLevel(Enum):
@@ -13,18 +14,24 @@ class ErrorLevel(Enum):
     WARNING = 2
     ERROR = 3
 
-class CourseError(object):
-    """Abstract class describing an error"""
-    def __init__(self, filename=None, message=None):
+class CourseError(ABC):
+    """
+    Abstract class describing an error.
+    Subclasses should use their docstring to describe themselves and set their error level.
+    They should use their __init__ method to construct the error description.
+    """
+    _level = ErrorLevel.DEBUG
+    _filename = ""        # To be set in init
+    _description = ""     # To be set in init
+
+    @abstractmethod
+    def __init__(self, filename, **kwargs):
         """
-        Initializing an error requires three pieces:
-        * Set the error level
+        Initializing an error requires two pieces:
         * Store the relevant filename
-        * Construct the error message
+        * Construct the error message from the kwargs
         """
         self._filename = filename
-        self._description = message
-        self._level = ErrorLevel.DEBUG
 
     @property
     def filename(self):
@@ -45,3 +52,7 @@ class CourseError(object):
     @property
     def name(self):
         return type(self).__name__
+
+    @property
+    def about(self):
+        return type(self).__doc__

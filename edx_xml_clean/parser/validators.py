@@ -45,9 +45,5 @@ class CheckDisplayNames(GlobalValidator):
             display_name = edxobj.attributes.get('display_name')
             if edxobj.display_name and (display_name is None or display_name == ""):
                 if not edxobj.broken:
-                    if 'url_name' in edxobj.attributes:
-                        msg = f"The tag {edxobj} is missing the display_name attribute"
-                    else:
-                        msg = f"A <{edxobj.type}> tag with no url_name is missing the display_name attribute"
-                    errorstore.add_error(MissingDisplayName(edxobj.filenames[-1], msg))
+                    errorstore.add_error(MissingDisplayName(edxobj.filenames[-1], edxobj=edxobj))
             # TODO: Check to make sure that objects that shouldn't have a display_name don't have one

@@ -24,7 +24,7 @@ def load_policy(directory, course, errorstore):
     # Get the run name for the course
     runname = course.attributes.get("url_name")
     if runname is None:
-        errorstore.add_error(NoRunName(course.filenames[0], None))
+        errorstore.add_error(NoRunName(course.filenames[0]))
         return {}, {}
 
     # Construct filenames for policy files

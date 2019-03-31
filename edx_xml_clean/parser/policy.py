@@ -26,15 +26,17 @@ def find_url_names(course, errorstore):
         if url_name is None:
             if edxobj.needs_url_name and not edxobj.broken:
                 # Report the error
-                msg = f"A <{edxobj.type}> tag has no url_name"
-                errorstore.add_error(MissingURLName(edxobj.filenames[0], msg))
+                errorstore.add_error(MissingURLName(edxobj.filenames[0], tag=edxobj.type))
         else:
             # Record the name
             if url_name in results:
                 # We have a collision!
-                msg = (f"Duplicate url_name found: {url_name} appears as <{results[url_name].type}> in "
-                       f"{results[url_name].filenames[0]} and also as <{edxobj.type}> in {edxobj.filenames[0]}")
-                errorstore.add_error(DuplicateURLName(edxobj.filenames[0], msg))
+                errorstore.add_error(DuplicateURLName(edxobj.filenames[0],
+                                                      url_name=url_name,
+                                                      tag1=results[url_name].type,
+                                                      file1=results[url_name].filenames[0],
+                                                      tag2=edxobj.type,
+                                                      file2=edxobj.filenames[0]))
             else:
                 results[url_name] = edxobj
 
