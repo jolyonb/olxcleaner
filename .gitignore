@@ -1,5 +1,4 @@
 venv
 .idea
-course
 *.DS_Store
 *__pycache__
