@@ -10,6 +10,7 @@ Copyright (C) 2018-2019 Jolyon Bloomfield
 
 * [Error Listing](errors.md)
 * [Wishlist](wishlist.md)
+* [Vision](vision.md)
 * [License](LICENSE)
 
 ## Requirements
