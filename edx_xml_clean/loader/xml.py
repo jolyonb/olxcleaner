@@ -25,7 +25,9 @@ from edx_xml_clean.loader.xml_exceptions import (
     ExtraURLName,
     UnexpectedContent,
     EmptyTag,
-    PossiblePointer
+    PossiblePointer,
+    PossibleHTMLPointer,
+    DuplicateHTMLName
 )
 
 def load_course(directory, filename, errorstore, quiet):
@@ -44,7 +46,7 @@ def load_course(directory, filename, errorstore, quiet):
         errorstore.add_error(CourseXMLDoesNotExist(fullpath))
         return
 
-    if not quiet:
+    if not quiet:  # pragma: no cover
         print(f"Loading {fullpath}")
 
     # Check file name
@@ -62,11 +64,11 @@ def load_course(directory, filename, errorstore, quiet):
     course = EdxObject.get_object('course')
 
     # Load the course!
-    traverse_course(course, tree.getroot(), directory, filename, errorstore)
+    traverse_course(course, tree.getroot(), directory, filename, errorstore, {})
 
     return course
 
-def traverse_course(edxobj, node, directory, filename, errorstore, pointer=False):
+def traverse_course(edxobj, node, directory, filename, errorstore, htmlfiles, pointer=False):
     """
     Takes in the current EdxObject, the current lxml element, and the
     current filename. Reads from the element into the object, creating
@@ -77,6 +79,7 @@ def traverse_course(edxobj, node, directory, filename, errorstore, pointer=False
     :param directory: The course directory
     :param filename: The current filename
     :param errorstore: An ErrorStore object that is collecting errors
+    :param htmlfiles: A dictionary of XML filenames (value) that reference a given HTML filename (key)
     :param pointer: True if we've arrived at this node due to a pointer tag
     :return: None
     """
@@ -93,11 +96,25 @@ def traverse_course(edxobj, node, directory, filename, errorstore, pointer=False
     # Set the filename for the object
     edxobj.add_filename(filename)
 
-    # Is the tag an empty tag? (contains only attributes)
-    empty = (len(node) == 0 and node.text is None)
+    # Is the tag an empty tag? (contains only attributes and comments)
+    nodelen = len(node)
+    for child in node:
+        if child.tag is etree.Comment:
+            # We need to remove comment nodes from the length count
+            nodelen -= 1
+    empty = False
+    if nodelen == 0:
+        # Check for text
+        if node.text is None or node.text.strip() == '':
+            empty = True
+            # No text, but make sure that the comment children also have no text!
+            for child in node:
+                if child.tail and child.tail.strip():
+                    empty = False
 
     # Check for a pointer tag
     if empty and edxobj.is_pointer(node.attrib):
+
         if pointer:
             # The target of a pointer tag cannot be a pointer itself
             errorstore.add_error(SelfPointer(filename,
@@ -129,12 +146,59 @@ def traverse_course(edxobj, node, directory, filename, errorstore, pointer=False
             edxobj.broken = True
             return
         else:
-            traverse_course(edxobj, new_node, directory, new_file, errorstore, pointer=True)
+            traverse_course(edxobj, new_node, directory, new_file, errorstore, htmlfiles, pointer=True)
             return
+
+    # Special case: HTML files can point to an actual HTML file with their 'filename' attribute
+    if node.tag == "html" and "filename" in edxobj.attributes:
+        new_filename = edxobj.attributes['filename']
+        if ":" in new_filename:
+            new_filename = new_filename.replace(":", "/")
+            new_file = "html/" + new_filename + ".html"
+            errorstore.add_error(NonFlatFilename(filename, url_name=edxobj.attributes.get('url_name'), newfilename=new_file))
+        else:
+            new_file = "html/" + new_filename + ".html"
+
+        # If not empty, then it could be a PossibleHTMLPointer error
+        if not empty:
+            if isfile(os.path.join(directory, new_file)):
+                errorstore.add_error(PossibleHTMLPointer(filename,
+                                                         tag=node.tag,
+                                                         url_name=edxobj.attributes.get('url_name'),
+                                                         new_file=new_file))
+        else:
+            # We are empty, so this is a good pointer
+            # Ensure the file exists
+            if not isfile(os.path.join(directory, new_file)):
+                errorstore.add_error(FileDoesNotExist(filename,
+                                                      tag=node.tag,
+                                                      url_name=edxobj.attributes.get('url_name'),
+                                                      new_file=new_file))
+                return
+
+            try:
+                with open(os.path.join(directory, new_file)) as f:
+                    html = f.read()
+                parser = etree.HTMLParser(recover=False)
+                etree.fromstring(html, parser)
+            except Exception as e:
+                errorstore.add_error(InvalidHTML(new_file, error=e.args[0]))
+                edxobj.broken = True
+                return
+            else:
+                if new_filename in htmlfiles:
+                    errorstore.add_error(DuplicateHTMLName(filename,
+                                                           file2=htmlfiles[new_filename],
+                                                           htmlfilename=new_file))
+                else:
+                    htmlfiles[new_filename] = filename
+                edxobj.content = html
+                edxobj.html_content = True
+                return
 
     # Next, check if the tag shouldn't be empty, and hence should be a pointer
     # but for some reason was an invalid pointer
-    if empty and not edxobj.can_be_empty and "url_name" in edxobj.attributes:
+    if empty and not edxobj.can_be_empty and "url_name" in node.attrib:
         # Likely to be an invalid pointer tag due to too many attributes
         errorstore.add_error(InvalidPointer(filename,
                                             tag=node.tag,
@@ -147,36 +211,6 @@ def traverse_course(edxobj, node, directory, filename, errorstore, pointer=False
     # The target of a pointer should have no url_name attribute
     if pointer and "url_name" in node.attrib:
         errorstore.add_error(ExtraURLName(filename, tag=node.tag))
-
-    # Special case: HTML files can point to an actual HTML file with their 'filename' attribute
-    if node.tag == "html" and "filename" in edxobj.attributes:
-        filename = edxobj.attributes['filename']
-        if ":" in filename:
-            errorstore.add_error(NonFlatFilename(filename, url_name=edxobj.attributes.get('url_name')))
-            filename = filename.replace(":", "/")
-        new_file = "html/" + filename + ".html"
-
-        # Ensure the file exists
-        if not isfile(os.path.join(directory, new_file)):
-            errorstore.add_error(FileDoesNotExist(filename,
-                                                  tag=node.tag,
-                                                  url_name=edxobj.attributes.get('url_name'),
-                                                  new_file=new_file))
-            return
-
-        try:
-            with open(os.path.join(directory, new_file)) as f:
-                html = f.read()
-            parser = etree.HTMLParser()
-            etree.fromstring(html, parser)
-        except Exception as e:
-            errorstore.add_error(InvalidHTML(filename, error=e.args[0]))
-            edxobj.broken = True
-            return
-        else:
-            edxobj.content = html
-            edxobj.html_content = True
-            return
 
     # Is the tag unexpectedly empty?
     if empty and not edxobj.can_be_empty:
@@ -224,7 +258,7 @@ def traverse_course(edxobj, node, directory, filename, errorstore, pointer=False
                 # Recurse on that node
                 newobj = EdxObject.get_object(child.tag)
                 edxobj.add_child(newobj)
-                traverse_course(newobj, child, directory, filename, errorstore)
+                traverse_course(newobj, child, directory, filename, errorstore, htmlfiles)
             else:
                 errorstore.add_error(UnexpectedTag(filename,
                                                    tag=child.tag,

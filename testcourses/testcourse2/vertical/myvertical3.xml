@@ -1,0 +1,15 @@
+<vertical display_name="Hello">
+  <html url_name='html1'/>
+  <html url_name='html2'/>
+  <html url_name='html3'/>
+  <html url_name='html4'/>
+  <html filename='nonexistant'/>
+  <html filename='stuff:here'/>
+  <html url_name='html5'/>
+  <html url_name='html6'/>
+  <html url_name='html7'/>
+  <html filename='html7'/>
+  <html filename='html3'>
+    more stuff
+  </html>
+</vertical>

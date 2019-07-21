@@ -1,0 +1,2 @@
+<course url_name="mycourseurl" org="myorg" course="mycourse"/>
+<!-- This simple course exists to ensure that everything loads fine when no errors are present -->

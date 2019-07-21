@@ -24,6 +24,9 @@ class CourseError(ABC):
     _filename = ""        # To be set in init
     _description = ""     # To be set in init
 
+    def __repr__(self):  # pragma: no cover
+        return f"<{self.__class__.__name__} error in {self.filename}>"
+
     @abstractmethod
     def __init__(self, filename, **kwargs):
         """
@@ -54,5 +57,5 @@ class CourseError(ABC):
         return type(self).__name__
 
     @property
-    def about(self):
+    def about(self):  # pragma: no cover
         return type(self).__doc__

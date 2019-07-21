@@ -1,0 +1,4 @@
+<vertical display_name="Hello">
+  <video url_name='video1'/>
+  <video url_name='stuff:video2'/>
+</vertical>

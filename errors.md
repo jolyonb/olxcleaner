@@ -45,11 +45,17 @@ Each error has a name that can be used in the `-i` flag to ignore it.
 
 - `NonFlatURLName`: A `url_name` pointer uses colon notation to point to a subdirectory. While partially supported, this is not recommended.
 
+- `PossibleHTMLPointer`: This HTML tag looks like it isn't a pointer tag, but a file exists that it could be trying to point to.
+
 - `PossiblePointer`: This tag looks like it isn't a pointer tag, but a file exists that it could be trying to point to. (This file is thus orphaned, as no other tag can point to it due to `url_name` clashes.)
 
 
 ## Information
 
+- `DuplicateHTMLName`: Two HTML tags point to the same HTML file (`filename` attribute). While this isn't obviously problematic, probably best not to do it.
+
 
 ## Debug
+
+(Currently no errors in this category)
 

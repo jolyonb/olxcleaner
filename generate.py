@@ -21,5 +21,7 @@ with open("errors.md", "w") as f:
         f.write(f"\n## {names[i]}\n\n")
         for error in sorted(errors[i]):
             f.write(f"{error}\n\n")
+        if not errors[i]:
+            f.write("(Currently no errors in this category)\n\n")
 
 print("Error listing written to errors.md")

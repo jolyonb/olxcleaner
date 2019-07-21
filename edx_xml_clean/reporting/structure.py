@@ -26,7 +26,7 @@ def write_tree(course, filename, maxdepth=None):
 
 def _write_tree(obj, handle, maxdepth, indent=0):
     """
-    Recursively outputs a tree version of the course structure to screen.
+    Recursively writes a tree version of the course structure to the file handle.
 
     :param obj: Current object to display
     :param handle: File handle to output to

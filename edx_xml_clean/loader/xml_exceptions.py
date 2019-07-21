@@ -114,8 +114,12 @@ class FileDoesNotExist(CourseError):
         - new_file
         """
         super().__init__(filename)
-        self._description = (f"The <{kwargs['tag']}> tag with url_name {kwargs['url_name']} points to "
-                             f"the file {kwargs['new_file']} that does not exist")
+        if kwargs.get('url_name'):
+            self._description = (f"The <{kwargs['tag']}> tag with url_name '{kwargs['url_name']}' points to "
+                                 f"the file {kwargs['new_file']} that does not exist")
+        else:
+            self._description = (f"A <{kwargs['tag']}> tag with no url_name points to "
+                                 f"the file {kwargs['new_file']} that does not exist")
 
 class SelfPointer(CourseError):
     """A tag appears to be pointing to itself."""
@@ -128,7 +132,7 @@ class SelfPointer(CourseError):
         - url_name
         """
         super().__init__(filename)
-        self._description = (f"The tag <{kwargs['tag']}> with url_name {kwargs['url_name']} "
+        self._description = (f"The tag <{kwargs['tag']}> with url_name '{kwargs['url_name']}' "
                              f"appears to be pointing to itself")
 
 class UnexpectedTag(CourseError):
@@ -145,7 +149,7 @@ class UnexpectedTag(CourseError):
         super().__init__(filename)
         if kwargs['url_name']:
             self._description = (f"A <{kwargs['tag']}> tag was unexpectedly found inside the <{kwargs['parent']}> tag with "
-                                 f"url_name {kwargs['url_name']}")
+                                 f"url_name '{kwargs['url_name']}'")
         else:
             self._description = (f"A <{kwargs['tag']}> tag was unexpectedly found inside a <{kwargs['parent']}> tag with "
                                  f"no url_name")
@@ -164,6 +168,25 @@ class PossiblePointer(CourseError):
         super().__init__(filename)
         self._description = (f"The <{kwargs['tag']}> tag with url_name '{kwargs['url_name']}' "
                              f"is not a pointer, but a file that it could point to exists ({kwargs['new_file']})")
+
+class PossibleHTMLPointer(CourseError):
+    """This HTML tag looks like it isn't a pointer tag, but a file exists that it could be trying to point to."""
+    _level = ErrorLevel.WARNING
+
+    def __init__(self, filename, **kwargs):
+        """
+        Expects kwargs:
+        - tag
+        - url_name
+        - new_file
+        """
+        super().__init__(filename)
+        if kwargs['url_name']:
+            self._description = (f"The <{kwargs['tag']}> tag with url_name '{kwargs['url_name']}' "
+                                 f"is not a pointer, but a file that it could point to exists ({kwargs['new_file']})")
+        else:
+            self._description = (f"A <{kwargs['tag']}> tag with no url_name "
+                                 f"is not a pointer, but a file that it could point to exists ({kwargs['new_file']})")
 
 class UnexpectedContent(CourseError):
     """A tag contains unexpected text content."""
@@ -194,7 +217,7 @@ class NonFlatURLName(CourseError):
         - url_name
         """
         super().__init__(filename)
-        self._description = (f"The <{kwargs['tag']}> tag with url_name {kwargs['url_name']} "
+        self._description = (f"The <{kwargs['tag']}> tag with url_name '{kwargs['url_name']}' "
                              f"uses obsolete colon notation in the url_name to point to a subdirectory")
 
 class NonFlatFilename(CourseError):
@@ -207,9 +230,24 @@ class NonFlatFilename(CourseError):
         - url_name
         """
         super().__init__(filename)
-        if kwargs['url_name']:
-            self._description = (f"The <html> tag with url_name {kwargs['url_name']} "
-                                 f"uses obsolete colon notation to point to a subdirectory for filename {filename}")
+        newfilename = kwargs['newfilename']
+        if kwargs.get('url_name'):
+            self._description = (f"The <html> tag with url_name '{kwargs['url_name']}' "
+                                 f"uses obsolete colon notation to point to a subdirectory for filename {newfilename}")
         else:
             self._description = (f"An <html> tag with no url_name "
-                                 f"uses obsolete colon notation to point to a subdirectory for filename {filename}")
+                                 f"uses obsolete colon notation to point to a subdirectory for filename {newfilename}")
+
+class DuplicateHTMLName(CourseError):
+    """Two HTML tags point to the same HTML file (`filename` attribute). While this isn't obviously problematic, probably best not to do it."""
+    _level = ErrorLevel.INFO
+
+    def __init__(self, filename, **kwargs):
+        """
+        Expects kwargs:
+        - htmlfilename
+        - file2
+        """
+        super().__init__(filename)
+        self._description = (f"Two html tags refer to the same HTML file (using the 'filename' attribute): "
+                             f"{kwargs['htmlfilename']} is referenced in {filename} and {kwargs['file2']}")

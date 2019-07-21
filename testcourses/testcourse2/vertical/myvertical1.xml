@@ -1,0 +1,7 @@
+<vertical display_name="Hello">
+  <problem url_name='problem1'/>
+  <problem url_name='problem2'>
+    This is my problem
+  </problem>
+  <!-- Here's a comment! -->
+</vertical>

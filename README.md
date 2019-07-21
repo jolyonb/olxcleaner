@@ -1,5 +1,7 @@
 # edx-xml-clean
 
+[![Build Status](https://api.travis-ci.org/jolyonb/edx-xml-clean.svg?branch=master)](https://travis-ci.org/jolyonb/edx-xml-clean) [![Coverage Status](https://codecov.io/gh/jolyonb/edx-xml-clean/branch/master/graphs/badge.svg)](https://codecov.io/gh/jolyonb/edx-xml-clean)
+
 Validates the XML code for an edX course
 
 Version 0.0.1

@@ -1,0 +1,21 @@
+<sequential url_name="sequential" display_name="display name">
+  <vertical url_name="myvertical1"/>
+  <vertical url_name="myvertical2"/>
+  <vertical url_name="myvertical3"/>
+  <vertical url_name="myvertical4"/>
+  <vertical url_name="myvertical4-2"/>
+  <vertical url_name="myvertical5"/>
+  <vertical url_name="myvertical6"/>
+  <vertical url_name="myvertical7"/>
+  <vertical url_name="myvertical8"/>
+  <vertical url_name="myverticalnone"/>
+  <vertical url_name="myvertical9" display_name="Hi there"/>
+  <vertical url_name="myvertical10"/>
+  <vertical/>
+  <vertical>
+Here's some bad content
+  </vertical>
+  <vertical>
+    <chapter/>
+  </vertical>
+</sequential>
