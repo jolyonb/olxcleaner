@@ -11,12 +11,12 @@ from edx_xml_clean.parser.validators import GlobalValidator
 from edx_xml_clean.parser.longvalidators import LongValidator
 from edx_xml_clean.utils import traverse
 
-def validate(filename, steps=0, quiet=True, ignore=None):
+def validate(filename, steps=8, quiet=True, ignore=None):
     """
     Validate an OLX course
 
     :param filename: Location of course xml file or directory
-    :param steps: Number of validation steps to take (0 = all)
+    :param steps: Number of validation steps to take (1 = first only, 8 = all)
     :param quiet: Output information to the console
     :param ignore: List of errors to ignore
     :return: course object, errorstore object
@@ -35,42 +35,36 @@ def validate(filename, steps=0, quiet=True, ignore=None):
     course = load_course(directory, file, errorstore, quiet)
     if not course:
         return None, errorstore
-    if steps == 1:
-        return course, errorstore
 
-    # Validation Step #2: Load the policy files
-    policy, grading_policy = load_policy(directory, course, errorstore)
-    if steps == 2:
-        return course, errorstore
+    if steps > 1:
+        # Validation Step #2: Load the policy files
+        policy, grading_policy = load_policy(directory, course, errorstore)
 
-    # Validation Step #3: Construct a dictionary of url_names
-    url_names = find_url_names(course, errorstore)
-    if steps == 3:
-        return course, errorstore
+    if steps > 2:
+        # Validation Step #3: Construct a dictionary of url_names
+        url_names = find_url_names(course, errorstore)
 
-    # Validation Step #4: Merge policy data into object attributes
-    merge_policy(policy, url_names, errorstore)
-    if steps == 4:
-        return course, errorstore
+    if steps > 3:
+        # Validation Step #4: Merge policy data into object attributes
+        merge_policy(policy, url_names, errorstore)
 
-    # Validation Step #5: Validate grading policy
-    validate_grading_policy(grading_policy, course, errorstore)
-    if steps == 5:
-        return course, errorstore
+    if steps > 4:
+        # Validation Step #5: Validate grading policy
+        validate_grading_policy(grading_policy, course, errorstore)
 
-    # Validation Step #6: Have every object validate itself
-    for edxobj in traverse(course):
-        edxobj.validate(errorstore)
-    if steps == 6:
-        return course, errorstore
+    if steps > 5:
+        # Validation Step #6: Have every object validate itself
+        for edxobj in traverse(course):
+            edxobj.validate(errorstore)
 
-    # Validation Step #7: Parse the course for global errors
-    for validator in GlobalValidator.validators():
-        validator(course, errorstore, url_names)
-    if steps == 7:
-        return course, errorstore
+    if steps > 6:
+        # Validation Step #7: Parse the course for global errors
+        for validator in GlobalValidator.validators():
+            validator(course, errorstore, url_names)
 
-    # Validation Step #8: Parse the course for long global errors
-    for validator in LongValidator.validators():
-        validator(course, errorstore, url_names)
+    if steps > 7:
+        # Validation Step #8: Parse the course for long global errors
+        for validator in LongValidator.validators():
+            validator(course, errorstore, url_names)
+
     return course, errorstore

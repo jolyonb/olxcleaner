@@ -1,5 +1,5 @@
 """
-testload.py
+test_load_xml.py
 
 Tests for XML course loading
 """
@@ -30,9 +30,8 @@ from edx_xml_clean.loader.xml_exceptions import (
 def test_no_course():
     errorstore = ErrorStore()
     course = load_course("testcourses", "nocourse.xml", errorstore, True)
-    assert len(errorstore.errors) == 1
-    assert isinstance(errorstore.errors[0], CourseXMLDoesNotExist)
-    assert errorstore.errors[0].filename == "testcourses/nocourse.xml"
+    assert_error(errorstore, CourseXMLDoesNotExist, 'testcourses/nocourse.xml', 'The file \'testcourses/nocourse.xml\' does not exist.')
+    assert_caught_all_errors(errorstore)
 
 def test_course1():
     """Make sure that things load properly when everything is ok"""

@@ -14,9 +14,17 @@ class NoRunName(CourseError):
         self._description = f"The course tag has no url_name."
 
 class PolicyNotFound(CourseError):
-    """The file policy.json was not found."""
+    """A policy file was not found."""
     _level = ErrorLevel.ERROR
 
     def __init__(self, filename, **kwargs):
         super().__init__(filename)
-        self._description = f"The file policy.json was not found."
+        self._description = f"The policy file '{filename}' was not found."
+
+class BadPolicy(CourseError):
+    """A policy file was not valid JSON"""
+    _level = ErrorLevel.ERROR
+
+    def __init__(self, filename, **kwargs):
+        super().__init__(filename)
+        self._description = f"The policy file '{filename}' has invalid JSON: {kwargs['msg']}"

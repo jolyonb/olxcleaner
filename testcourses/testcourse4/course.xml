@@ -1,0 +1,11 @@
+<course org="myorg" course="mycourse">
+  <chapter url_name="chapter" display_name="chapter name">
+    <sequential url_name="sequential" display_name="display name">
+      <vertical url_name="vertical" display_name="vertical name">
+        <html url_name="html" display_name="html name">
+          <p>Test course</p>
+        </html>
+      </vertical>
+    </sequential>
+  </chapter>
+</course>
