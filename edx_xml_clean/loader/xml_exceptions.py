@@ -26,7 +26,7 @@ class InvalidXML(CourseError):
         self._description = kwargs['error']
 
 class InvalidHTML(CourseError):
-    """The specified HTML file has a syntax error"""
+    """The specified HTML file has a syntax error."""
     _level = ErrorLevel.ERROR
 
     def __init__(self, filename, **kwargs):

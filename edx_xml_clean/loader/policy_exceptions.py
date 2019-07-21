@@ -22,7 +22,7 @@ class PolicyNotFound(CourseError):
         self._description = f"The policy file '{filename}' was not found."
 
 class BadPolicy(CourseError):
-    """A policy file was not valid JSON"""
+    """A policy file was not valid JSON."""
     _level = ErrorLevel.ERROR
 
     def __init__(self, filename, **kwargs):

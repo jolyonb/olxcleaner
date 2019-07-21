@@ -31,7 +31,7 @@ class DuplicateURLName(CourseError):
         - file2
         """
         super().__init__(filename)
-        self._description = (f"Duplicate url_name found: {kwargs['url_name']} appears as <{kwargs['tag1']}> in "
+        self._description = (f"Duplicate url_name found: '{kwargs['url_name']}' appears as <{kwargs['tag1']}> in "
                              f"{kwargs['file1']} and also as <{kwargs['tag2']}> in {kwargs['file2']}")
 
 class MissingDisplayName(CourseError):
@@ -49,3 +49,51 @@ class MissingDisplayName(CourseError):
             self._description = f"The tag {edxobj} is missing the display_name attribute"
         else:
             self._description = f"A <{edxobj.type}> tag with no url_name is missing the display_name attribute"
+
+class BadPolicyFormat(CourseError):
+    """The policy file didn't have the expected structure."""
+    _level = ErrorLevel.ERROR
+
+    def __init__(self, filename, **kwargs):
+        super().__init__(filename)
+        self._description = f"The policy file is not a dictionary of values"
+
+class ObjectNotFound(CourseError):
+    """The policy file references an object that doesn't exist."""
+    _level = ErrorLevel.WARNING
+
+    def __init__(self, filename, **kwargs):
+        super().__init__(filename)
+        self._description = f"The policy file refers to <{kwargs['objtype']} url_name='{kwargs['url_name']}'> which does not exist in the course structure"
+
+class WrongObjectType(CourseError):
+    """The policy file references an object of one type, but that object is found in the course with another type."""
+    _level = ErrorLevel.ERROR
+
+    def __init__(self, filename, **kwargs):
+        super().__init__(filename)
+        self._description = f"The policy file refers to a <{kwargs['objtype']}> tag with url_name '{kwargs['url_name']}'. However, that url_name points to a <{kwargs['objtypefound']}> tag."
+
+class BadEntry(CourseError):
+    """The policy file contains an entry that is not a dictionary."""
+    _level = ErrorLevel.ERROR
+
+    def __init__(self, filename, **kwargs):
+        super().__init__(filename)
+        self._description = f"The policy file entry for <{kwargs['objtype']} url_name='{kwargs['url_name']}'> is not a dictionary"
+
+class SettingOverride(CourseError):
+    """The policy file is overriding a setting specified in a file."""
+    _level = ErrorLevel.WARNING
+
+    def __init__(self, filename, **kwargs):
+        super().__init__(filename)
+        self._description = f"The policy file entry for <{kwargs['objtype']} url_name='{kwargs['url_name']}'> is overriding the setting for '{kwargs['setting']}'"
+
+class GradingPolicyIssue(CourseError):
+    """A catch-all error for issues in the grading policy."""
+    _level = ErrorLevel.ERROR
+
+    def __init__(self, filename, **kwargs):
+        super().__init__(filename)
+        self._description = kwargs['msg']

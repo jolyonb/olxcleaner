@@ -1,0 +1,8 @@
+{
+  "course/mycourseurl": {"setting": true},
+  "chapter/chapter1": {"setting": true},
+  "sequential/sequential2": {"setting": true},
+  "vertical/vertical3": ["setting"],
+  "video/html4": {"setting": true},
+  "problem/noexist": {"setting": true}
+}

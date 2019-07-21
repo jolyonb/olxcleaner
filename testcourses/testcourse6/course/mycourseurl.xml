@@ -1,0 +1,33 @@
+<course>
+  <chapter url_name="chapter" display_name="chapter name">
+    <sequential url_name="sequential" display_name="display name">
+      <vertical display_name="vertical name">
+        <html url_name="html" display_name="html name">
+          <p>Test course</p>
+        </html>
+      </vertical>
+      <vertical display_name="vertical name">
+        <html url_name="html" display_name="html name">
+          <p>Test course</p>
+        </html>
+      </vertical>
+      <vertical url_name="here" display_name="vertical name">
+        <html url_name="html2" display_name="html name">
+          <p>Test course</p>
+        </html>
+      </vertical>
+    </sequential>
+    <sequential url_name="sequential2" display_name="display name">
+      <vertical url_name="there" display_name="vertical name">
+        <html url_name="html" display_name="html name">
+          <p>Test course</p>
+        </html>
+      </vertical>
+      <vertical url_name="ok" display_name="vertical name">
+        <html url_name="html2" display_name="html name">
+          <p>Test course</p>
+        </html>
+      </vertical>
+    </sequential>
+  </chapter>
+</course>

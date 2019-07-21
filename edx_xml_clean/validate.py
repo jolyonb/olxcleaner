@@ -13,7 +13,16 @@ from edx_xml_clean.utils import traverse
 
 def validate(filename, steps=8, quiet=True, ignore=None):
     """
-    Validate an OLX course
+    Validate an OLX course by performing the given number of steps:
+
+      * 1: Load the course
+      * 2: Load the policy and grading policy
+      * 3: Validate url_names
+      * 4: Merge policy data with course, ensuring that all references are valid
+      * 5: Validate the grading policy
+      * 6: Have every object validate itself
+      * 7: Parse the course for global errors
+      * 8: Parse the course for global errors that are time-consuming to detect
 
     :param filename: Location of course xml file or directory
     :param steps: Number of validation steps to take (1 = first only, 8 = all)
@@ -50,7 +59,7 @@ def validate(filename, steps=8, quiet=True, ignore=None):
 
     if steps > 4:
         # Validation Step #5: Validate grading policy
-        validate_grading_policy(grading_policy, course, errorstore)
+        validate_grading_policy(grading_policy, errorstore)
 
     if steps > 5:
         # Validation Step #6: Have every object validate itself
@@ -63,7 +72,7 @@ def validate(filename, steps=8, quiet=True, ignore=None):
             validator(course, errorstore, url_names)
 
     if steps > 7:
-        # Validation Step #8: Parse the course for long global errors
+        # Validation Step #8: Parse the course for global errors that are time-consuming to detect
         for validator in LongValidator.validators():
             validator(course, errorstore, url_names)
 
