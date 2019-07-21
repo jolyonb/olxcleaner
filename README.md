@@ -4,7 +4,7 @@
 
 Validates the XML code for an edX course
 
-Version 0.0.1
+Version 0.1.0
 
 Copyright (C) 2018-2019 Jolyon Bloomfield
 
@@ -13,11 +13,12 @@ Copyright (C) 2018-2019 Jolyon Bloomfield
 * [Error Listing](errors.md)
 * [Wishlist](wishlist.md)
 * [Vision](vision.md)
+* [Changelog](changelog.md)
 * [License](LICENSE)
 
 ## Requirements
 
-This code uses features of python 3.6.
+This code uses features of python 3.6. We recommend installing a virtual environment, and running `pip install -r requirements.txt`. Afterwards, tests may be run by running `pytest`.
 
 ## Usage
 
