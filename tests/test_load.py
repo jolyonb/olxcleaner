@@ -28,7 +28,7 @@ def test_no_course():
     course = load_course("testcourses", "nocourse.xml", errorstore, True)
     assert len(errorstore.errors) == 1
     assert isinstance(errorstore.errors[0], CourseXMLDoesNotExist)
-    assert errorstore.errors[0].filename == "testcourses/testcourse1/nocourse.xml"
+    assert errorstore.errors[0].filename == "testcourses/nocourse.xml"
 
 def test_course1():
     errorstore = ErrorStore()
