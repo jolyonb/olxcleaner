@@ -1,1 +1,6 @@
+# Used by the library
 lxml==4.2.5
+
+# For testing
+pytest==4.6.4
+pytest-cov==2.7.1

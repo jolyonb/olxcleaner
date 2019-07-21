@@ -14,8 +14,8 @@ for child in CourseError.__subclasses__():
     errors[child._level.value].append(f"- `{child.__name__}`: {child.__doc__}")
 
 with open("errors.md", "w") as f:
-    f.write("# Error Listing\n\n")
-    f.write("Each error has a name that can be used in the `-i` flag to ignore it.\n")
+    f.write('# Error Listing\n\n')
+    f.write('Each error has a name that can be used in the `-i` flag to ignore it.\n')
 
     for i in range(3, -1, -1):
         f.write(f"\n## {names[i]}\n\n")
