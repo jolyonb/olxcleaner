@@ -30,8 +30,11 @@ from edx_xml_clean.loader.xml_exceptions import (
 def test_no_course():
     errorstore = ErrorStore()
     course = load_course("testcourses", "nocourse.xml", errorstore, True)
-    assert_error(errorstore, CourseXMLDoesNotExist, 'testcourses/nocourse.xml', 'The file \'testcourses/nocourse.xml\' does not exist.')
+    handle_nocourse_errors(errorstore)
     assert_caught_all_errors(errorstore)
+
+def handle_nocourse_errors(errorstore):
+    assert_error(errorstore, CourseXMLDoesNotExist, 'testcourses/nocourse.xml', 'The file \'testcourses/nocourse.xml\' does not exist.')
 
 def test_course1():
     """Make sure that things load properly when everything is ok"""
@@ -58,6 +61,10 @@ def test_course2():
     """Test for XML loading errors"""
     errorstore = ErrorStore()
     course = load_course("testcourses/testcourse2", "coursefile.xml", errorstore, True)
+    handle_course2_errors(errorstore)
+    assert_caught_all_errors(errorstore)
+
+def handle_course2_errors(errorstore):
     assert_error(errorstore, CourseXMLName, 'coursefile.xml', 'The course file, coursefile.xml, is not named course.xml')
     assert_error(errorstore, ExtraURLName, 'sequential/mysequential.xml', 'The opening <sequential> tag shouldn\'t have a url_name attribute')
     assert_error(errorstore, FileDoesNotExist, 'sequential/mysequential.xml', 'The <vertical> tag with url_name \'myverticalnone\' points to the file vertical/myverticalnone.xml that does not exist')
@@ -82,7 +89,6 @@ def test_course2():
     assert_error(errorstore, FileDoesNotExist, 'html/html4.xml', 'The <html> tag with url_name \'html4\' points to the file html/htmlnotexist.html that does not exist')
     assert_error(errorstore, FileDoesNotExist, 'vertical/myvertical3.xml', 'A <html> tag with no url_name points to the file html/nonexistant.html that does not exist')
     assert_error(errorstore, DuplicateHTMLName, 'vertical/myvertical3.xml', 'Two html tags refer to the same HTML file (using the \'filename\' attribute): html/html7.html is referenced in vertical/myvertical3.xml and html/html7.xml')
-    assert_caught_all_errors(errorstore)
 
 def test_course3():
     """Test for XML error in course.xml"""

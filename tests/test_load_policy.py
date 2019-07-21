@@ -20,9 +20,12 @@ def test_no_policy():
     assert_caught_all_errors(errorstore)
     # Load the (nonexistent) policy files
     policy, grading_policy = load_policy("testcourses/testcourse1", course, errorstore)
+    handle_course1_errors(errorstore)
+    assert_caught_all_errors(errorstore)
+
+def handle_course1_errors(errorstore):
     assert_error(errorstore, PolicyNotFound, 'policies/mycourseurl/policy.json', "The policy file 'policies/mycourseurl/policy.json' was not found.")
     assert_error(errorstore, PolicyNotFound, 'policies/mycourseurl/grading_policy.json', "The policy file 'policies/mycourseurl/grading_policy.json' was not found.")
-    assert_caught_all_errors(errorstore)
 
 def test_no_url_name():
     errorstore = ErrorStore()
