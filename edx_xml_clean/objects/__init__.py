@@ -5,8 +5,7 @@ Contains classes to describe various edX objects
 
 Note that each edX object has its own file
 
-Use the EdxCourse.get_object method to create objects
-of appropriate tags
+Use the EdxCourse.get_object method to create objects of appropriate tags
 """
 from edx_xml_clean.objects.common import EdxObject
 from edx_xml_clean.objects.chapter import EdxChapter

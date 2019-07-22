@@ -151,7 +151,7 @@ def test_grading_policy():
     validate_grading_policy(policy, errorstore)
     # Handle errors
     assert_error(errorstore, GradingPolicyIssue, 'grading_policy.json', "'weight' settings do not add up to 1")
-    assert_error(errorstore, GradingPolicyIssue, 'grading_policy.json', "'short_label' setting is not a string for an entry in the grading policy")
+    assert_error(errorstore, GradingPolicyIssue, 'grading_policy.json', "'short_label' setting is not a string for entry 1 in the grading policy")
     assert_caught_all_errors(errorstore)
 
     # Set up the policy
@@ -180,27 +180,27 @@ def test_grading_policy():
     validate_grading_policy(policy, errorstore)
     # Handle errors
     assert_error(errorstore, GradingPolicyIssue, 'grading_policy.json',
-                 "'drop_count' setting is not an integer for an entry in the grading policy")
+                 "'drop_count' setting is not an integer for entry 1 in the grading policy")
     assert_error(errorstore, GradingPolicyIssue, 'grading_policy.json',
-                 "'min_count' setting is not an integer for an entry in the grading policy")
+                 "'min_count' setting is not an integer for entry 1 in the grading policy")
     assert_error(errorstore, GradingPolicyIssue, 'grading_policy.json',
-                 "'type' setting is not a string for an entry in the grading policy")
+                 "'type' setting is not a string for entry 1 in the grading policy")
     assert_error(errorstore, GradingPolicyIssue, 'grading_policy.json',
-                 "'weight' setting is not a number between 0 and 1 for an entry in the grading policy")
+                 "'weight' setting is not a number between 0 and 1 for entry 1 in the grading policy")
     assert_error(errorstore, GradingPolicyIssue, 'grading_policy.json',
-                 "'drop_count' setting is negative for an entry in the grading policy")
+                 "'drop_count' setting is negative for entry 2 in the grading policy")
     assert_error(errorstore, GradingPolicyIssue, 'grading_policy.json',
-                 "'min_count' setting is less than 1 for an entry in the grading policy")
+                 "'min_count' setting is less than 1 for entry 2 in the grading policy")
     assert_error(errorstore, GradingPolicyIssue, 'grading_policy.json',
-                 "'weight' setting is not a number between 0 and 1 for an entry in the grading policy")
+                 "'weight' setting is not a number between 0 and 1 for entry 2 in the grading policy")
     assert_error(errorstore, GradingPolicyIssue, 'grading_policy.json',
-                 "'drop_count' setting is omitted for an entry in the grading policy")
+                 "'drop_count' setting is omitted for entry 3 in the grading policy")
     assert_error(errorstore, GradingPolicyIssue, 'grading_policy.json',
-                 "'min_count' setting is omitted for an entry in the grading policy")
+                 "'min_count' setting is omitted for entry 3 in the grading policy")
     assert_error(errorstore, GradingPolicyIssue, 'grading_policy.json',
-                 "'type' setting is omitted for an entry in the grading policy")
+                 "'type' setting is omitted for entry 3 in the grading policy")
     assert_error(errorstore, GradingPolicyIssue, 'grading_policy.json',
-                 "'weight' setting is omitted for an entry in the grading policy")
+                 "'weight' setting is omitted for entry 3 in the grading policy")
     assert_error(errorstore, GradingPolicyIssue, 'grading_policy.json', "'weight' settings do not add up to 1")
     assert_error(errorstore, GradingPolicyIssue, 'grading_policy.json',
                  "'Pass' entry is not between 0 and 1 in the GRADE_CUTOFFS part of the grading policy")
@@ -213,7 +213,13 @@ def test_grading_policy():
                 "drop_count": 2,
                 "min_count": 12,
                 "type": "Something",
-                "weight": 1
+                "weight": 0.6
+            },
+            {
+                "drop_count": 2,
+                "min_count": 12,
+                "type": "Something",
+                "weight": 0.4
             },
         ],
         'GRADE_CUTOFFS': {
@@ -231,6 +237,7 @@ def test_grading_policy():
     assert_error(errorstore, GradingPolicyIssue, 'grading_policy.json', "'C' entry is not between 0 and 1 in the GRADE_CUTOFFS part of the grading policy")
     assert_error(errorstore, GradingPolicyIssue, 'grading_policy.json', "'pass' is not allowed in the GRADE_CUTOFFS part of the grading policy")
     assert_error(errorstore, GradingPolicyIssue, 'grading_policy.json', "'Pass' entry is not a number in the GRADE_CUTOFFS part of the grading policy")
+    assert_error(errorstore, GradingPolicyIssue, 'grading_policy.json', "Assessment type 'Something' appears multiple times in the grading policy")
     assert_caught_all_errors(errorstore)
 
 

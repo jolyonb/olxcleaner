@@ -50,6 +50,22 @@ class MissingDisplayName(CourseError):
         else:
             self._description = f"A <{edxobj.type}> tag with no url_name is missing the display_name attribute"
 
+class ExtraDisplayName(CourseError):
+    """A tag has a `display_name` attribute when it shouldn't."""
+    _level = ErrorLevel.WARNING
+
+    def __init__(self, filename, **kwargs):
+        """
+        Expects kwargs:
+        - edxobj, the object that is missing the display name
+        """
+        super().__init__(filename)
+        edxobj = kwargs['edxobj']
+        if 'url_name' in edxobj.attributes:
+            self._description = f"The tag {edxobj} has an erroneous display_name attribute"
+        else:
+            self._description = f"A <{edxobj.type}> tag with no url_name has an erroneous display_name attribute"
+
 class BadPolicyFormat(CourseError):
     """The policy file didn't have the expected structure."""
     _level = ErrorLevel.ERROR

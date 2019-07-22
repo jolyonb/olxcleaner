@@ -7,7 +7,8 @@ import inspect
 from abc import ABC, abstractmethod
 from edx_xml_clean.utils import traverse
 from edx_xml_clean.parser.parser_exceptions import (
-    MissingDisplayName
+    MissingDisplayName,
+    ExtraDisplayName
 )
 
 class GlobalValidator(ABC):
@@ -42,8 +43,9 @@ class CheckDisplayNames(GlobalValidator):
 
     def __call__(self, course, errorstore, url_names):
         for edxobj in traverse(course):
-            display_name = edxobj.attributes.get('display_name')
-            if edxobj.display_name and (display_name is None or display_name == ""):
-                if not edxobj.broken:
+            if not edxobj.broken:
+                display_name = edxobj.attributes.get('display_name')
+                if edxobj.display_name is True and (display_name is None or display_name == ""):
                     errorstore.add_error(MissingDisplayName(edxobj.filenames[-1], edxobj=edxobj))
-            # TODO: Check to make sure that objects that shouldn't have a display_name don't have one
+                elif edxobj.display_name is False and display_name is not None:
+                    errorstore.add_error(ExtraDisplayName(edxobj.filenames[-1], edxobj=edxobj))

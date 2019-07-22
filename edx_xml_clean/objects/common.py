@@ -41,7 +41,7 @@ class EdxObject(ABC):
     # Can this tag be empty?
     can_be_empty = False
 
-    # Does this tag need a display_name attribute?
+    # Does this tag need a display_name attribute? Options are True, False and 'optional'
     display_name = False
 
     # Does this tag need a url_name attribute?
@@ -92,13 +92,14 @@ class EdxObject(ABC):
         return set(attribs.keys()) == self.pointer_attr and self.can_be_pointer
 
     @abstractmethod
-    def validate(self, errorstore):
+    def validate(self, course, errorstore):
         """
         Perform validation on this object.
 
         Objects should validate their contents other than those tags
         contained in allowed_children.
 
+        :param course: The course object, which may contain settings relevant to the validation of this object
         :param errorstore: An ErrorStore object to which errors should be reported
         :return: None
         """

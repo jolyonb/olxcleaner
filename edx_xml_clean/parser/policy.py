@@ -109,47 +109,54 @@ def validate_grading_policy(grading_policy, errorstore):
         errorstore.add_error(GradingPolicyIssue('grading_policy.json', msg="'GRADER' entry not in grading policy is not a list"))
     else:
         weightsum = 0
+        types = set()
         # Validate the required components of each entry
-        for entry in grading_policy["GRADER"]:
+        for idx, entry in enumerate(grading_policy["GRADER"]):
             if "drop_count" not in entry:
-                msg = "'drop_count' setting is omitted for an entry in the grading policy"
+                msg = f"'drop_count' setting is omitted for entry {idx+1} in the grading policy"
                 errorstore.add_error(GradingPolicyIssue('grading_policy.json', msg=msg))
             elif not isinstance(entry['drop_count'], int):
-                msg = "'drop_count' setting is not an integer for an entry in the grading policy"
+                msg = f"'drop_count' setting is not an integer for entry {idx+1} in the grading policy"
                 errorstore.add_error(GradingPolicyIssue('grading_policy.json', msg=msg))
             elif entry['drop_count'] < 0:
-                msg = "'drop_count' setting is negative for an entry in the grading policy"
+                msg = f"'drop_count' setting is negative for entry {idx+1} in the grading policy"
                 errorstore.add_error(GradingPolicyIssue('grading_policy.json', msg=msg))
 
             if "min_count" not in entry:
-                msg = "'min_count' setting is omitted for an entry in the grading policy"
+                msg = f"'min_count' setting is omitted for entry {idx+1} in the grading policy"
                 errorstore.add_error(GradingPolicyIssue('grading_policy.json', msg=msg))
             elif not isinstance(entry['min_count'], int):
-                msg = "'min_count' setting is not an integer for an entry in the grading policy"
+                msg = f"'min_count' setting is not an integer for entry {idx+1} in the grading policy"
                 errorstore.add_error(GradingPolicyIssue('grading_policy.json', msg=msg))
             elif entry['min_count'] < 1:
-                msg = "'min_count' setting is less than 1 for an entry in the grading policy"
+                msg = f"'min_count' setting is less than 1 for entry {idx+1} in the grading policy"
                 errorstore.add_error(GradingPolicyIssue('grading_policy.json', msg=msg))
 
             if "short_label" in entry and not isinstance(entry['short_label'], str):
-                msg = "'short_label' setting is not a string for an entry in the grading policy"
+                msg = f"'short_label' setting is not a string for entry {idx+1} in the grading policy"
                 errorstore.add_error(GradingPolicyIssue('grading_policy.json', msg=msg))
 
             if "type" not in entry:
-                msg = "'type' setting is omitted for an entry in the grading policy"
+                msg = f"'type' setting is omitted for entry {idx+1} in the grading policy"
                 errorstore.add_error(GradingPolicyIssue('grading_policy.json', msg=msg))
             elif not isinstance(entry['type'], str):
-                msg = "'type' setting is not a string for an entry in the grading policy"
+                msg = f"'type' setting is not a string for entry {idx+1} in the grading policy"
                 errorstore.add_error(GradingPolicyIssue('grading_policy.json', msg=msg))
+            else:
+                if entry['type'] in types:
+                    msg = f"Assessment type '{entry['type']}' appears multiple times in the grading policy"
+                    errorstore.add_error(GradingPolicyIssue('grading_policy.json', msg=msg))
+                else:
+                    types.add(entry['type'])
 
             if "weight" not in entry:
-                msg = "'weight' setting is omitted for an entry in the grading policy"
+                msg = f"'weight' setting is omitted for entry {idx+1} in the grading policy"
                 errorstore.add_error(GradingPolicyIssue('grading_policy.json', msg=msg))
             elif not (isinstance(entry['weight'], int) or isinstance(entry['weight'], float)):
-                msg = "'weight' setting is not a number between 0 and 1 for an entry in the grading policy"
+                msg = f"'weight' setting is not a number between 0 and 1 for entry {idx+1} in the grading policy"
                 errorstore.add_error(GradingPolicyIssue('grading_policy.json', msg=msg))
             elif entry['weight'] > 1 or entry['weight'] < 0:
-                msg = "'weight' setting is not a number between 0 and 1 for an entry in the grading policy"
+                msg = f"'weight' setting is not a number between 0 and 1 for entry {idx+1} in the grading policy"
                 errorstore.add_error(GradingPolicyIssue('grading_policy.json', msg=msg))
             else:
                 weightsum += entry['weight']
@@ -220,5 +227,3 @@ def validate_grading_policy(grading_policy, errorstore):
                         errorstore.add_error(GradingPolicyIssue('grading_policy.json', msg=msg))
                     else:
                         current = grading_policy["GRADE_CUTOFFS"][entry]
-
-    # TODO: Check for repeated entries in GRADER, at least one entry

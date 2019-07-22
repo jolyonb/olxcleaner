@@ -15,10 +15,11 @@ class EdxSequential(EdxObject):
     def allowed_children(self):
         return ['vertical']
 
-    def validate(self, errorstore):
+    def validate(self, course, errorstore):
         """
         Perform validation on this object.
 
+        :param course: The course object, which may contain settings relevant to the validation of this object
         :param errorstore: An ErrorStore object to which errors should be reported
         :return: None
         """
