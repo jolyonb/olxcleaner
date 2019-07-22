@@ -84,10 +84,9 @@ else:
     sys.exit(0)
 
 # TODO: Make option to output statistics (numbers of each type of block, problem types/input types, python in problems, exams)
-# Make sure DND problems are captured and links checked properly
 # Implement ORA
-# Detect new DND
 # Do link checking
+# Do discussion id checking
 # TODO: Get code coverage to 100%...
 # TODO: Clean up vision
 

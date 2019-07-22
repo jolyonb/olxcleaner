@@ -8,7 +8,7 @@ from edx_xml_clean.errorstore import ErrorStore
 from edx_xml_clean.loader import load_course, load_policy
 from edx_xml_clean.parser.policy import find_url_names, merge_policy, validate_grading_policy
 from edx_xml_clean.parser.validators import GlobalValidator
-from edx_xml_clean.parser.longvalidators import LongValidator
+from edx_xml_clean.parser.slowvalidators import SlowValidator
 from edx_xml_clean.utils import traverse
 
 def validate(filename, steps=8, quiet=True, ignore=None):
@@ -75,7 +75,7 @@ def validate(filename, steps=8, quiet=True, ignore=None):
 
     if steps > 7:
         # Validation Step #8: Parse the course for global errors that are time-consuming to detect
-        for validator in LongValidator.validators():
+        for validator in SlowValidator.validators():
             validator(course, errorstore, url_names)
 
     return course, errorstore, url_names

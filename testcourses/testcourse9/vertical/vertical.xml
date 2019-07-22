@@ -10,4 +10,5 @@
   <problem display_name='no url_name' due="Feb 20, 2020, 17:00" showanswer="hah!">
 stuff
   </problem>
+    <drag-and-drop-v2 url_name="studio_mess" xblock-family="xblock.v1"/>
 </vertical>
