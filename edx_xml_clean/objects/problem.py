@@ -11,6 +11,11 @@ response_types = ['coderesponse', 'numericalresponse', 'formularesponse', 'custo
                   'choiceresponse', 'multiplechoiceresponse', 'truefalseresponse', 'annotationresponse',
                   'choicetextresponse']
 
+input_types = ['optioninput', 'choicegroup', 'radiogroup', 'checkboxgroup', 'jsinput', 'textline', 'filesubmission',
+               'codeinput', 'textbox', 'matlabinput', 'schematic', 'imageinput', 'crystallography', 'vsepr_input',
+               'chemicalequationinput', 'formulaequationinput', 'drag_and_drop_input', 'editamoleculeinput',
+               'designprotein2dinput', 'editageneinput', 'annotationinput', 'radiotextgroup', 'checkboxtextgroup']
+
 class EdxProblem(EdxContent):
     """edX problem object"""
     type = "problem"
@@ -22,6 +27,8 @@ class EdxProblem(EdxContent):
         # Add in extra objects
         self.scripts = []
         self.response_types = []
+        self.input_types = []
+        self.has_solution = False
 
     def validate(self, course, errorstore):
         """
@@ -80,6 +87,23 @@ class EdxProblem(EdxContent):
         # Detect response types
         self.response_types = self.detect_response_types()
 
+        # Detect input types
+        self.input_types = self.detect_input_types()
+
+        # Detect solution
+        self.has_solution = self.detect_solution()
+
+    def detect_solution(self):
+        """
+        Find any solutions present in the problem
+
+        :return: True/False
+        """
+        # Does there exist at least one <solution> tag?
+        if self.content.find('.//solution') is not None:
+            return True
+        return False
+
     def detect_response_types(self):
         """
         Locate and identify all response types used in the problem
@@ -91,6 +115,19 @@ class EdxProblem(EdxContent):
             # Does there exist at least one of these tags?
             if self.content.find('.//' + rtype) is not None:
                 tags.append(rtype)
+        return tags
+
+    def detect_input_types(self):
+        """
+        Locate and identify all input types used in the problem
+
+        :return: List of input types used
+        """
+        tags = []
+        for itype in input_types:
+            # Does there exist at least one of these tags?
+            if self.content.find('.//' + itype) is not None:
+                tags.append(itype)
         return tags
 
     def detect_scripts(self):

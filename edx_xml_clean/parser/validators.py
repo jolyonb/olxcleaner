@@ -51,5 +51,4 @@ class CheckDisplayNames(GlobalValidator):
                     errorstore.add_error(ExtraDisplayName(edxobj.filenames[-1], edxobj=edxobj))
 
 # TODO: Things to implement
-# Check all internal links (/static/, /course/, /jump_to_id) appearing in xml attributes
 # Check that discussion blocks all have unique IDs

@@ -16,3 +16,7 @@ class LongValidator(GlobalValidator):
 #
 #     def __call__(self, course, errorstore, url_names):
 #         pass
+
+# TODO: Things to implement
+# Check all internal links (/static/, /course/, /jump_to_id) appearing in xml attributes
+# Rename to slowvalidators!

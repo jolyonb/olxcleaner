@@ -4,6 +4,7 @@ sequential.py
 Object description for an OLX sequential tag
 """
 from edx_xml_clean.objects.common import EdxObject, show_answer_list, randomize_list, show_correctness_list
+from edx_xml_clean.parser.parser_exceptions import InvalidSetting
 
 class EdxSequential(EdxObject):
     """edX sequential object"""
@@ -54,3 +55,16 @@ class EdxSequential(EdxObject):
                                errorstore,
                                same_ok=True,
                                error_msg="due date must be before course end date")
+
+        # If this is a timed exam, make sure it's enabled in the policy
+        if self.is_exam():
+            if not course.attributes.get('enable_timed_exams'):
+                msg = self.get_msg_start() + f"is a timed exam, but the course policy does not have 'enable_timed_exams=true'."
+                errorstore.add_error(InvalidSetting(self.filenames[-1], msg=msg))
+
+    def is_exam(self):
+        """Helper routine that determines whether or not this is a timed exam"""
+        entry = self.attributes.get('is_time_limited')
+        if entry == "true":
+            return True
+        return False

@@ -65,11 +65,17 @@ def test_validate_course9():
     assert_error(errorstore, InvalidSetting, 'problem/problem.xml', "The <problem> tag with url_name 'problem' has a negative problem weight.")
     assert_error(errorstore, InvalidSetting, 'course/mycourseurl.xml', "The <course> tag with url_name 'mycourseurl' should have a positive number of attempts.")
     assert_error(errorstore, InvalidSetting, 'problem/problem.xml', "The <problem> tag with url_name 'problem' should have a positive number of attempts.")
+    assert_error(errorstore, InvalidSetting, 'sequential/examseq.xml', "The <sequential> tag with url_name 'examseq' is a timed exam, but the course policy does not have 'enable_timed_exams=true'.")
     assert_caught_all_errors(errorstore)
 
     # Ensure that we got the scripts from the problem file
     assert set(url_names['problem'].scripts) == {'python', 'perl', 'javascript'}
-    # Also make sure we detected the problem types
+    # Also make sure we detected the response types
     assert set(url_names['problem'].response_types) == {'customresponse', 'multiplechoiceresponse'}
+    # as well as the input types
+    assert set(url_names['problem'].input_types) == {'choicegroup', 'textline'}
+    # We also found the solution
+    assert url_names['problem'].has_solution
 
-# TODO: Get code coverage to 100%...
+    # Make sure our exam sequential was detected
+    assert url_names['examseq'].is_exam()
