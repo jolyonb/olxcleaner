@@ -32,10 +32,10 @@ class EdxLtiConsumer(EdxObject):
         if lti_id:
             if (course.attributes.get('lti_passports') is None
                     or lti_id not in course.attributes.get('lti_passports')):
-                msg = f"Course policy does not include an 'lti_passports' entry for '{lti_id}', required for an <lti_consumer> block."
+                msg = f"Course policy does not include an 'lti_passports' entry for '{lti_id}', required for {self}."
                 errorstore.add_error(LTIError(self.filenames[-1], msg=msg))
 
         # Check that lti_consumer is in the course policy as an advanced module
         if course.attributes.get('advanced_modules') is None or "lti_consumer" not in course.attributes.get('advanced_modules'):
-            msg = "Course policy does not include the 'lti_consumer' advanced module, required for an <tli_consumer> block."
+            msg = f"Course policy does not include the 'lti_consumer' advanced module, required for {self}."
             errorstore.add_error(LTIError(self.filenames[-1], msg=msg))

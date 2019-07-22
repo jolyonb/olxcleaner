@@ -1,0 +1,33 @@
+<vertical display_name="Hi there">
+  <!-- Included as the only example I know of where display_name is not included -->
+  <openassessment url_name="paper-draft" submission_start="2019-05-15T17:00:00" submission_due="2019-05-29T17:00:00" file_upload_response="required" file_upload_type="custom" white_listed_file_types="pdf" allow_latex="False" prompts_type="html" display_name="Hah!">
+    <title>Draft Paper Upload</title>
+    <assessments>
+      <assessment name="peer-assessment" must_grade="2" must_be_graded_by="2" start="2019-05-15T17:00:00" due="2019-06-05T17:00:00"/>
+    </assessments>
+    <prompts>
+      <prompt>
+        <description>&lt;p&gt;Upload your draft term paper here.&lt;/p&gt;</description>
+      </prompt>
+    </prompts>
+    <rubric>
+      <criterion>
+        <name>Draft paper submission</name>
+        <label>Draft paper submission</label>
+        <prompt>Has the learner submitted a draft of their paper?</prompt>
+        <option points="1">
+          <name>Yes</name>
+          <label>Yes</label>
+          <explanation>Looks good!</explanation>
+        </option>
+        <option points="0">
+          <name>No</name>
+          <label>No</label>
+          <explanation>Nothing here!</explanation>
+        </option>
+      </criterion>
+      <feedbackprompt>Leave a comment here.</feedbackprompt>
+      <feedback_default_text></feedback_default_text>
+    </rubric>
+  </openassessment>
+</vertical>

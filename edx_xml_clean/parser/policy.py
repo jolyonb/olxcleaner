@@ -32,7 +32,7 @@ def find_url_names(course, errorstore):
         if url_name is None:
             if edxobj.needs_url_name and not edxobj.broken:
                 # Report the error
-                errorstore.add_error(MissingURLName(edxobj.filenames[0], tag=edxobj.type))
+                errorstore.add_error(MissingURLName(edxobj.filenames[0], edxobj=edxobj))
         else:
             # Record the name
             if url_name in results:

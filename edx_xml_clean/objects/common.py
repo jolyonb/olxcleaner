@@ -72,12 +72,16 @@ class EdxObject(ABC):
         """Adds a filename to the filename list for this object"""
         self.filenames.append(value)
 
-    def __repr__(self):  # pragma: no cover
+    def __repr__(self):
         """Produce a string representation of this object"""
         name = self.attributes.get("display_name")
-        if not name:
-            name = self.attributes.get("url_name")
-        return f"<{self.type}: {name}>"
+        url_name = self.attributes.get("url_name") or "no url_name"
+        if name:
+            return f"<{self.type}: '{name}' ({url_name})>"
+        elif self.display_name:
+            return f"<{self.type}: (Unnamed) ({url_name})>"
+        else:
+            return f"<{self.type} ({url_name})>"
 
     def is_pointer(self, attribs=None):
         """
@@ -135,16 +139,6 @@ class EdxObject(ABC):
                 return cls()
         raise ValueError(f"Cannot instantiate object of unknown type <{object_type}>")  # pragma: no cover
 
-    def get_msg_start(self):
-        """
-        Produces the start of an error message with the tag type and url_name.
-        """
-        if self.attributes.get('url_name') is None:
-            msg = f"A <{self.type}> tag with no url_name "
-        else:
-            msg = f"The <{self.type}> tag with url_name '{self.attributes['url_name']}' "
-        return msg
-
     def validate_entry_from_allowed(self, setting_name, allowed_list, errorstore, missing_ok=True):
         """
         Validate that the entry under the setting setting_name for this object is in the allowed list.
@@ -156,18 +150,15 @@ class EdxObject(ABC):
         :param missing_ok: Whether the entry can be missing
         :return: None
         """
-        # Set up the beginning of the error message
-        msg = self.get_msg_start()
-
         # Check the entry
         entry = self.attributes.get(setting_name)
         if entry is None:
             if not missing_ok:  # pragma: no cover
-                msg += f"does not have the required setting '{setting_name}'."
+                msg = f"The tag {self} does not have the required setting '{setting_name}'."
                 errorstore.add_error(InvalidSetting(self.filenames[-1], msg=msg))
             return
         elif entry not in allowed_list:
-            msg += f"has an invalid setting '{setting_name}={entry}'."
+            msg = f"The tag {self} has an invalid setting '{setting_name}={entry}'."
             errorstore.add_error(InvalidSetting(self.filenames[-1], msg=msg))
 
     def require_setting(self, setting_name, errorstore):
@@ -179,18 +170,16 @@ class EdxObject(ABC):
         :param errorstore: ErrorStore object to store errors
         :return: None
         """
-        # Set up the beginning of the error message
-        msg = self.get_msg_start()
-
         # Check the entry
         entry = self.attributes.get(setting_name)
         if entry is None:
-            msg += f"does not have the required setting '{setting_name}'."
+            msg = f"The tag {self} does not have the required setting '{setting_name}'."
             errorstore.add_error(InvalidSetting(self.filenames[-1], msg=msg))
 
     def clean_date(self, setting_name, errorstore, required=False):
         """
-        Clean the date entry in setting_name. If invalid, report the error, and nullify the entry.
+        Clean the date entry in setting_name, storing it.
+        If invalid, report the error, and nullify the entry.
 
         :param setting_name: The name of the setting
         :param errorstore: ErrorStore object to store errors
@@ -201,19 +190,27 @@ class EdxObject(ABC):
         if required:
             self.require_setting(setting_name, errorstore)
 
-        # Set up the beginning of the error message
-        msg = self.get_msg_start()
-
         # Handle the cleaning part
-        if self.attributes.get(setting_name):
-            # Make sure it parses properly
-            try:
-                # Yes, this overwrites the setting, but now other code can use it as a date
-                self.attributes[setting_name] = dateutil.parser.parse(self.attributes.get(setting_name))
-            except (TypeError, ValueError):
-                msg += f"has an invalid date setting for {setting_name}: '{self.attributes[setting_name]}'."
-                errorstore.add_error(InvalidSetting(self.filenames[-1], msg=msg))
-                self.attributes[setting_name] = None
+        # Done in a separate routine, so that that routine can be called when we don't want to overwrite setting
+        date = self.attributes.get(setting_name)
+        self.attributes[setting_name] = self.convert2date(date, errorstore, setting_name)
+
+    def convert2date(self, date, errorstore, setting_name):
+        """
+        Returns a date interpretation of the given date.
+        If there's an issue, store it in the errorstore, using setting_name in the error message.
+        """
+        if date is None:
+            return None
+
+        # Make sure it parses properly
+        try:
+            # Yes, this overwrites the setting, but now other code can use it as a date
+            return dateutil.parser.parse(date)
+        except (TypeError, ValueError):
+            msg = f"The tag {self} has an invalid date setting for {setting_name}: '{date}'."
+            errorstore.add_error(InvalidSetting(self.filenames[-1], msg=msg))
+            return None
 
     def ensure_date_order(self, date1, date2, errorstore, error_msg, same_ok=False):
         """
@@ -230,17 +227,14 @@ class EdxObject(ABC):
         if date1 is None or date2 is None:
             return
 
-        # Set up the beginning of the error message
-        msg = self.get_msg_start()
-
         # Check the ordering
         if same_ok:
             if date1 > date2:
-                msg += f"has a date out of order: {error_msg}"
+                msg = f"The tag {self} has a date out of order: {error_msg}"
                 errorstore.add_error(DateOrdering(self.filenames[-1], msg=msg))
         else:
             if date1 >= date2:
-                msg += f"has a date out of order: {error_msg}"
+                msg = f"The tag {self} has a date out of order: {error_msg}"
                 errorstore.add_error(DateOrdering(self.filenames[-1], msg=msg))
 
     def require_positive_attempts(self, errorstore):
@@ -253,10 +247,10 @@ class EdxObject(ABC):
         attempts = self.attributes.get("attempts")
         try:
             if attempts and int(attempts) < 1:
-                msg = self.get_msg_start() + f"should have a positive number of attempts."
+                msg = f"The tag {self} should have a positive number of attempts."
                 errorstore.add_error(InvalidSetting(self.filenames[-1], msg=msg))
         except ValueError:
-            msg = self.get_msg_start() + f"should have a positive number of attempts."
+            msg = f"The tag {self} should have a positive number of attempts."
             errorstore.add_error(InvalidSetting(self.filenames[-1], msg=msg))
 
 

@@ -38,8 +38,6 @@ class EdxProblem(EdxContent):
         :param errorstore: An ErrorStore object to which errors should be reported
         :return: None
         """
-        msg_start = self.get_msg_start()
-
         self.validate_entry_from_allowed("rerandomize", randomize_list, errorstore)
         self.validate_entry_from_allowed("show_correctness", show_correctness_list, errorstore)
         self.validate_entry_from_allowed("showanswer", show_answer_list, errorstore)
@@ -75,7 +73,7 @@ class EdxProblem(EdxContent):
         # Ensure that problem weight isn't negative
         weight = self.attributes.get("weight")
         if weight and float(weight) < 0:
-            msg = msg_start + f"has a negative problem weight."
+            msg = f"The tag {self} has a negative problem weight."
             errorstore.add_error(InvalidSetting(self.filenames[-1], msg=msg))
 
         # Ensure that number of attempts is None or positive

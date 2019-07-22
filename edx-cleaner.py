@@ -84,10 +84,9 @@ else:
     sys.exit(0)
 
 # TODO: Make option to output statistics (numbers of each type of block, problem types/input types, python in problems, exams)
-# Implement ORA
 # Do link checking
 # Do discussion id checking
 # TODO: Get code coverage to 100%...
 # TODO: Clean up vision
-
-# link, src, href, img, icon
+# TODO: Clean up error messages by using edxobj representation
+# link, src, href, img, icon, special dataness for dndv2

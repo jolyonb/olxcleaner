@@ -19,7 +19,8 @@ class EdxVertical(EdxObject):
                 'problem',
                 'lti',
                 'lti_consumer',
-                'drag-and-drop-v2']
+                'drag-and-drop-v2',
+                'openassessment']
 
     def validate(self, course, errorstore):
         """

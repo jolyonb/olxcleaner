@@ -121,23 +121,21 @@ def traverse_course(edxobj, node, directory, filename, errorstore, htmlfiles, po
         if pointer:
             # The target of a pointer tag cannot be a pointer itself
             errorstore.add_error(SelfPointer(filename,
-                                             tag=node.tag,
-                                             url_name=edxobj.attributes['url_name']))
+                                             edxobj=edxobj))
             edxobj.broken = True
             return
 
         # We have a valid pointer tag
         url_name = edxobj.attributes['url_name']
         if ":" in url_name:
-            errorstore.add_error(NonFlatURLName(filename, tag=node.tag, url_name=url_name))
+            errorstore.add_error(NonFlatURLName(filename, edxobj=edxobj))
             url_name = url_name.replace(":", "/")
         new_file = edxobj.type + "/" + url_name + ".xml"
 
         # Ensure the file exists
         if not isfile(os.path.join(directory, new_file)):
             errorstore.add_error(FileDoesNotExist(filename,
-                                                  tag=node.tag,
-                                                  url_name=url_name,
+                                                  edxobj=edxobj,
                                                   new_file=new_file))
             edxobj.broken = True
             return
@@ -158,7 +156,7 @@ def traverse_course(edxobj, node, directory, filename, errorstore, htmlfiles, po
         if ":" in new_filename:
             new_filename = new_filename.replace(":", "/")
             new_file = "html/" + new_filename + ".html"
-            errorstore.add_error(NonFlatFilename(filename, url_name=edxobj.attributes.get('url_name'), newfilename=new_file))
+            errorstore.add_error(NonFlatFilename(filename, edxobj=edxobj, newfilename=new_file))
         else:
             new_file = "html/" + new_filename + ".html"
 
@@ -166,16 +164,14 @@ def traverse_course(edxobj, node, directory, filename, errorstore, htmlfiles, po
         if not empty:
             if isfile(os.path.join(directory, new_file)):
                 errorstore.add_error(PossibleHTMLPointer(filename,
-                                                         tag=node.tag,
-                                                         url_name=edxobj.attributes.get('url_name'),
+                                                         edxobj=edxobj,
                                                          new_file=new_file))
         else:
             # We are empty, so this is a good pointer
             # Ensure the file exists
             if not isfile(os.path.join(directory, new_file)):
                 errorstore.add_error(FileDoesNotExist(filename,
-                                                      tag=node.tag,
-                                                      url_name=edxobj.attributes.get('url_name'),
+                                                      edxobj=edxobj,
                                                       new_file=new_file))
                 return
 
@@ -203,9 +199,7 @@ def traverse_course(edxobj, node, directory, filename, errorstore, htmlfiles, po
     # but for some reason was an invalid pointer
     if empty and not edxobj.can_be_empty and "url_name" in node.attrib:
         # Likely to be an invalid pointer tag due to too many attributes
-        errorstore.add_error(InvalidPointer(filename,
-                                            tag=node.tag,
-                                            url_name=edxobj.attributes['url_name']))
+        errorstore.add_error(InvalidPointer(filename, edxobj=edxobj))
         edxobj.broken = True
         return
 
@@ -217,9 +211,7 @@ def traverse_course(edxobj, node, directory, filename, errorstore, htmlfiles, po
 
     # Is the tag unexpectedly empty?
     if empty and not edxobj.can_be_empty:
-        errorstore.add_error(EmptyTag(filename,
-                                      tag=node.tag,
-                                      url_name=edxobj.attributes.get('url_name')))
+        errorstore.add_error(EmptyTag(filename, edxobj=edxobj))
         return
 
     # If we get here, we have a non-empty tag
@@ -229,8 +221,7 @@ def traverse_course(edxobj, node, directory, filename, errorstore, htmlfiles, po
         new_file = edxobj.type + "/" + edxobj.attributes['url_name'] + ".xml"
         if isfile(os.path.join(directory, new_file)):
             errorstore.add_error(PossiblePointer(filename,
-                                                 tag=node.tag,
-                                                 url_name=edxobj.attributes['url_name'],
+                                                 edxobj=edxobj,
                                                  new_file=new_file))
 
     if edxobj.content_store:
@@ -240,15 +231,13 @@ def traverse_course(edxobj, node, directory, filename, errorstore, htmlfiles, po
         # Check for content in non-content tag
         if node.text and node.text.strip():
             errorstore.add_error(UnexpectedContent(filename,
-                                                   tag=node.tag,
-                                                   url_name=edxobj.attributes.get('url_name'),
+                                                   edxobj=edxobj,
                                                    text=node.text))
         else:
             for child in node:
                 if child.tail and child.tail.strip():
                     errorstore.add_error(UnexpectedContent(filename,
-                                                           tag=node.tag,
-                                                           url_name=edxobj.attributes.get('url_name'),
+                                                           edxobj=edxobj,
                                                            text=child.tail))
                     break
 
@@ -265,5 +254,4 @@ def traverse_course(edxobj, node, directory, filename, errorstore, htmlfiles, po
             else:
                 errorstore.add_error(UnexpectedTag(filename,
                                                    tag=child.tag,
-                                                   parent=node.tag,
-                                                   url_name=edxobj.attributes.get('url_name')))
+                                                   edxobj=edxobj))

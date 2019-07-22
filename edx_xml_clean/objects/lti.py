@@ -22,8 +22,7 @@ class EdxLti(EdxObject):
         :return: None
         """
         # Flag as obsolete
-        msg = self.get_msg_start()
-        msg += f"should be converted to the newer lti_consumer Xblock."
+        msg = f"The tag {self} should be converted to the newer lti_consumer Xblock."
         errorstore.add_error(Obsolete(self.filenames[1], msg=msg))
 
         # Check that required fields are present
@@ -36,10 +35,10 @@ class EdxLti(EdxObject):
         if lti_id:
             if (course.attributes.get('lti_passports') is None
                     or lti_id not in course.attributes.get('lti_passports')):
-                msg = f"Course policy does not include an 'lti_passports' entry for '{lti_id}', required for an <lti> block."
+                msg = f"Course policy does not include an 'lti_passports' entry for '{lti_id}', required for {self}."
                 errorstore.add_error(LTIError(self.filenames[-1], msg=msg))
 
         # Check that lti_consumer is in the course policy as an advanced module
         if course.attributes.get('advanced_modules') is None or "lti" not in course.attributes.get('advanced_modules'):
-            msg = "Course policy does not include the 'lti' advanced module, required for an <lti> block."
+            msg = f"Course policy does not include the 'lti' advanced module, required for {self}."
             errorstore.add_error(LTIError(self.filenames[-1], msg=msg))

@@ -3,15 +3,23 @@ draganddropv2.py
 
 Object description for the "new" drag and drop interface
 """
-from edx_xml_clean.objects.common import EdxContent
+import json
+from edx_xml_clean.objects.common import EdxObject
+from edx_xml_clean.parser.parser_exceptions import InvalidSetting
 
-class EdxDragAndDropV2(EdxContent):
+class EdxDragAndDropV2(EdxObject):
     """edX drag-and-drop-v2 object"""
     type = "drag-and-drop-v2"
-    display_name = False
+    display_name = 'optional'
     can_be_pointer = False
     can_be_empty = True
     depth = 4
+
+    def __init__(self):
+        # Do standard initialization
+        super().__init__()
+        # Add in extra objects
+        self.parsed_data = {}
 
     def validate(self, course, errorstore):
         """
@@ -21,5 +29,19 @@ class EdxDragAndDropV2(EdxContent):
         :param errorstore: An ErrorStore object to which errors should be reported
         :return: None
         """
-        # There is nothing to validate here; this Xblock isn't exported in OLX :-(
-        pass
+        # The data for this Xblock is exported as json in the data field
+        datafields = self.attributes.get('data')
+        if datafields is None:
+            return
+
+        # Make sure that the field is valid, and save it for future validation
+        try:
+            parsed_data = json.loads(datafields)
+            self.parsed_data = parsed_data
+            if not isinstance(self.parsed_data, dict):
+                msg = f"The tag {self} data JSON is not a dictionary."
+                errorstore.add_error(InvalidSetting(self.filenames[-1], msg=msg))
+        except json.decoder.JSONDecodeError as err:
+            msg = f"The tag {self} has an error in the data JSON: {err}."
+            errorstore.add_error(InvalidSetting(self.filenames[-1], msg=msg))
+            return

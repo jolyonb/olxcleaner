@@ -10,26 +10,14 @@ class MissingURLName(CourseError):
     _level = ErrorLevel.WARNING
 
     def __init__(self, filename, **kwargs):
-        """
-        Expects kwargs:
-        - tag, describing the tag name
-        """
         super().__init__(filename)
-        self._description = f"A <{kwargs['tag']}> tag has no url_name"
+        self._description = f"The tag {kwargs['edxobj']} has no url_name."
 
 class DuplicateURLName(CourseError):
     """Two tags have the same `url_name` attribute. This can lead to the wrong content loading."""
     _level = ErrorLevel.ERROR
 
     def __init__(self, filename, **kwargs):
-        """
-        Expects kwargs:
-        - url_name
-        - tag1
-        - file1
-        - tag2
-        - file2
-        """
         super().__init__(filename)
         self._description = (f"Duplicate url_name found: '{kwargs['url_name']}' appears as <{kwargs['tag1']}> in "
                              f"{kwargs['file1']} and also as <{kwargs['tag2']}> in {kwargs['file2']}")
@@ -39,32 +27,16 @@ class MissingDisplayName(CourseError):
     _level = ErrorLevel.WARNING
 
     def __init__(self, filename, **kwargs):
-        """
-        Expects kwargs:
-        - edxobj, the object that is missing the display name
-        """
         super().__init__(filename)
-        edxobj = kwargs['edxobj']
-        if 'url_name' in edxobj.attributes:
-            self._description = f"The tag {edxobj} is missing the display_name attribute"
-        else:
-            self._description = f"A <{edxobj.type}> tag with no url_name is missing the display_name attribute"
+        self._description = f"The tag {kwargs['edxobj']} is missing the display_name attribute."
 
 class ExtraDisplayName(CourseError):
     """A tag has a `display_name` attribute when it shouldn't."""
     _level = ErrorLevel.WARNING
 
     def __init__(self, filename, **kwargs):
-        """
-        Expects kwargs:
-        - edxobj, the object that is missing the display name
-        """
         super().__init__(filename)
-        edxobj = kwargs['edxobj']
-        if 'url_name' in edxobj.attributes:
-            self._description = f"The tag {edxobj} has an erroneous display_name attribute"
-        else:
-            self._description = f"A <{edxobj.type}> tag with no url_name has an erroneous display_name attribute"
+        self._description = f"The tag {kwargs['edxobj']} has an erroneous display_name attribute."
 
 class BadPolicyFormat(CourseError):
     """The policy file didn't have the expected structure."""
@@ -152,5 +124,4 @@ class MissingFile(CourseError):
 
     def __init__(self, filename, **kwargs):
         super().__init__(filename)
-        missing_file = kwargs["missing_file"]
-        self._description = f"Reference to a missing static file: {missing_file}"
+        self._description = f"The {kwargs['edxobj']} tag contains a reference to a missing static file: {kwargs['missing_file']}"

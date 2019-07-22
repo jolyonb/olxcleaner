@@ -62,8 +62,8 @@ def test_course6_url():
     assert_caught_all_errors(errorstore)
 
 def handle_course6_errors(errorstore):
-    assert_error(errorstore, MissingURLName, 'course/mycourseurl.xml', "A <vertical> tag has no url_name")
-    assert_error(errorstore, MissingURLName, 'course/mycourseurl.xml', "A <vertical> tag has no url_name")
+    assert_error(errorstore, MissingURLName, 'course/mycourseurl.xml', "The tag <vertical: 'vertical name' (no url_name)> has no url_name.")
+    assert_error(errorstore, MissingURLName, 'course/mycourseurl.xml', "The tag <vertical: 'vertical name' (no url_name)> has no url_name.")
     assert_error(errorstore, DuplicateURLName, 'course/mycourseurl.xml', "Duplicate url_name found: 'html' appears as <html> in course/mycourseurl.xml and also as <html> in course/mycourseurl.xml")
     assert_error(errorstore, DuplicateURLName, 'course/mycourseurl.xml', "Duplicate url_name found: 'html' appears as <html> in course/mycourseurl.xml and also as <html> in course/mycourseurl.xml")
     assert_error(errorstore, DuplicateURLName, 'course/mycourseurl.xml', "Duplicate url_name found: 'html2' appears as <html> in course/mycourseurl.xml and also as <html> in course/mycourseurl.xml")

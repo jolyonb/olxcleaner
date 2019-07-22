@@ -24,8 +24,7 @@ class EdxDiscussion(EdxObject):
         """
         # Check for obsolete invocation
         if len(self.filenames) == 2:
-            msg = self.get_msg_start()
-            msg += f"should be included inline rather than through the discussion directory."
+            msg = f"The tag {self} should be included inline rather than through the discussion directory."
             errorstore.add_error(Obsolete(self.filenames[0], msg=msg))
 
         # Check for required attributes

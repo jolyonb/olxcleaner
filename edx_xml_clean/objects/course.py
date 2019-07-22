@@ -12,6 +12,7 @@ class EdxCourse(EdxObject):
     """edX course object"""
     type = "course"
     depth = 0
+    display_name = True
 
     # course pointer tags need three attributes:
     pointer_attr = {'url_name', 'course', 'org'}
@@ -60,12 +61,13 @@ class EdxCourse(EdxObject):
         if self.attributes.get("course_image"):
             if not check_static_file_exists(self, self.attributes.get("course_image")):
                 errorstore.add_error(MissingFile(self.filenames[-1],
+                                                 edxobj=self,
                                                  missing_file=self.attributes.get("course_image")))
 
         # Check that the grace period is valid
         if not validate_graceperiod(self.attributes.get("graceperiod")):
             errorstore.add_error(InvalidSetting(self.filenames[-1],
-                                                msg="Unable to recognize graceperiod format."))
+                                                msg="Unable to recognize graceperiod format in policy."))
 
         # Ensure that the default number of attempts is None or positive
         self.require_positive_attempts(errorstore)
