@@ -11,4 +11,5 @@
       <vertical url_name="oravert"/>
     </sequential>
   </chapter>
+  <chapter url_name='broken_chapter'/>
 </course>

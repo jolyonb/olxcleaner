@@ -75,7 +75,7 @@ def handle_course2_errors(errorstore):
     assert_error(errorstore, InvalidXML, 'vertical/myvertical5.xml', 'Opening and ending tag mismatch: vertical line 1 and chapter, line 2, column 11')
     assert_error(errorstore, UnexpectedTag, 'vertical/myvertical6.xml', "A <vertical> tag was unexpectedly found inside the <vertical: 'Hello' (myvertical6)> tag")
     assert_error(errorstore, UnexpectedTag, 'sequential/mysequential.xml', 'A <chapter> tag was unexpectedly found inside the <vertical: (Unnamed) (no url_name)> tag')
-    assert_error(errorstore, TagMismatch, 'vertical/myvertical7.xml', 'A file is of type <vertical> but opens with a <chapter> tag')
+    assert_error(errorstore, TagMismatch, 'vertical/myvertical7.xml', 'The file is of type <vertical> but opens with a <chapter> tag')
     assert_error(errorstore, SelfPointer, 'vertical/myvertical8.xml', 'The tag <vertical: (Unnamed) (myvertical8)> tag appears to be pointing to itself')
     assert_error(errorstore, InvalidPointer, 'sequential/mysequential.xml', "The <vertical: 'Hi there' (myvertical9)>> tag looks like it is an invalid pointer tag")
     assert_error(errorstore, UnexpectedContent, 'vertical/myvertical10.xml', "The <vertical: 'something' (myvertical10)> tag should not contain any text (Here is some co...)")

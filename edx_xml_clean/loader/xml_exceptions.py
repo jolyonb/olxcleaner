@@ -43,7 +43,7 @@ class TagMismatch(CourseError):
 
     def __init__(self, filename, **kwargs):
         super().__init__(filename)
-        self._description = (f"A file is of type <{kwargs['tag1']}> but "
+        self._description = (f"The file is of type <{kwargs['tag1']}> but "
                              f"opens with a <{kwargs['tag2']}> tag")
 
 class EmptyTag(CourseError):

@@ -5,10 +5,12 @@ Validation routines that act on the course as a whole
 """
 import inspect
 from abc import ABC, abstractmethod
+from edx_xml_clean.objects import EdxDiscussion
 from edx_xml_clean.utils import traverse
 from edx_xml_clean.parser.parser_exceptions import (
     MissingDisplayName,
-    ExtraDisplayName
+    ExtraDisplayName,
+    DuplicateID
 )
 
 class GlobalValidator(ABC):
@@ -43,12 +45,25 @@ class CheckDisplayNames(GlobalValidator):
 
     def __call__(self, course, errorstore, url_names):
         for edxobj in traverse(course):
-            if not edxobj.broken:
-                display_name = edxobj.attributes.get('display_name')
-                if edxobj.display_name is True and (display_name is None or display_name == ""):
-                    errorstore.add_error(MissingDisplayName(edxobj.filenames[-1], edxobj=edxobj))
-                elif edxobj.display_name is False and display_name is not None:
-                    errorstore.add_error(ExtraDisplayName(edxobj.filenames[-1], edxobj=edxobj))
+            display_name = edxobj.attributes.get('display_name')
+            if edxobj.display_name is True and (display_name is None or display_name == ""):
+                errorstore.add_error(MissingDisplayName(edxobj.filenames[-1], edxobj=edxobj))
+            elif edxobj.display_name is False and display_name is not None:
+                errorstore.add_error(ExtraDisplayName(edxobj.filenames[-1], edxobj=edxobj))
 
-# TODO: Things to implement
-# Check that discussion blocks all have unique IDs
+class CheckDiscussionIDs(GlobalValidator):
+    """Searches the course for duplicate discussion_id entries in discussion blocks"""
+
+    def __call__(self, course, errorstore, url_names):
+        discussion_ids = {}
+        for edxobj in traverse(course):
+            if isinstance(edxobj, EdxDiscussion):
+                disc_id = edxobj.attributes.get('discussion_id')
+                if disc_id:
+                    if disc_id in discussion_ids:
+                        errorstore.add_error(DuplicateID(edxobj.filenames[-1],
+                                                         edxobj1=edxobj,
+                                                         edxobj2=discussion_ids[disc_id],
+                                                         disc_id=disc_id))
+                    else:
+                        discussion_ids[disc_id] = edxobj

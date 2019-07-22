@@ -18,6 +18,10 @@ def traverse(edxobj):
     :param edxobj: EdxObject to traverse
     :return: Generator of EdxObjects
     """
+    # Don't traverse broken objects
+    if edxobj.broken:
+        return
+
     # Generate this object
     yield edxobj
 
