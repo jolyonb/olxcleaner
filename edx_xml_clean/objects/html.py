@@ -21,5 +21,5 @@ class EdxHtml(EdxContent):
         :return: None
         """
         # Pretty much anything goes for an HTML file
-        # Nothing to really validate here
+        # Nothing to validate here
         pass

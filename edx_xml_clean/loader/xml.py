@@ -66,6 +66,9 @@ def load_course(directory, filename, errorstore, quiet):
     # Load the course!
     traverse_course(course, tree.getroot(), directory, filename, errorstore, {})
 
+    # Save the course directory in the course object
+    course.savedir(directory)
+
     return course
 
 def traverse_course(edxobj, node, directory, filename, errorstore, htmlfiles, pointer=False):
@@ -232,7 +235,7 @@ def traverse_course(edxobj, node, directory, filename, errorstore, htmlfiles, po
 
     if edxobj.content_store:
         # Store content from content tags
-        edxobj.content = etree.tostring(node, pretty_print=True)
+        edxobj.content = node  # Can convert to test with etree.tostring(node, pretty_print=True)
     else:
         # Check for content in non-content tag
         if node.text and node.text.strip():

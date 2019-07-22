@@ -1,0 +1,26 @@
+<problem showanswer="bad" start="Feb 20, 2019, 17:00" due="Feb 1, 2019, 17:00" weight="-1" attempts="bad">
+This file is a mess of things that are being used for testing.
+<script>
+a = 1 + 2
+</script>
+<script type="perl">
+</script>
+<script type="javascript">
+</script>
+<multiplechoiceresponse>
+  <choicegroup direction="vertical">
+    <choice correct="false" name="1">
+      <text> They have first order corrections.</text>
+    </choice>
+    <choice correct="false" name="2">
+      <text> Their first order correction is vanishing, but they have non-zero higher order corrections.</text>
+    </choice>
+    <choice correct="true" name="3">
+      <text> They receive no corrections to any order.</text>
+    </choice>
+  </choicegroup>
+</multiplechoiceresponse>
+<customresponse cfn="grader" inline="1" expect="1/l^2*(-2*psi(n*l)+psi((n+1)*l)+psi((n-1)*l))">
+  <textline size="45" correct_answer="1/l^2*(-2*psi(n*l)+psi((n+1)*l)+psi((n-1)*l))" inline="1" math="1" preprocessorClassName="MJxPrep" preprocessorSrc="/static/MJxPrep.js"/>
+</customresponse>
+</problem>

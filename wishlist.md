@@ -1,38 +1,20 @@
 # Wishlist
 
-This is just a list of things that it would be nice to have in this program.
+This is a list of features that it would be nice to have in this program.
 
-## Features
-
-* Generate statistics about a course after scanning
-* Course upload to server via HTTP if error level satisfied
-* pip install
-
-## Errors
-
-### On course load:
+## Recognize the following tags:
 
 - Conditional tags
 - AB Test tags
 - ORA tags
-- Flag tag types that can't load from a directory (some, such as discussion, are obsolete)
 
-### On course updates load:
+## Validate Course Updates:
 
-- Update file not found
-- Error loading update json
+- Check that the update file is found (and that json/html aren't clashing)
+- Validate the json/html
 
-### On parsing:
+## On parsing:
 
-- Obsolete components (eg, old LTI)
-- Course tag has the three required attributes
-- Test internal links, including all static folder links and textbook pdfs (policy)
-- Test that python code runs
-- Test that customgraders work when using expect values in customresponse
-- Python code is wrapped in CDATA
-- Python has correct script type
-- lti_consumer uses valid passport credentials
-- Date fields in policy all evaluate using edX date evaluator
-- Check that all release dates fall inside the course start and end dates
-- Check that various open/close dates appear in order!
-- Check that each update has the required elements
+- Check textbook and tab structure in course block validation
+- Check that python scripts in problems run (and are preferably wrapped in CDATA)
+- Check that customresponse graders grade correctly when given expected answer

@@ -4,6 +4,7 @@ discussion.py
 Object description for an OLX discussion tag
 """
 from edx_xml_clean.objects.common import EdxObject
+from edx_xml_clean.parser.parser_exceptions import Obsolete
 
 class EdxDiscussion(EdxObject):
     """edX discussion object"""
@@ -22,6 +23,12 @@ class EdxDiscussion(EdxObject):
         :return: None
         """
         # Check for obsolete invocation
-        # Check for attributes: discussion_id, discussion_category, discussion_target
-        # TODO: Perform validation
-        pass
+        if len(self.filenames) == 2:
+            msg = self.get_msg_start()
+            msg += f"should be included inline rather than through the discussion directory."
+            errorstore.add_error(Obsolete(self.filenames[0], msg=msg))
+
+        # Check for required attributes
+        self.require_setting("discussion_id", errorstore)
+        self.require_setting("discussion_category", errorstore)
+        self.require_setting("discussion_target", errorstore)

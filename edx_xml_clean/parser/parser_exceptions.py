@@ -113,3 +113,44 @@ class GradingPolicyIssue(CourseError):
     def __init__(self, filename, **kwargs):
         super().__init__(filename)
         self._description = kwargs['msg']
+
+class InvalidSetting(CourseError):
+    """A setting has been set to an invalid value."""
+    _level = ErrorLevel.ERROR
+
+    def __init__(self, filename, **kwargs):
+        super().__init__(filename)
+        self._description = kwargs['msg']
+
+class DateOrdering(CourseError):
+    """A date setting appears out of order with another date setting."""
+    _level = ErrorLevel.WARNING
+
+    def __init__(self, filename, **kwargs):
+        super().__init__(filename)
+        self._description = kwargs['msg']
+
+class Obsolete(CourseError):
+    """The way this object has been set up is obsolete."""
+    _level = ErrorLevel.INFO
+
+    def __init__(self, filename, **kwargs):
+        super().__init__(filename)
+        self._description = kwargs['msg']
+
+class LTIError(CourseError):
+    """There appears to be an error in the way that an LTI component is being invoked."""
+    _level = ErrorLevel.ERROR
+
+    def __init__(self, filename, **kwargs):
+        super().__init__(filename)
+        self._description = kwargs['msg']
+
+class MissingFile(CourseError):
+    """A file appears to be missing from the static directory."""
+    _level = ErrorLevel.ERROR
+
+    def __init__(self, filename, **kwargs):
+        super().__init__(filename)
+        missing_file = kwargs["missing_file"]
+        self._description = f"Reference to a missing static file: {missing_file}"

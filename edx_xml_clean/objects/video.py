@@ -19,5 +19,5 @@ class EdxVideo(EdxContent):
         :param errorstore: An ErrorStore object to which errors should be reported
         :return: None
         """
-        # Video XML is such a mess, I'm not doing anything here
+        # Video XML is such a mess, I'm not even going to try parsing it.
         pass

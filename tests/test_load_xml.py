@@ -3,6 +3,7 @@ test_load_xml.py
 
 Tests for XML course loading
 """
+from lxml import etree
 from tests.helpers import assert_error, assert_caught_all_errors
 
 from edx_xml_clean.loader.xml import load_course
@@ -55,7 +56,7 @@ def test_course1():
 
     [html] = vertical.children
     assert html.attributes == {'url_name': 'html', 'display_name': 'html name'}
-    assert '<p>Test course</p>' in html.content.decode()
+    assert '<p>Test course</p>' in etree.tostring(html.content, pretty_print=True).decode()
 
 def test_course2():
     """Test for XML loading errors"""

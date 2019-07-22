@@ -62,7 +62,7 @@ if not args.quiet:
     print(f'edX XML cleaner {version} -- A validator for XML edX courses')
 
 # Validate the course
-course, errorstore = validate(args.course, args.steps, args.quiet, args.ignore)
+course, errorstore, url_names = validate(args.course, args.steps, args.quiet, args.ignore)
 
 # Report any errors that were found
 if not args.quiet:
@@ -82,3 +82,5 @@ if errorstore.return_error(args.failure):
     sys.exit(1)
 else:
     sys.exit(0)
+
+# TODO: Make option to output statistics (numbers of each type of block, problem types, python in problems)

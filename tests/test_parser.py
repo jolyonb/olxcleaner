@@ -85,6 +85,8 @@ def test_course7_url():
 
     # Merge the policy file
     merge_policy(policy, url_names, errorstore)
+    # Ensure that settings were indeed merged
+    assert(url_names['sequential2'].attributes['setting'])
 
     # Validate the grading policy
     validate_grading_policy(grading_policy, errorstore)

@@ -28,7 +28,7 @@ def validate(filename, steps=8, quiet=True, ignore=None):
     :param steps: Number of validation steps to take (1 = first only, 8 = all)
     :param quiet: Output information to the console
     :param ignore: List of errors to ignore
-    :return: course object, errorstore object
+    :return: course object, errorstore object, url_names dictionary (or None if steps < 3)
     """
     # Create an error store
     if ignore is None:
@@ -43,12 +43,13 @@ def validate(filename, steps=8, quiet=True, ignore=None):
         directory, file = os.path.split(filename)
     course = load_course(directory, file, errorstore, quiet)
     if not course:
-        return None, errorstore
+        return None, errorstore, None
 
     if steps > 1:
         # Validation Step #2: Load the policy files
         policy, grading_policy = load_policy(directory, course, errorstore)
 
+    url_names = None
     if steps > 2:
         # Validation Step #3: Construct a dictionary of url_names
         url_names = find_url_names(course, errorstore)
@@ -77,4 +78,4 @@ def validate(filename, steps=8, quiet=True, ignore=None):
         for validator in LongValidator.validators():
             validator(course, errorstore, url_names)
 
-    return course, errorstore
+    return course, errorstore, url_names

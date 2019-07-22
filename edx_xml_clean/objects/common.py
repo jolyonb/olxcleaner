@@ -4,6 +4,8 @@ common.py
 Contains abstract base classes to describe various edX objects
 """
 from abc import ABC, ABCMeta, abstractmethod
+import dateutil.parser
+from edx_xml_clean.parser.parser_exceptions import InvalidSetting, DateOrdering
 
 class EdxObject(ABC):
     """Abstract base class for edX structure objects"""
@@ -27,7 +29,7 @@ class EdxObject(ABC):
     # Can this object store content?
     content_store = False
 
-    # Can this object be referenced using pointer tags?
+    # Can this object be referenced using pointer tags? (if True, then can be located in the directory of the appropriate type)
     can_be_pointer = True
     # What attributes are needed to be a pointer tag?
     pointer_attr = {'url_name'}
@@ -51,7 +53,7 @@ class EdxObject(ABC):
     broken = False
 
     @property
-    def allowed_children(self):
+    def allowed_children(self):  # pragma: no cover
         """
         What children object types can this object contain?
         Note: implemented as property to avoid forward reference problems.
@@ -70,7 +72,7 @@ class EdxObject(ABC):
         """Adds a filename to the filename list for this object"""
         self.filenames.append(value)
 
-    def __repr__(self):
+    def __repr__(self):  # pragma: no cover
         """Produce a string representation of this object"""
         name = self.attributes.get("display_name")
         if not name:
@@ -84,7 +86,7 @@ class EdxObject(ABC):
 
         Uses attribs if passed in, or self.attributes if not
         """
-        if attribs is None:
+        if attribs is None:  # pragma: no cover
             attribs = self.attributes
         # Follows pointer convention in edX: is_pointer_tag in
         # https://github.com/edx/edx-platform/blob/master/common/lib/xmodule/xmodule/xml_module.py
@@ -92,7 +94,7 @@ class EdxObject(ABC):
         return set(attribs.keys()) == self.pointer_attr and self.can_be_pointer
 
     @abstractmethod
-    def validate(self, course, errorstore):
+    def validate(self, course, errorstore):  # pragma: no cover
         """
         Perform validation on this object.
 
@@ -131,7 +133,132 @@ class EdxObject(ABC):
         for cls in EdxObject._subclasses:
             if cls.type == object_type:
                 return cls()
-        raise ValueError(f"Cannot instantiate object of unknown type <{object_type}>")
+        raise ValueError(f"Cannot instantiate object of unknown type <{object_type}>")  # pragma: no cover
+
+    def get_msg_start(self):
+        """
+        Produces the start of an error message with the tag type and url_name.
+        """
+        if self.attributes.get('url_name') is None:
+            msg = f"A <{self.type}> tag with no url_name "
+        else:
+            msg = f"The <{self.type}> tag with url_name '{self.attributes['url_name']}' "
+        return msg
+
+    def validate_entry_from_allowed(self, setting_name, allowed_list, errorstore, missing_ok=True):
+        """
+        Validate that the entry under the setting setting_name for this object is in the allowed list.
+        If not, put the error in the errorstore.
+
+        :param setting_name: The name of the setting
+        :param allowed_list: List of allowed entries
+        :param errorstore: ErrorStore object to store errors
+        :param missing_ok: Whether the entry can be missing
+        :return: None
+        """
+        # Set up the beginning of the error message
+        msg = self.get_msg_start()
+
+        # Check the entry
+        entry = self.attributes.get(setting_name)
+        if entry is None:
+            if not missing_ok:  # pragma: no cover
+                msg += f"does not have the required setting '{setting_name}'."
+                errorstore.add_error(InvalidSetting(self.filenames[-1], msg=msg))
+            return
+        elif entry not in allowed_list:
+            msg += f"has an invalid setting '{setting_name}={entry}'."
+            errorstore.add_error(InvalidSetting(self.filenames[-1], msg=msg))
+
+    def require_setting(self, setting_name, errorstore):
+        """
+        Validate that the setting setting_name has an entry for this object.
+        If not, put the error in the errorstore.
+
+        :param setting_name: The name of the setting
+        :param errorstore: ErrorStore object to store errors
+        :return: None
+        """
+        # Set up the beginning of the error message
+        msg = self.get_msg_start()
+
+        # Check the entry
+        entry = self.attributes.get(setting_name)
+        if entry is None:
+            msg += f"does not have the required setting '{setting_name}'."
+            errorstore.add_error(InvalidSetting(self.filenames[-1], msg=msg))
+
+    def clean_date(self, setting_name, errorstore, required=False):
+        """
+        Clean the date entry in setting_name. If invalid, report the error, and nullify the entry.
+
+        :param setting_name: The name of the setting
+        :param errorstore: ErrorStore object to store errors
+        :param required: Whether or not this setting is required
+        :return: None
+        """
+        # Handle the required part
+        if required:
+            self.require_setting(setting_name, errorstore)
+
+        # Set up the beginning of the error message
+        msg = self.get_msg_start()
+
+        # Handle the cleaning part
+        if self.attributes.get(setting_name):
+            # Make sure it parses properly
+            try:
+                # Yes, this overwrites the setting, but now other code can use it as a date
+                self.attributes[setting_name] = dateutil.parser.parse(self.attributes.get(setting_name))
+            except (TypeError, ValueError):
+                msg += f"has an invalid date setting for {setting_name}: '{self.attributes[setting_name]}'."
+                errorstore.add_error(InvalidSetting(self.filenames[-1], msg=msg))
+                self.attributes[setting_name] = None
+
+    def ensure_date_order(self, date1, date2, errorstore, error_msg, same_ok=False):
+        """
+        Ensures that the dates appear in order date1 < date2. If not, stores msg as an error in errorstore.
+        If either date is None, no comparison is made.
+
+        :param date1: First date to compare
+        :param date2: Second date to compare
+        :param errorstore: ErrorStore object to store errors
+        :param error_msg: The message to report
+        :param same_ok: Whether or not it's ok for the dates to be the same
+        :return: None
+        """
+        if date1 is None or date2 is None:
+            return
+
+        # Set up the beginning of the error message
+        msg = self.get_msg_start()
+
+        # Check the ordering
+        if same_ok:
+            if date1 > date2:
+                msg += f"has a date out of order: {error_msg}"
+                errorstore.add_error(DateOrdering(self.filenames[-1], msg=msg))
+        else:
+            if date1 >= date2:
+                msg += f"has a date out of order: {error_msg}"
+                errorstore.add_error(DateOrdering(self.filenames[-1], msg=msg))
+
+    def require_positive_attempts(self, errorstore):
+        """
+        Require that the object's "attempts" attribute is positive.
+
+        :param errorstore: ErrorStore to report any errors
+        :return: None
+        """
+        attempts = self.attributes.get("attempts")
+        try:
+            if attempts and int(attempts) < 1:
+                msg = self.get_msg_start() + f"should have a positive number of attempts."
+                errorstore.add_error(InvalidSetting(self.filenames[-1], msg=msg))
+        except ValueError:
+            msg = self.get_msg_start() + f"should have a positive number of attempts."
+            errorstore.add_error(InvalidSetting(self.filenames[-1], msg=msg))
+
 
 class EdxContent(EdxObject, metaclass=ABCMeta):
     """Abstract class for edX content objects"""
@@ -142,5 +269,14 @@ class EdxContent(EdxObject, metaclass=ABCMeta):
     # What depth does this object typically appear at? (used for reporting)
     depth = 4
 
-    # Contains the content of the tag, including the tag itself
+    # Contains the content of the tag, including the tag itself (except for HTML tags that reference an html file)
     content = None
+
+
+# Collections of constants
+show_answer_list = ["always", "answered", "attempted", "closed", "finished", "correct_or_past_due",
+                    "past_due", "never", "after_attempts"]
+
+randomize_list = ["always", "onreset", "never", "per_student"]
+
+show_correctness_list = ['always', 'past_due', 'never']
