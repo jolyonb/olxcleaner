@@ -29,4 +29,6 @@ class EdxVertical(EdxObject):
         :return: None
         """
         # TODO: Perform validation
+        # Check start/due dates
+        # Check showanswer, show_correctness, rerandomize
         pass

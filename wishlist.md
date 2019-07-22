@@ -6,7 +6,7 @@ This is just a list of things that it would be nice to have in this program.
 
 * Generate statistics about a course after scanning
 * Course upload to server via HTTP if error level satisfied
-* Local configuration files
+* pip install
 
 ## Errors
 
@@ -35,5 +35,4 @@ This is just a list of things that it would be nice to have in this program.
 - Date fields in policy all evaluate using edX date evaluator
 - Check that all release dates fall inside the course start and end dates
 - Check that various open/close dates appear in order!
-- Check that each update has the required elements, and that display text parses as html correctly
-- FBE tags set up correctly
+- Check that each update has the required elements

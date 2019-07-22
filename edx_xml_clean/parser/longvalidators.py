@@ -9,10 +9,10 @@ from edx_xml_clean.parser.validators import GlobalValidator
 # from edx_xml_clean.parser.parser_exceptions import ...
 
 class LongValidator(GlobalValidator):
-    """Abstract base class for long validators"""
+    """Abstract base class for time-consuming validators"""
 
 # class Example(LongValidator):
-#     """Example long validator"""
+#     """Example LongValidator"""
 #
 #     def __call__(self, course, errorstore, url_names):
 #         pass

@@ -20,5 +20,6 @@ class EdxHtml(EdxContent):
         :param errorstore: An ErrorStore object to which errors should be reported
         :return: None
         """
-        # TODO: Perform validation
+        # Pretty much anything goes for an HTML file
+        # Nothing to really validate here
         pass

@@ -20,5 +20,8 @@ class EdxLti(EdxObject):
         :param errorstore: An ErrorStore object to which errors should be reported
         :return: None
         """
+        # Check LTI passport is included and exists in policy
+        # Flag as obsolete
+        # Check that required fields are present, optional fields are written properly
         # TODO: Perform validation
         pass

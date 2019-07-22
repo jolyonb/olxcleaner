@@ -13,6 +13,21 @@ from edx_xml_clean.loader.policy_exceptions import (
     BadPolicy
 )
 
+default_grading_policy = {
+    "GRADER": [
+        {
+            "drop_count": 0,
+            "min_count": 1,
+            "short_label": "HW",
+            "type": "Homework",
+            "weight": 1
+        },
+    ],
+    "GRADE_CUTOFFS": {
+        "Pass": 0.5
+    }
+}
+
 def load_policy(directory, course, errorstore):
     """
     Loads the policy file for a course. If loading fails, empty
@@ -36,6 +51,8 @@ def load_policy(directory, course, errorstore):
     # Load the policy files
     policy = load_json(directory, policyfile, errorstore)
     grading_policy = load_json(directory, gradingfile, errorstore)
+    if not grading_policy:
+        grading_policy = default_grading_policy
 
     # Return the results
     return policy, grading_policy

@@ -24,4 +24,6 @@ class EdxSequential(EdxObject):
         :return: None
         """
         # TODO: Perform validation
+        # Check start/due dates, graded
+        # Check showanswer, show_correctness, rerandomize
         pass

@@ -47,6 +47,8 @@ Each error has a name that can be used in the `-i` flag to ignore it.
 
 - `EmptyTag`: A tag was unexpectedly empty (e.g., a `chapter` tag had no children).
 
+- `ExtraDisplayName`: A tag has a `display_name` attribute when it shouldn't.
+
 - `MissingDisplayName`: A tag is missing the `display_name` attribute. edX will fill a generic name for you.
 
 - `MissingURLName`: A tag is missing the `url_name` attribute. edX will provide a garbage 32-character name for you, but everything is cleaner if you provide a nice name yourself.

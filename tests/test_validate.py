@@ -4,7 +4,7 @@ test_validate.py
 Tests the full validation pipeline
 """
 from edx_xml_clean import validate
-from tests.helpers import assert_caught_all_errors
+from tests.helpers import assert_caught_all_errors, assert_error
 from tests.test_load_xml import handle_course2_errors, handle_nocourse_errors
 from tests.test_load_policy import handle_course1_errors
 from tests.test_parser import handle_course7_errors
@@ -27,4 +27,9 @@ def test_validate_course2():
 def test_validate_course7():
     course, errorstore = validate("testcourses/testcourse7/course.xml", 5)
     handle_course7_errors(errorstore)
+    assert_caught_all_errors(errorstore)
+
+def test_validate_course8():
+    """This test includes individual component validation"""
+    course, errorstore = validate("testcourses/testcourse8", 6)
     assert_caught_all_errors(errorstore)

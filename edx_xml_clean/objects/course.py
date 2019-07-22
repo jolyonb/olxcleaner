@@ -26,4 +26,12 @@ class EdxCourse(EdxObject):
         :return: None
         """
         # TODO: Perform validation
+        # Check showanswer, show_correctness, rerandomize
+        # Tabs (files might need to warn not parsed, use debug to warn, can validate all types, esp. textbooks!)
+        # Check textbook setup, textbook links to existing files
+        # Check start and end date (convert to dates for later usage)
+        # Check course_image exists
+        # Check enrollment_end, enrollment_start
+        # Check graceperiod parcing
+        # Three required properties
         pass

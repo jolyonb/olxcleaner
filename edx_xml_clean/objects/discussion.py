@@ -21,5 +21,7 @@ class EdxDiscussion(EdxObject):
         :param errorstore: An ErrorStore object to which errors should be reported
         :return: None
         """
+        # Check for obsolete invocation
+        # Check for attributes: discussion_id, discussion_category, discussion_target
         # TODO: Perform validation
         pass

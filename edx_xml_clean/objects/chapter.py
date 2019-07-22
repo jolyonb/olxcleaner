@@ -23,5 +23,7 @@ class EdxChapter(EdxObject):
         :param errorstore: An ErrorStore object to which errors should be reported
         :return: None
         """
+        # Check start/due dates
+        # Check showanswer, show_correctness, rerandomize
         # TODO: Perform validation
         pass

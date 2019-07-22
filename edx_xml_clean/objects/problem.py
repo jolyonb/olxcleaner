@@ -18,5 +18,10 @@ class EdxProblem(EdxContent):
         :param errorstore: An ErrorStore object to which errors should be reported
         :return: None
         """
+        # Check start/due dates
+        # Check weight, attempts, show_reset_button
+        # Check showanswer, show_correctness, rerandomize
         # TODO: Perform validation
+        # Detect python script
+        # Detect problem types
         pass
