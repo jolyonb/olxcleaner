@@ -14,7 +14,7 @@ def report_statistics(course):
     result = []
 
     # If things are borked, then get out
-    if course is None or course.broken:
+    if course is None or course.broken:  # pragma: no cover
         return result
 
     # Compute statistics
@@ -100,8 +100,10 @@ def report_errors(errorstore):
     result = []
     if errorstore.errors:
         for error in errorstore.errors:
-            result.append(f"{error.level} ({error.filename}): {error.description} ({error.name})")
-    return result
+            result.append((error.filename, f"{error.level} ({error.filename}): {error.description} ({error.name})"))
+    result.sort()  # Uses the filename for ordering
+    wanted = [report for (filename, report) in result]
+    return wanted
 
 def report_error_summary(errorstore):
     """Reports summary statistics on the errors found, returned as a list"""
@@ -112,7 +114,7 @@ def report_error_summary(errorstore):
             result.append(f"{level.name}s: {sum(counter[level.name].values())}")
             for name, num in counter[level.name].items():
                 result.append(f"    {name}: {num}")
-    if not counter:
+    if not counter:  # pragma: no cover
         result.append("No errors found!")
     return result
 
@@ -145,6 +147,6 @@ def _construct_tree(obj, output, maxdepth, indent=0):
     """
     if maxdepth is not None and obj.depth > maxdepth:
         return
-    output.append(f'{" " * indent * 4}{obj}\n')
+    output.append(f'{" " * indent * 4}{obj}')
     for child in obj.children:
         _construct_tree(child, output, maxdepth, indent + 1)

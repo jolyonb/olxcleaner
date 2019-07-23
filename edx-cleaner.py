@@ -89,7 +89,7 @@ if args.tree and course is not None:
         print(f"Writing structure to {args.tree}")
     with open(args.tree, 'w') as f:
         for line in construct_tree(course, args.level):
-            f.write(line)
+            f.write(line + "\n")
 
 # Exit with the appropriate error level
 if errorstore.return_error(args.failure):
