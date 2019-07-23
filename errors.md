@@ -12,7 +12,9 @@ Each error has a name that can be used in the `-i` flag to ignore it.
 
 - `CourseXMLDoesNotExist`: The supplied `course.xml` file does not exist (or could not be opened).
 
-- `DuplicateURLName`: Two tags have the same `url_name` attribute. This can lead to the wrong content loading.
+- `DuplicateID`: A discussion ID is duplicated. This leads to the discussion forums randomly telling students that threads have been deleted.
+
+- `DuplicateURLName`: Two tags have the same `url_name` attribute. This can lead to the wrong content loading, and seriously impedes this program's error analysis.
 
 - `ExtraURLName`: A tag that had been pointed to by `url_name` from another file has a `url_name` of its own.
 
@@ -24,7 +26,11 @@ Each error has a name that can be used in the `-i` flag to ignore it.
 
 - `InvalidPointer`: This tag appears to be trying to point to another file, but contains unexpected attributes, and is hence not pointing.
 
+- `InvalidSetting`: A setting has been set to an invalid value.
+
 - `InvalidXML`: The specified XML file has a syntax error.
+
+- `LTIError`: There appears to be an error in the way that an LTI component is being invoked.
 
 - `NoRunName`: The course tag has no `url_name`, and hence no run name. This is a required parameter for a course.
 
@@ -43,13 +49,21 @@ Each error has a name that can be used in the `-i` flag to ignore it.
 
 ## Warnings
 
+- `BadCourseLink`: An internal /course/ link points to a location that doesn't exist.
+
+- `BadJumpToLink`: An internal jump_to_id link points to a url_name that doesn't exist.
+
 - `CourseXMLName`: The master file was not called `course.xml`.
+
+- `DateOrdering`: A date setting appears out of order with another date setting.
 
 - `EmptyTag`: A tag was unexpectedly empty (e.g., a `chapter` tag had no children).
 
 - `ExtraDisplayName`: A tag has a `display_name` attribute when it shouldn't.
 
 - `MissingDisplayName`: A tag is missing the `display_name` attribute. edX will fill a generic name for you.
+
+- `MissingFile`: A file appears to be missing from the static directory.
 
 - `MissingURLName`: A tag is missing the `url_name` attribute. edX will provide a garbage 32-character name for you, but everything is cleaner if you provide a nice name yourself.
 
@@ -69,6 +83,8 @@ Each error has a name that can be used in the `-i` flag to ignore it.
 ## Information
 
 - `DuplicateHTMLName`: Two HTML tags point to the same HTML file (`filename` attribute). While this isn't obviously problematic, probably best not to do it.
+
+- `Obsolete`: The way this object has been set up is obsolete.
 
 
 ## Debug

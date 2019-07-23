@@ -1,0 +1,22 @@
+<vertical display_name="Drag and Drop test">
+  <problem url_name="dndtest" display_name="Mwa">
+  <span>
+    <customresponse cfn="check_ex34"> <!-- Note: check function removed -->
+      <drag_and_drop_input img="/static/ex34_dnd.png" target_outline="false" one_per_target="true" no_labels="true" label_bg_color="rgb(222, 139, 238)">
+        <draggable id="Aa" icon="/static/ex34_dnd_label1.png" can_reuse="true"/>
+        <draggable id="Ab" icon="/static/ex34_dnd_label2.png" can_reuse="true"/>
+        <draggable id="Ac" icon="/static/ex34_dnd_label3.png" can_reuse="true"/>
+        <target id="1" x="76" y="0" w="72" h="51"/>
+        <!-- answer=Ad -->
+        <target id="2" x="162" y="0" w="71" h="51"/>
+        <!-- answer=Bd -->
+        <target id="3" x="303" y="0" w="143" h="51"/>
+        <!-- answer=Ce -->
+      </drag_and_drop_input>
+    </customresponse>
+    <solution>
+      <img src="/static/ex34_dnd_sol.png"/>
+    </solution>
+  </span>
+  </problem>
+</vertical>

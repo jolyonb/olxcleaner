@@ -53,3 +53,22 @@ def validate_graceperiod(entry):
     if not parts:
         return False
     return True
+
+def find_links(edxobj):
+    """Find all internal links in the given object"""
+    links = []
+
+    # This is the list of all attributes we will scan for internal links
+    url_attributes = ['link', 'src', 'href', 'img', 'icon']
+    # This is the list of special links we will look for
+    internal_links = ['/static/', '/course/', '/jump_to_id/']
+
+    # Search for all elements that have the desired attributes
+    for attrib in url_attributes:
+        for tag in edxobj.content.findall(f".//*[@{attrib}]"):
+            link = tag.get(attrib)
+            if link:
+                for special in internal_links:
+                    if link.startswith(special):
+                        links.append(link)
+    return links

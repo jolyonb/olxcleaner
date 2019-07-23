@@ -5,10 +5,13 @@
         <html url_name="html">
           <p>Test course</p>
         </html>
+        <html url_name="linktest"/>
         <discussion discussion_target="Something" discussion_category="Something else" discussion_id="Me"/>
         <discussion discussion_target="Apple" discussion_category="Ball" discussion_id="Me" display_name="Here's a discussion"/>
       </vertical>
       <vertical url_name="oravert"/>
+      <vertical url_name="dndvert"/>
+      <vertical url_name="dnd2vert"/>
     </sequential>
   </chapter>
   <chapter url_name='broken_chapter'/>

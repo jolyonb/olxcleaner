@@ -14,7 +14,7 @@ class MissingURLName(CourseError):
         self._description = f"The tag {kwargs['edxobj']} has no url_name."
 
 class DuplicateURLName(CourseError):
-    """Two tags have the same `url_name` attribute. This can lead to the wrong content loading."""
+    """Two tags have the same `url_name` attribute. This can lead to the wrong content loading, and seriously impedes this program's error analysis."""
     _level = ErrorLevel.ERROR
 
     def __init__(self, filename, **kwargs):
@@ -120,14 +120,30 @@ class LTIError(CourseError):
 
 class MissingFile(CourseError):
     """A file appears to be missing from the static directory."""
-    _level = ErrorLevel.ERROR
+    _level = ErrorLevel.WARNING
 
     def __init__(self, filename, **kwargs):
         super().__init__(filename)
         self._description = f"The {kwargs['edxobj']} tag contains a reference to a missing static file: {kwargs['missing_file']}"
 
+class BadJumpToLink(CourseError):
+    """An internal jump_to_id link points to a url_name that doesn't exist."""
+    _level = ErrorLevel.WARNING
+
+    def __init__(self, filename, **kwargs):
+        super().__init__(filename)
+        self._description = f"The {kwargs['edxobj']} tag contains a link to a url_name that doesn't exist: {kwargs['link']}"
+
+class BadCourseLink(CourseError):
+    """An internal /course/ link points to a location that doesn't exist."""
+    _level = ErrorLevel.WARNING
+
+    def __init__(self, filename, **kwargs):
+        super().__init__(filename)
+        self._description = f"The {kwargs['edxobj']} tag contains a link to a location that doesn't exist: {kwargs['link']}"
+
 class DuplicateID(CourseError):
-    """A discussion ID is duplicated."""
+    """A discussion ID is duplicated. This leads to the discussion forums randomly telling students that threads have been deleted."""
     _level = ErrorLevel.ERROR
 
     def __init__(self, filename, **kwargs):
