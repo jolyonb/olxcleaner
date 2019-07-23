@@ -57,11 +57,12 @@ class EdxSequential(EdxObject):
                                error_msg="due date must be before course end date")
 
         # If this is a timed exam, make sure it's enabled in the policy
-        if self.is_exam():
+        if self.is_exam:
             if not course.attributes.get('enable_timed_exams'):
                 msg = f"The tag {self} is a timed exam, but the course policy does not have 'enable_timed_exams=true'."
                 errorstore.add_error(InvalidSetting(self.filenames[-1], msg=msg))
 
+    @property
     def is_exam(self):
         """Helper routine that determines whether or not this is a timed exam"""
         entry = self.attributes.get('is_time_limited')

@@ -6,12 +6,11 @@ This is a list of features that it would be nice to have in this program.
 
 - Conditional tags
 - AB Test tags
-- ORA tags
 
 ## Validate Course Updates:
 
 - Check that the update file is found (and that json/html aren't clashing)
-- Validate the json/html
+- Validate the json/html in course updates
 
 ## Parsing:
 

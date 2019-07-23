@@ -65,8 +65,7 @@ def validate(filename, steps=8, quiet=True, ignore=None):
     if steps > 5:
         # Validation Step #6: Have every object validate itself
         for edxobj in traverse(course):
-            if not edxobj.broken:
-                edxobj.validate(course, errorstore)
+            edxobj.validate(course, errorstore)
 
     if steps > 6:
         # Validation Step #7: Parse the course for global errors

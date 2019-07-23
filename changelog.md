@@ -6,5 +6,4 @@
 
 This is the initial release.
 
-* Detects a number of errors in XML structure, policy settings, and a few global errors
-* Object validation is currently extremely limited
+* Detects a number of errors in XML structure, policy settings, block settings, and a few global errors.

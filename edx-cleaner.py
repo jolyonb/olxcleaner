@@ -12,6 +12,7 @@ from edx_xml_clean.__version__ import version
 from edx_xml_clean import validate
 from edx_xml_clean.reporting.structure import write_tree
 from edx_xml_clean.reporting.errors import report_errors, report_summary
+from edx_xml_clean.reporting.statistics import report_statistics
 
 def handle_arguments():
     """Look after all command-line arguments"""
@@ -38,13 +39,16 @@ def handle_arguments():
     # Error summary
     parser.add_argument("-s", "--nosummary", help="Suppress error summary", action="store_true")
 
+    # Error summary
+    parser.add_argument("-S", "--nostats", help="Suppress course statistics", action="store_true")
+
     # Failure level
     parser.add_argument("-f", "--failure", default=3, choices=[0, 1, 2, 3, 4], type=int,
                         help="Level of errors at which to declare failure: 0=DEBUG, 1=INFO, "
                              "2=WARNING, 3=ERROR (default), 4=NEVER")
 
     # Steps to run
-    parser.add_argument("-p", "--steps", default=7, choices=[1, 2, 3, 4, 5, 6, 7, 8], type=int,
+    parser.add_argument("-p", "--steps", default=8, choices=[1, 2, 3, 4, 5, 6, 7, 8], type=int,
                         help="Validation steps to take: 1=load course, 2=load policies, 3=check url_names, "
                              "4=validate policy, 5=validate grading policy, 6=validate tags, "
                              "7=perform global validation, 8=perform detailed global validation")
@@ -64,12 +68,14 @@ if not args.quiet:
 # Validate the course
 course, errorstore, url_names = validate(args.course, args.steps, args.quiet, args.ignore)
 
-# Report any errors that were found
+# Output reports
 if not args.quiet:
     if not args.noerrors:
         report_errors(errorstore)
     if not args.nosummary:
         report_summary(errorstore)
+    if not args.nostats:
+        report_statistics(course)
 
 # Output the structure to file
 if args.tree and course is not None:

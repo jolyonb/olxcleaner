@@ -82,7 +82,7 @@ def test_validate_course9():
     assert url_names['problem'].has_solution
 
     # Make sure our exam sequential was detected
-    assert url_names['examseq'].is_exam()
+    assert url_names['examseq'].is_exam
 
 def test_validate_course10():
     """This test includes all validation steps. The course is designed to test the validators and slow validators."""

@@ -88,3 +88,5 @@ class EdxORA(EdxContent):
                                    errorstore,
                                    same_ok=True,
                                    error_msg=f"assessment {idx + 1} due date must be before course end date")
+
+            # TODO: Validate complete ORA schema
