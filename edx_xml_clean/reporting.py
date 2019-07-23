@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-reporting.y
+reporting.py
 
 Contains methods used to report on an analyzed course
 """

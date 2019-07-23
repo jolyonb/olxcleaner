@@ -76,13 +76,14 @@ class EdxObject(ABC):
     def __repr__(self):
         """Produce a string representation of this object"""
         name = self.attributes.get("display_name")
-        url_name = self.attributes.get("url_name") or "no url_name"
+        url_name = self.attributes.get("url_name")
+        result = f"<{self.type}"
+        if url_name:
+            result += f" url_name='{url_name}'"
         if name:
-            return f"<{self.type}: '{name}' ({url_name})>"
-        elif self.display_name:
-            return f"<{self.type}: (Unnamed) ({url_name})>"
-        else:
-            return f"<{self.type} ({url_name})>"
+            result += f" display_name='{name}'"
+        result += ">"
+        return result
 
     def is_pointer(self, attribs=None):
         """

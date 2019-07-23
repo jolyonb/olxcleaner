@@ -69,7 +69,7 @@ class InvalidPointer(CourseError):
 
     def __init__(self, filename, **kwargs):
         super().__init__(filename)
-        self._description = f"The {kwargs['edxobj']}> tag looks like it is an invalid pointer tag"
+        self._description = f"The {kwargs['edxobj']} tag looks like it is an invalid pointer tag"
 
 class FileDoesNotExist(CourseError):
     """The file being pointed to does not exist."""

@@ -30,7 +30,7 @@ def handle_arguments():
 args = handle_arguments()
 
 # Load the course
-course, errorstore, url_names = validate(args.course, steps=1, quiet=True)
+course, errorstore, url_names = validate(args.course, steps=1)
 
 # Make sure we have a course to crawl
 if not course:

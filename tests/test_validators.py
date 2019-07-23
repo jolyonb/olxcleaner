@@ -30,9 +30,9 @@ def handle_general_errors_in_10(errorstore):
     assert_error(errorstore, TagMismatch, 'chapter/broken_chapter.xml', "The file is of type <chapter> but opens with a <sequential> tag")
 
 def handle_display_name_errors_in_10(errorstore):
-    assert_error(errorstore, MissingDisplayName, 'course/mycourseurl.xml', "The tag <course: (Unnamed) (mycourseurl)> is missing the display_name attribute.")
-    assert_error(errorstore, MissingDisplayName, 'course/mycourseurl.xml', "The tag <html: (Unnamed) (html)> is missing the display_name attribute.")
-    assert_error(errorstore, ExtraDisplayName, 'vertical/oravert.xml', "The tag <openassessment: 'Hah!' (paper-draft)> has an erroneous display_name attribute.")
+    assert_error(errorstore, MissingDisplayName, 'course/mycourseurl.xml', "The tag <course url_name='mycourseurl'> is missing the display_name attribute.")
+    assert_error(errorstore, MissingDisplayName, 'course/mycourseurl.xml', "The tag <html url_name='html'> is missing the display_name attribute.")
+    assert_error(errorstore, ExtraDisplayName, 'vertical/oravert.xml', "The tag <openassessment url_name='paper-draft' display_name='Hah!'> has an erroneous display_name attribute.")
 
 def test_discussion_ids():
     # Perform all steps on course 10 up to validation steps
@@ -49,7 +49,7 @@ def test_discussion_ids():
     assert_caught_all_errors(errorstore)
 
 def handle_discussion_id_errors_in_10(errorstore):
-    assert_error(errorstore, DuplicateID, 'course/mycourseurl.xml', "The <discussion: 'Here's a discussion' (no url_name)> tag and the <discussion: 'Here's a discussion' (no url_name)> tag both use the same discussion id: Me")
+    assert_error(errorstore, DuplicateID, 'course/mycourseurl.xml', "The <discussion display_name='Here's a discussion'> tag and the <discussion display_name='Here's a discussion'> tag both use the same discussion id: Me")
 
 def test_link_checking():
     """Checks for broken internal links"""
@@ -90,15 +90,15 @@ def test_link_checking():
     assert_caught_all_errors(errorstore)
 
 def handle_link_errors_in_10(errorstore):
-    assert_error(errorstore, BadJumpToLink, 'html/linktest.xml', "The <html: 'Testing links' (linktest)> tag contains a link to a url_name that doesn't exist: /jump_to_id/oravert2")
-    assert_error(errorstore, MissingFile, 'html/linktest.xml', "The <html: 'Testing links' (linktest)> tag contains a reference to a missing static file: /static/testing2.css")
-    assert_error(errorstore, MissingFile, 'html/linktest.xml', "The <html: 'Testing links' (linktest)> tag contains a reference to a missing static file: /static/testing.png")
-    assert_error(errorstore, BadCourseLink, 'html/linktest.xml', "The <html: 'Testing links' (linktest)> tag contains a link to a location that doesn't exist: /course/courseware/testing")
-    assert_error(errorstore, BadCourseLink, 'html/linktest.xml', "The <html: 'Testing links' (linktest)> tag contains a link to a location that doesn't exist: /course/courseware/chapter/sequential/vertical/10")
-    assert_error(errorstore, BadCourseLink, 'html/linktest.xml', "The <html: 'Testing links' (linktest)> tag contains a link to a location that doesn't exist: /course/courseware/chapter/sequential/vertical/0")
-    assert_error(errorstore, BadCourseLink, 'html/linktest.xml', "The <html: 'Testing links' (linktest)> tag contains a link to a location that doesn't exist: /course/courseware/chapter/sequential/vertical/html")
-    assert_error(errorstore, MissingFile, 'vertical/dnd2vert.xml', "The <drag-and-drop-v2: 'This is my title' (studio_mess)> tag contains a reference to a missing static file: /static/ex34_dnd.png")
-    assert_error(errorstore, MissingFile, 'vertical/dnd2vert.xml', "The <drag-and-drop-v2: 'This is my title' (studio_mess)> tag contains a reference to a missing static file: /static/ex34_dnd_label1.png")
-    assert_error(errorstore, MissingFile, 'vertical/dndvert.xml', "The <problem: 'Mwa' (dndtest)> tag contains a reference to a missing static file: /static/ex34_dnd_sol.png")
-    assert_error(errorstore, MissingFile, 'vertical/dndvert.xml', "The <problem: 'Mwa' (dndtest)> tag contains a reference to a missing static file: /static/ex34_dnd.png")
-    assert_error(errorstore, MissingFile, 'vertical/dndvert.xml', "The <problem: 'Mwa' (dndtest)> tag contains a reference to a missing static file: /static/ex34_dnd_label1.png")
+    assert_error(errorstore, BadJumpToLink, 'html/linktest.xml', "The <html url_name='linktest' display_name='Testing links'> tag contains a link to a url_name that doesn't exist: /jump_to_id/oravert2")
+    assert_error(errorstore, MissingFile, 'html/linktest.xml', "The <html url_name='linktest' display_name='Testing links'> tag contains a reference to a missing static file: /static/testing2.css")
+    assert_error(errorstore, MissingFile, 'html/linktest.xml', "The <html url_name='linktest' display_name='Testing links'> tag contains a reference to a missing static file: /static/testing.png")
+    assert_error(errorstore, BadCourseLink, 'html/linktest.xml', "The <html url_name='linktest' display_name='Testing links'> tag contains a link to a location that doesn't exist: /course/courseware/testing")
+    assert_error(errorstore, BadCourseLink, 'html/linktest.xml', "The <html url_name='linktest' display_name='Testing links'> tag contains a link to a location that doesn't exist: /course/courseware/chapter/sequential/vertical/10")
+    assert_error(errorstore, BadCourseLink, 'html/linktest.xml', "The <html url_name='linktest' display_name='Testing links'> tag contains a link to a location that doesn't exist: /course/courseware/chapter/sequential/vertical/0")
+    assert_error(errorstore, BadCourseLink, 'html/linktest.xml', "The <html url_name='linktest' display_name='Testing links'> tag contains a link to a location that doesn't exist: /course/courseware/chapter/sequential/vertical/html")
+    assert_error(errorstore, MissingFile, 'vertical/dndvert.xml', "The <problem url_name='dndtest' display_name='Mwa'> tag contains a reference to a missing static file: /static/ex34_dnd_sol.png")
+    assert_error(errorstore, MissingFile, 'vertical/dndvert.xml', "The <problem url_name='dndtest' display_name='Mwa'> tag contains a reference to a missing static file: /static/ex34_dnd.png")
+    assert_error(errorstore, MissingFile, 'vertical/dndvert.xml', "The <problem url_name='dndtest' display_name='Mwa'> tag contains a reference to a missing static file: /static/ex34_dnd_label1.png")
+    assert_error(errorstore, MissingFile, 'vertical/dnd2vert.xml', "The <drag-and-drop-v2 url_name='studio_mess' display_name='This is my title'> tag contains a reference to a missing static file: /static/ex34_dnd.png")
+    assert_error(errorstore, MissingFile, 'vertical/dnd2vert.xml', "The <drag-and-drop-v2 url_name='studio_mess' display_name='This is my title'> tag contains a reference to a missing static file: /static/ex34_dnd_label1.png")
