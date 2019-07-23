@@ -29,12 +29,13 @@ def report_statistics(course):
         print(f"    Number of problems: {typecounter['problem']}")
         print(f"    Number of problems with solutions: {problem_solutions}")
         print(f"    Number of problems with python scripts: {python_problems}")
-        print(f"    response_types used:")
+        print(f"    response_types used*:")
         for entry in response_types:
             print(f"      - {entry}: {response_types[entry]}")
-        print(f"    input_types used:")
+        print(f"    input_types used*:")
         for entry in input_types:
             print(f"      - {entry}: {input_types[entry]}")
+        print(f"    * Multiple uses within a single problem only count once")
 
 def construct_statistics(course):
     """

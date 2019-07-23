@@ -88,6 +88,3 @@ if errorstore.return_error(args.failure):
     sys.exit(1)
 else:
     sys.exit(0)
-
-# TODO: Make option to output statistics (numbers of each type of block, problem types/input types, python in problems, exams)
-# TODO: Get code coverage to 100%...
