@@ -3,8 +3,9 @@
 """
 edx-xml-clean.py
 
-Very light wrapper around the edx_xml_clean library.
-Despite the light touch, it exposes all of the capabilities of the library.
+edX XML code validator, based on a very light wrapper around
+the edx_xml_clean library. Despite the light touch, it
+exposes all of the capabilities of the library.
 """
 import sys
 import argparse

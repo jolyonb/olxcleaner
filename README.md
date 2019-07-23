@@ -20,9 +20,13 @@ Copyright (C) 2018-2019 Jolyon Bloomfield
 
 This code uses features of python 3.6. We recommend installing a virtual environment, and running `pip install -r requirements.txt`. Afterwards, tests may be run by running `pytest`.
 
-## Usage
+## Installation
 
-Currently, you need to clone the repository; no installer is provided.
+Currently, you need to clone the repository, as no installer is provided.
+
+## edx-cleaner Usage
+
+Used to validate OLX (edX XML) code. This is a very light wrapper around the edx_xml_cleaner library, but exposes all of the functionality thereof.
 
 Run the file `./edx-cleaner.py` with the following command line options:
 
@@ -56,4 +60,18 @@ Run the file `./edx-cleaner.py` with the following command line options:
 * `-f`: Select the error level at which to exit with an error code. 0 = DEBUG, 1 = INFO, 2 = WARNING, 3 = ERROR (default), 4 = NEVER. Exit code is set to `1` if an error at the specified level or higher is present.
 * `-i`: Specify a space-separated list of error names to ignore. See [Error Listing](errors.md).
 
-The cleaner includes modules that parse a course into python objects. This can be useful if you want to scan a course to generate a report. An example that does so, outputting a LaTeX file, is given in `crawler.py`.
+## edx-reporter Usage
+
+The edx_xml_clean library includes modules that parse a course into python objects. This can be useful if you want to scan a course to generate a report. We exploit this in `edx-reporter.py` to generate LaTeX reports of course structure.
+
+Run the file `./edx-reporter.py` with the following command line options:
+
+```text
+./edx-reporter.py [-h] 
+                  [-c COURSE]
+                  [> latexfile.tex]
+```
+
+* `-h`: Display help.
+* `-c`: Specify the course file to analyze. If not specified, looks for `course.xml` in the current directory. If given a directory, looks for `course.xml` in that directory.
+* `> latexfile.tex`: Output the report to a file using a bash pipe.
