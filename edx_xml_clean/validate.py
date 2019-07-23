@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 validate.py
 
@@ -11,7 +12,7 @@ from edx_xml_clean.parser.validators import GlobalValidator
 from edx_xml_clean.parser.slowvalidators import SlowValidator
 from edx_xml_clean.utils import traverse
 
-def validate(filename, steps=8, quiet=True, ignore=None):
+def validate(filename, steps=8, ignore=None):
     """
     Validate an OLX course by performing the given number of steps:
 
@@ -26,7 +27,6 @@ def validate(filename, steps=8, quiet=True, ignore=None):
 
     :param filename: Location of course xml file or directory
     :param steps: Number of validation steps to take (1 = first only, 8 = all)
-    :param quiet: Output information to the console
     :param ignore: List of errors to ignore
     :return: course object, errorstore object, url_names dictionary (or None if steps < 3)
     """
@@ -41,7 +41,7 @@ def validate(filename, steps=8, quiet=True, ignore=None):
         file = "course.xml"
     else:
         directory, file = os.path.split(filename)
-    course = load_course(directory, file, errorstore, quiet)
+    course = load_course(directory, file, errorstore)
     if not course:
         return None, errorstore, None
 

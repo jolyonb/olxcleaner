@@ -30,14 +30,13 @@ from edx_xml_clean.loader.xml_exceptions import (
     DuplicateHTMLName
 )
 
-def load_course(directory, filename, errorstore, quiet):
+def load_course(directory, filename, errorstore):
     """
     Loads a course, given a filename for the appropriate course.xml file.
 
     :param directory: Path for course.xml (or equivalent)
     :param filename: Filename for course.xml (or equivalent)
     :param errorstore: ErrorStore object to store errors
-    :param quiet: Flag for quiet mode
     :return: EdxCourse object, or None on failure
     """
     # Ensure the file exists
@@ -45,9 +44,6 @@ def load_course(directory, filename, errorstore, quiet):
     if not isfile(fullpath):
         errorstore.add_error(CourseXMLDoesNotExist(fullpath))
         return
-
-    if not quiet:  # pragma: no cover
-        print(f"Loading {fullpath}")
 
     # Check file name
     if filename != "course.xml":
@@ -66,8 +62,8 @@ def load_course(directory, filename, errorstore, quiet):
     # Load the course!
     traverse_course(course, tree.getroot(), directory, filename, errorstore, {})
 
-    # Save the course directory in the course object
-    course.savedir(directory)
+    # Save the course directory and full path in the course object
+    course.savedir(directory, fullpath)
 
     return course
 

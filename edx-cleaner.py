@@ -3,16 +3,15 @@
 """
 edx-xml-clean.py
 
-Sample validation script
+Very light wrapper around the edx_xml_clean library.
+Despite the light touch, it exposes all of the capabilities of the library.
 """
 import sys
 import argparse
 
 from edx_xml_clean.__version__ import version
 from edx_xml_clean import validate
-from edx_xml_clean.reporting.structure import write_tree
-from edx_xml_clean.reporting.errors import report_errors, report_summary
-from edx_xml_clean.reporting.statistics import report_statistics
+from edx_xml_clean.reporting import construct_tree, report_errors, report_error_summary, report_statistics
 
 def handle_arguments():
     """Look after all command-line arguments"""
@@ -51,7 +50,7 @@ def handle_arguments():
     parser.add_argument("-p", "--steps", default=8, choices=[1, 2, 3, 4, 5, 6, 7, 8], type=int,
                         help="Validation steps to take: 1=load course, 2=load policies, 3=check url_names, "
                              "4=validate policy, 5=validate grading policy, 6=validate tags, "
-                             "7=perform global validation, 8=perform detailed global validation")
+                             "7=perform global validation, 8=perform detailed global validation (default)")
 
     # Ignore list
     parser.add_argument('-i', '--ignore', nargs='+', help='List of errors to ignore')
@@ -64,24 +63,33 @@ args = handle_arguments()
 
 if not args.quiet:
     print(f'edX XML cleaner {version} -- A validator for XML edX courses')
+    print(f'Loading...')
 
 # Validate the course
-course, errorstore, url_names = validate(args.course, args.steps, args.quiet, args.ignore)
+course, errorstore, url_names = validate(args.course, args.steps, args.ignore)
+
+if not args.quiet:
+    print(f'Loaded from {course.fullpath}')
 
 # Output reports
 if not args.quiet:
     if not args.noerrors:
-        report_errors(errorstore)
+        for line in report_errors(errorstore):
+            print(line)
     if not args.nosummary:
-        report_summary(errorstore)
+        for line in report_error_summary(errorstore):
+            print(line)
     if not args.nostats:
-        report_statistics(course)
+        for line in report_statistics(course):
+            print(line)
 
 # Output the structure to file
 if args.tree and course is not None:
     if not args.quiet:
         print(f"Writing structure to {args.tree}")
-    write_tree(course, args.tree, args.level)
+    with open(args.tree, 'w') as f:
+        for line in construct_tree(course, args.level):
+            f.write(line)
 
 # Exit with the appropriate error level
 if errorstore.return_error(args.failure):

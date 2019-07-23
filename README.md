@@ -2,7 +2,7 @@
 
 [![Build Status](https://api.travis-ci.org/jolyonb/edx-xml-clean.svg?branch=master)](https://travis-ci.org/jolyonb/edx-xml-clean) [![Coverage Status](https://codecov.io/gh/jolyonb/edx-xml-clean/branch/master/graphs/badge.svg)](https://codecov.io/gh/jolyonb/edx-xml-clean)
 
-Validates the XML code for an edX course
+Validates the XML code for an edX course, reporting errors found and statistics.
 
 Version 0.1.0
 
@@ -26,7 +26,7 @@ Currently, you need to clone the repository; no installer is provided.
 
 Run the file `./edx-cleaner.py` with the following command line options:
 
-```bash
+```text
 ./edx-cleaner.py [-h] 
                  [-c COURSE]
                  [-p {1,2,3,4,5,6,7,8}] 
@@ -46,7 +46,7 @@ Run the file `./edx-cleaner.py` with the following command line options:
   * 5: Validate the grading policy
   * 6: Have every object validate itself
   * 7: Parse the course for global errors
-  * 8: Parse the course for time-consuming global errors
+  * 8: Parse the course for detailed global errors (default)
 * `-t TREE`: Specify a file to output the tree structure to.
 * `-l`: Specify the depth level to output the tree structure to. Only used if the `-t` option is set. 0 = Course, 1 = Chapter, 2 = Sequential, 3 = Vertical, 4 = Content. 
 * `-q`: Quiet mode. Does not output anything to the screen.

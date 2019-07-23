@@ -16,7 +16,7 @@ from edx_xml_clean.loader.policy_exceptions import (
 def test_no_policy():
     errorstore = ErrorStore()
     # Load course (needed before loading policy)
-    course = load_course("testcourses/testcourse1", "course.xml", errorstore, True)
+    course = load_course("testcourses/testcourse1", "course.xml", errorstore)
     assert_caught_all_errors(errorstore)
     # Load the (nonexistent) policy files
     policy, grading_policy = load_policy("testcourses/testcourse1", course, errorstore)
@@ -30,7 +30,7 @@ def handle_course1_errors(errorstore):
 def test_no_url_name():
     errorstore = ErrorStore()
     # Load course (needed before loading policy)
-    course = load_course("testcourses/testcourse4", "course.xml", errorstore, True)
+    course = load_course("testcourses/testcourse4", "course.xml", errorstore)
     assert_caught_all_errors(errorstore)
     # Load the (nonexistent) policy files
     policy, grading_policy = load_policy("testcourses/testcourse4", course, errorstore)
@@ -40,7 +40,7 @@ def test_no_url_name():
 def test_bad_json():
     errorstore = ErrorStore()
     # Load course (needed before loading policy)
-    course = load_course("testcourses/testcourse5", "course.xml", errorstore, True)
+    course = load_course("testcourses/testcourse5", "course.xml", errorstore)
     assert_caught_all_errors(errorstore)
     # Load the policy files
     policy, grading_policy = load_policy("testcourses/testcourse5", course, errorstore)

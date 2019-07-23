@@ -30,7 +30,7 @@ from edx_xml_clean.loader.xml_exceptions import (
 
 def test_no_course():
     errorstore = ErrorStore()
-    course = load_course("testcourses", "nocourse.xml", errorstore, True)
+    course = load_course("testcourses", "nocourse.xml", errorstore)
     handle_nocourse_errors(errorstore)
     assert_caught_all_errors(errorstore)
 
@@ -40,7 +40,7 @@ def handle_nocourse_errors(errorstore):
 def test_course1():
     """Make sure that things load properly when everything is ok"""
     errorstore = ErrorStore()
-    course = load_course("testcourses/testcourse1", "course.xml", errorstore, True)
+    course = load_course("testcourses/testcourse1", "course.xml", errorstore)
     assert errorstore.errors == []
 
     assert course.attributes == {'url_name': 'mycourseurl', 'org': 'myorg', 'course': 'mycourse'}
@@ -61,7 +61,7 @@ def test_course1():
 def test_course2():
     """Test for XML loading errors"""
     errorstore = ErrorStore()
-    course = load_course("testcourses/testcourse2", "coursefile.xml", errorstore, True)
+    course = load_course("testcourses/testcourse2", "coursefile.xml", errorstore)
     handle_course2_errors(errorstore)
     assert_caught_all_errors(errorstore)
 
@@ -94,6 +94,6 @@ def handle_course2_errors(errorstore):
 def test_course3():
     """Test for XML error in course.xml"""
     errorstore = ErrorStore()
-    course = load_course("testcourses/testcourse3", "course.xml", errorstore, True)
+    course = load_course("testcourses/testcourse3", "course.xml", errorstore)
     assert_error(errorstore, InvalidXML, 'course.xml', 'attributes construct error, line 1, column 61')
     assert_caught_all_errors(errorstore)

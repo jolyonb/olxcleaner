@@ -23,7 +23,7 @@ def test_url_names():
     errorstore = ErrorStore()
 
     # Load course
-    course = load_course("testcourses/testcourse1", "course.xml", errorstore, True)
+    course = load_course("testcourses/testcourse1", "course.xml", errorstore)
     assert_caught_all_errors(errorstore)
 
     # Make a dictionary of url_names
@@ -44,7 +44,7 @@ def test_course6_url():
     errorstore = ErrorStore()
 
     # Load course
-    course = load_course("testcourses/testcourse6", "course.xml", errorstore, True)
+    course = load_course("testcourses/testcourse6", "course.xml", errorstore)
     assert_caught_all_errors(errorstore)
 
     # Load policy
@@ -73,7 +73,7 @@ def test_course7_url():
     errorstore = ErrorStore()
 
     # Load course
-    course = load_course("testcourses/testcourse7", "course.xml", errorstore, True)
+    course = load_course("testcourses/testcourse7", "course.xml", errorstore)
     assert_caught_all_errors(errorstore)
 
     # Load policy

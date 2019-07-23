@@ -1,9 +1,9 @@
+# -*- coding: utf-8 -*-
 """
 course.py
 
 Object description for an OLX course tag
 """
-import re
 from edx_xml_clean.objects.common import EdxObject, show_answer_list, randomize_list, show_correctness_list
 from edx_xml_clean.parser.parser_exceptions import MissingFile, InvalidSetting
 from edx_xml_clean.utils import check_static_file_exists, validate_graceperiod
@@ -22,10 +22,12 @@ class EdxCourse(EdxObject):
         return ["chapter"]
 
     directory = None
+    fullpath = None
 
-    def savedir(self, directory):
-        """Saves the course directory for future use"""
+    def savedir(self, directory, fullpath):
+        """Saves the course directory and full path for future use"""
         self.directory = directory
+        self.fullpath = fullpath
 
     def validate(self, course, errorstore):
         """

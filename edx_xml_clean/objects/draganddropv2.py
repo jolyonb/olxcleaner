@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 draganddropv2.py
 
