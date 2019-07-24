@@ -100,7 +100,7 @@ def report_errors(errorstore):
     result = []
     if errorstore.errors:
         for error in errorstore.errors:
-            result.append((error.filename, f"{error.level} ({error.filename}): {error.description} ({error.name})"))
+            result.append((error.filename, f"{error.level} {error.name} ({error.filename}): {error.description}"))
     result.sort()  # Uses the filename for ordering
     wanted = [report for (filename, report) in result]
     return wanted

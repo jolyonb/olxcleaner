@@ -75,18 +75,22 @@ if not args.quiet:
 # Output reports
 if not args.quiet:
     if not args.noerrors:
+        print()
         for line in report_errors(errorstore):
             print(line)
     if not args.nosummary:
+        print()
         for line in report_error_summary(errorstore):
             print(line)
     if not args.nostats:
+        print()
         for line in report_statistics(course):
             print(line)
 
 # Output the structure to file
 if args.tree and course is not None:
     if not args.quiet:
+        print()
         print(f"Writing structure to {args.tree}")
     with open(args.tree, 'w') as f:
         for line in construct_tree(course, args.level):
@@ -94,6 +98,12 @@ if args.tree and course is not None:
 
 # Exit with the appropriate error level
 if errorstore.return_error(args.failure):
+    if not args.quiet:
+        print()
+        print(f"Done! Exiting with code 1")
     sys.exit(1)
 else:
+    if not args.quiet:
+        print()
+        print(f"Done! Exiting with code 0")
     sys.exit(0)

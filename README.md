@@ -2,7 +2,15 @@
 
 [![Build Status](https://api.travis-ci.org/jolyonb/edx-xml-clean.svg?branch=master)](https://travis-ci.org/jolyonb/edx-xml-clean) [![Coverage Status](https://codecov.io/gh/jolyonb/edx-xml-clean/branch/master/graphs/badge.svg)](https://codecov.io/gh/jolyonb/edx-xml-clean)
 
-Validates the XML code for an edX course, reporting errors found and statistics.
+This library aims to perform two functions:
+
+* Parse the XML code for an edX course, loading it into python objects
+* Validate the objects for errors
+
+Based on this, two programs are provided that leverage the library:
+
+* edx-cleaner.py constructs an error report, course tree and course statistics
+* edx-reporter.py constructs a LaTeX file representation of the course structure
 
 Version 0.1.0
 
@@ -62,16 +70,18 @@ Run the file `./edx-cleaner.py` with the following command line options:
 
 ## edx-reporter Usage
 
-The edx_xml_clean library includes modules that parse a course into python objects. This can be useful if you want to scan a course to generate a report. We exploit this in `edx-reporter.py` to generate LaTeX reports of course structure.
+The edx_xml_clean library includes modules that parse a course into python objects. This can be useful if you want to scan a course to generate a report. We exploit this in `edx-reporter.py` to generate a LaTeX report of course structure.
 
 Run the file `./edx-reporter.py` with the following command line options:
 
 ```text
 ./edx-reporter.py [-h] 
                   [-c COURSE]
+                  [-u]
                   [> latexfile.tex]
 ```
 
 * `-h`: Display help.
 * `-c`: Specify the course file to analyze. If not specified, looks for `course.xml` in the current directory. If given a directory, looks for `course.xml` in that directory.
+* `-u`: Include url_names for verticals.
 * `> latexfile.tex`: Output the report to a file using a bash pipe.
