@@ -57,7 +57,7 @@ class EmptyTag(CourseError):
 
 class ExtraURLName(CourseError):
     """A tag that had been pointed to by `url_name` from another file has a `url_name` of its own."""
-    _level = ErrorLevel.ERROR
+    _level = ErrorLevel.WARNING
 
     def __init__(self, filename, **kwargs):
         super().__init__(filename)

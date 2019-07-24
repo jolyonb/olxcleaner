@@ -16,8 +16,6 @@ Each error has a name that can be used in the `-i` flag to ignore it.
 
 - `DuplicateURLName`: Two tags have the same `url_name` attribute. This can lead to the wrong content loading, and seriously impedes this program's error analysis.
 
-- `ExtraURLName`: A tag that had been pointed to by `url_name` from another file has a `url_name` of its own.
-
 - `FileDoesNotExist`: The file being pointed to does not exist.
 
 - `GradingPolicyIssue`: A catch-all error for issues in the grading policy.
@@ -60,6 +58,8 @@ Each error has a name that can be used in the `-i` flag to ignore it.
 - `EmptyTag`: A tag was unexpectedly empty (e.g., a `chapter` tag had no children).
 
 - `ExtraDisplayName`: A tag has a `display_name` attribute when it shouldn't.
+
+- `ExtraURLName`: A tag that had been pointed to by `url_name` from another file has a `url_name` of its own.
 
 - `MissingDisplayName`: A tag is missing the `display_name` attribute. edX will fill a generic name for you.
 
