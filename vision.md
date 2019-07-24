@@ -1,6 +1,6 @@
 # Vision
 
-This document lays out the vision for this code.
+This document lays out the vision for the edx_xml_clean code.
 
 It is envisioned that this code can be used in many ways to assist with the creation of edX courses.
 
