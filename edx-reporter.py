@@ -48,8 +48,8 @@ def sanitize(text):
     results = results.replace(" '", ' `')
     results = results.replace(' "', ' ``')
     results = results.replace('"', "''")
-    # Fix unicode characters
-    results = utf8tolatex(results)
+    # Fix unicode characters. Bad characters are replaced by a bold '?'
+    results = utf8tolatex(results, substitute_bad_chars=True)
     # Fix math entries a^b
     results = re.sub(r'(.\^.)', r'$\1$', results)
     # Fix math entries a_b (note that utf8tolatex has converted _ to {\_})
