@@ -112,7 +112,7 @@ def report_error_summary(errorstore):
     for level in ErrorLevel:
         if level.name in counter:
             result.append(f"{level.name}s: {sum(counter[level.name].values())}")
-            for name, num in counter[level.name].items():
+            for name, num in sorted(counter[level.name].items()):
                 result.append(f"    {name}: {num}")
     if not counter:  # pragma: no cover
         result.append("No errors found!")

@@ -116,8 +116,8 @@ def test_report_error_summary():
                        'WARNINGs: 1',
                        '    MissingDisplayName: 1',
                        'ERRORs: 5',
-                       '    PolicyNotFound: 2',
-                       '    InvalidSetting: 3']
+                       '    InvalidSetting: 3',
+                       '    PolicyNotFound: 2']
 
     course, errorstore, _ = validate("testcourses/testcourse9")
     summary = report_error_summary(errorstore)
@@ -126,10 +126,10 @@ def test_report_error_summary():
                        'INFOs: 2',
                        '    Obsolete: 2',
                        'WARNINGs: 19',
-                       '    MissingURLName: 1',
-                       '    MissingFile: 4',
                        '    DateOrdering: 5',
                        '    MissingDisplayName: 9',
+                       '    MissingFile: 4',
+                       '    MissingURLName: 1',
                        'ERRORs: 19',
                        '    InvalidSetting: 15',
                        '    LTIError: 4']
