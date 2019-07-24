@@ -47,7 +47,7 @@ class BadPolicyFormat(CourseError):
         super().__init__(filename)
         self._description = f"The policy file is not a dictionary of values"
 
-class ObjectNotFound(CourseError):
+class PolicyRefNotFound(CourseError):
     """The policy file references an object that doesn't exist."""
     _level = ErrorLevel.WARNING
 

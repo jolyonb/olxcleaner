@@ -12,7 +12,7 @@ from edx_xml_clean.parser.parser_exceptions import (
     MissingURLName,
     DuplicateURLName,
     BadPolicyFormat,
-    ObjectNotFound,
+    PolicyRefNotFound,
     WrongObjectType,
     BadEntry,
     SettingOverride,
@@ -97,7 +97,7 @@ def test_course7_url():
 
 def handle_course7_errors(errorstore):
     assert_error(errorstore, DuplicateURLName, 'course/mycourseurl.xml', "Duplicate url_name found: 'html4' appears as <html> in course/mycourseurl.xml and also as <html> in course/mycourseurl.xml")
-    assert_error(errorstore, ObjectNotFound, 'policy.json', "The policy file refers to <problem url_name='noexist'> which does not exist in the course structure")
+    assert_error(errorstore, PolicyRefNotFound, 'policy.json', "The policy file refers to <problem url_name='noexist'> which does not exist in the course structure")
     assert_error(errorstore, WrongObjectType, 'policy.json', "The policy file refers to a <video> tag with url_name 'html4'. However, that url_name points to a <html> tag.")
     assert_error(errorstore, BadEntry, 'policy.json', "The policy file entry for <vertical url_name='vertical3'> is not a dictionary")
     assert_error(errorstore, SettingOverride, 'policy.json', "The policy file entry for <sequential url_name='sequential2'> is overriding the setting for 'setting'")

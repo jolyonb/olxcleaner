@@ -71,7 +71,7 @@ Each error has a name that can be used in the `-i` flag to ignore it.
 
 - `NonFlatURLName`: A `url_name` pointer uses colon notation to point to a subdirectory. While partially supported, this is not recommended.
 
-- `ObjectNotFound`: The policy file references an object that doesn't exist.
+- `PolicyRefNotFound`: The policy file references an object that doesn't exist.
 
 - `PossibleHTMLPointer`: This HTML tag looks like it isn't a pointer tag, but a file exists that it could be trying to point to.
 

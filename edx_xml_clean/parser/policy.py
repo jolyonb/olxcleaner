@@ -9,7 +9,7 @@ from edx_xml_clean.parser.parser_exceptions import (
     MissingURLName,
     DuplicateURLName,
     BadPolicyFormat,
-    ObjectNotFound,
+    PolicyRefNotFound,
     WrongObjectType,
     BadEntry,
     SettingOverride,
@@ -72,7 +72,7 @@ def merge_policy(policy, url_names, errorstore):
 
         # Make sure we have an object
         if edxobj is None:
-            errorstore.add_error(ObjectNotFound('policy.json', objtype=objtype, url_name=url_name))
+            errorstore.add_error(PolicyRefNotFound('policy.json', objtype=objtype, url_name=url_name))
             continue
 
         # Make sure the type matches
