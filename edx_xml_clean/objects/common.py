@@ -6,6 +6,7 @@ Contains abstract base classes to describe various edX objects
 """
 from abc import ABC, ABCMeta, abstractmethod
 import dateutil.parser
+import pytz
 from edx_xml_clean.parser.parser_exceptions import InvalidSetting, DateOrdering
 
 class EdxObject(ABC):
@@ -207,8 +208,13 @@ class EdxObject(ABC):
 
         # Make sure it parses properly
         try:
-            # Yes, this overwrites the setting, but now other code can use it as a date
-            return dateutil.parser.parse(date)
+            parsed_date = dateutil.parser.parse(date)
+            if parsed_date.tzinfo is None or parsed_date.tzinfo.utcoffset(parsed_date) is None:
+                # Apply a timezone to the date
+                return pytz.utc.localize(parsed_date)
+            else:
+                # Shift to UTC
+                return parsed_date.astimezone(pytz.utc)
         except (TypeError, ValueError):
             msg = f"The tag {self} has an invalid date setting for {setting_name}: '{date}'."
             errorstore.add_error(InvalidSetting(self.filenames[-1], msg=msg))

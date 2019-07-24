@@ -1,4 +1,4 @@
-<problem showanswer="bad" start="Feb 20, 2019, 17:00" due="Feb 1, 2019, 17:00" weight="-1" attempts="bad">
+<problem showanswer="bad" start="2019-06-12T23:00:00Z" due="Feb 1, 2019, 17:00" weight="-1" attempts="bad">
 This file is a mess of things that are being used for testing.
 <script>
 a = 1 + 2

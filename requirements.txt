@@ -1,6 +1,7 @@
 # Used by the library
 lxml==4.2.5
 python-dateutil==2.8.0
+pytz==2019.1
 
 # Used by edx-reporter.py to convert unicode symbols to LaTeX
 pylatexenc==1.5
