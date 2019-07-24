@@ -10,6 +10,12 @@ sequential will be calculated.
 
 Recommended usage:
 edx-reporter.py > report.tex
+
+If you get this error:
+Character cannot be encoded into LaTeX: U+FEFF - `'
+then you have some bad unicode in your display_name entries: Look through
+the LaTeX file for {\bfseries ?}, which is what that character is converted
+into.
 """
 import sys
 import argparse
