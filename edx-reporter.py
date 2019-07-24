@@ -39,8 +39,14 @@ def sanitize(text):
     This is a helper function that should be used to sanitize text for LaTeX output.
     You'll probably need to edit the LaTeX slightly afterwards, but it should look pretty good!
     """
+    results = text
     # Fix quotation marks
-    results = text.replace(' "', ' ``')
+    if results.startswith('"'):
+        results = "``" + results[1:]
+    if results.startswith("'"):
+        results = "`" + results[1:]
+    results = results.replace(" '", ' `')
+    results = results.replace(' "', ' ``')
     results = results.replace('"', "''")
     # Fix unicode characters
     results = utf8tolatex(results)
