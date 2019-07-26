@@ -1,7 +1,6 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-edx-clenaer.py
+edx-cleaner.py
 
 edX XML code validator, based on a very light wrapper around
 the olxcleaner library. Despite the light touch, it

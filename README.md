@@ -24,28 +24,28 @@ Copyright (C) 2018-2019 Jolyon Bloomfield
 * [Changelog](changelog.md)
 * [License](LICENSE)
 
-## Requirements
-
-This code uses features of python 3.6. We recommend installing a virtual environment, and running `pip install -r requirements.txt`. Afterwards, tests may be run by running `pytest`.
-
 ## Installation
 
-Currently, you need to clone the repository, as no installer is provided.
+This package may be installed from PYPI using `pip install olxcleaner`.
+
+### Local Installation 
+
+Clone this repository, and set up a virtual environment for python 3.6 or later. Run `pip install -r requirements.txt` to install the libraries, followed by `pytest` to ensure that all tests are passing as expected.
 
 ## edx-cleaner Usage
 
-Used to validate OLX (edX XML) code. This is a very light wrapper around the edx_xml_cleaner library, but exposes all of the functionality thereof.
+Used to validate OLX (edX XML) code. This is a very light wrapper around the olxcleaner library, but exposes all of the functionality thereof.
 
-Run the file `./edx-cleaner.py` with the following command line options:
+Run `edx-cleaner` with the following command line options:
 
 ```text
-./edx-cleaner.py [-h] 
-                 [-c COURSE]
-                 [-p {1,2,3,4,5,6,7,8}] 
-                 [-t TREE] [-l {0,1,2,3,4}]
-                 [-q] [-e] [-s] [-S]
-                 [-f {0,1,2,3,4}]
-                 [-i IGNORE [IGNORE ...]]
+edx-cleaner [-h] 
+            [-c COURSE]
+            [-p {1,2,3,4,5,6,7,8}] 
+            [-t TREE] [-l {0,1,2,3,4}]
+            [-q] [-e] [-s] [-S]
+            [-f {0,1,2,3,4}]
+            [-i IGNORE [IGNORE ...]]
 ```
 
 * `-h`: Display help.
@@ -70,18 +70,18 @@ Run the file `./edx-cleaner.py` with the following command line options:
 
 ## edx-reporter Usage
 
-The edx_xml_clean library includes modules that parse a course into python objects. This can be useful if you want to scan a course to generate a report. We exploit this in `edx-reporter.py` to generate a LaTeX report of course structure.
+The olxcleaner library includes modules that parse a course into python objects. This can be useful if you want to scan a course to generate a report. We exploit this in `edx-reporter.py` to generate a LaTeX report of course structure.
 
-Run the file `./edx-reporter.py` with the following command line options:
+Run `edx-reporter` with the following command line options:
 
 ```text
-./edx-reporter.py [-h] 
-                  [-c COURSE]
-                  [-u]
-                  [> latexfile.tex]
+edx-reporter.py [-h] 
+                [-c COURSE]
+                [-u]
+                [> latexfile.tex]
 ```
 
 * `-h`: Display help.
 * `-c`: Specify the course file to analyze. If not specified, looks for `course.xml` in the current directory. If given a directory, looks for `course.xml` in that directory.
 * `-u`: Include url_names for verticals.
-* `> latexfile.tex`: Output the report to a file using a bash pipe.
+* `> latexfile.tex`: Output the report to a file.
