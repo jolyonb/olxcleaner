@@ -23,7 +23,7 @@ def validate(filename, steps=8, ignore=None):
       * 5: Validate the grading policy
       * 6: Have every object validate itself
       * 7: Parse the course for global errors
-      * 8: Parse the course for global errors that are time-consuming to detect
+      * 8: Parse the course for global errors that may be time-consuming to detect
 
     :param filename: Location of course xml file or directory
     :param steps: Number of validation steps to take (1 = first only, 8 = all)

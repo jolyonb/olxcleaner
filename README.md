@@ -28,7 +28,7 @@ Copyright (C) 2018-2019 Jolyon Bloomfield
 
 This package may be installed from PYPI using `pip install olxcleaner`. It requires python 3.6 or later.
 
-### Local Installation 
+### Repository Installation (advanced) 
 
 Clone this repository, and set up a virtual environment for python 3.6 or later. Run `pip install -r requirements.txt` to install the libraries, followed by `pytest` to ensure that all tests are passing as expected.
 
@@ -72,7 +72,7 @@ edx-cleaner [-h]
 
 ## edx-reporter Usage
 
-The olxcleaner library includes modules that parse a course into python objects. This can be useful if you want to scan a course to generate a report. We exploit this in `edx-reporter.py` to generate a LaTeX report of course structure.
+The olxcleaner library includes modules that parse a course into python objects. This can be useful if you want to scan a course to generate a report. We exploit this in `edx-reporter` to generate a LaTeX report of course structure.
 
 Basic usage: run `edx-reporter` in the directory of the course you want to generate a report about.
 
@@ -90,4 +90,28 @@ edx-reporter.py [-h]
 * `-u`: Include url_names for verticals.
 * `> latexfile.tex`: Output the report to a file.
 
-If you get an error like `Character cannot be encoded into LaTeX: U+FEFF - ``'`, then you have some bad unicode in your `display_name` entries. Look through the LaTeX output for `{\bfseries ?}`, which is what that character is converted into.
+If you get an error like ``Character cannot be encoded into LaTeX: U+FEFF - `'``, then you have some bad unicode in your `display_name` entries. Look through the LaTeX output for `{\bfseries ?}`, which is what that character is converted into.
+
+## Library usage
+
+The workhorse of the library is `olxcleaner.validate`, which validates a course in a number of steps.
+
+```python
+olxcleaner.validate(filename, steps=8, ignore=None)
+```
+
+* `filename`: Pass in either the course directory or the path of `course.xml` for the course you wish to validate.
+* `steps`: Choose how many validation steps you wish to perform:
+    * 1: Load the course
+    * 2: Load the policy and grading policy
+    * 3: Validate `url_name`s
+    * 4: Merge policy data with course, ensuring that all references are valid
+    * 5: Validate the grading policy
+    * 6: Have every object validate itself
+    * 7: Parse the course for global errors
+    * 8: Parse the course for global errors that may be time-consuming to detect
+* `ignore`: A list of error names to ignore
+
+Returns `EdxCourse`, `ErrorStore`, `url_names` (dictionary `{'url_name': EdxObject}`, or `None` if `steps < 3`)
+
+See examples of how to use `olxcleaner.validate` and the objects it returns in `olxcleaner.entries`.
