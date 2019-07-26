@@ -71,11 +71,10 @@ def main():
     # Validate the course
     course, errorstore, url_names = validate(args.course, args.steps, args.ignore)
 
+    # Output reports
     if not args.quiet:
         print(f'Loaded from {course.fullpath}')
 
-    # Output reports
-    if not args.quiet:
         if not args.noerrors:
             print()
             for line in report_errors(errorstore):

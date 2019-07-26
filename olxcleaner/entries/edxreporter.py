@@ -110,7 +110,7 @@ def main():
 
     # Load the course
     # We need XML structure + policy information, so go to step 4
-    course, _, url_names = validate(args.course, steps=4)
+    course, _, _ = validate(args.course, steps=4)
 
     # Make sure we have a course to crawl
     if not course:

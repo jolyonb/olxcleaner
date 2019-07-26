@@ -36,7 +36,9 @@ Clone this repository, and set up a virtual environment for python 3.6 or later.
 
 Used to validate OLX (edX XML) code. This is a very light wrapper around the olxcleaner library, but exposes all of the functionality thereof.
 
-Run `edx-cleaner` with the following command line options:
+Basic usage: run `edx-cleaner` in the directory of the course you want to validate.
+
+Command-line options:
 
 ```text
 edx-cleaner [-h] 
@@ -72,7 +74,9 @@ edx-cleaner [-h]
 
 The olxcleaner library includes modules that parse a course into python objects. This can be useful if you want to scan a course to generate a report. We exploit this in `edx-reporter.py` to generate a LaTeX report of course structure.
 
-Run `edx-reporter` with the following command line options:
+Basic usage: run `edx-reporter` in the directory of the course you want to generate a report about.
+
+Command-line options:
 
 ```text
 edx-reporter.py [-h] 
@@ -85,3 +89,5 @@ edx-reporter.py [-h]
 * `-c`: Specify the course file to analyze. If not specified, looks for `course.xml` in the current directory. If given a directory, looks for `course.xml` in that directory.
 * `-u`: Include url_names for verticals.
 * `> latexfile.tex`: Output the report to a file.
+
+If you get an error like `Character cannot be encoded into LaTeX: U+FEFF - ``'`, then you have some bad unicode in your `display_name` entries. Look through the LaTeX output for `{\bfseries ?}`, which is what that character is converted into.
