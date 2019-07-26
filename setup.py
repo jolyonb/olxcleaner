@@ -14,7 +14,7 @@ setuptools.setup(
     version="0.1.0",
     author="Jolyon Bloomfield",
     author_email="jolyon@mit.edu",
-    description="Tool to validate edX XML courses",
+    description="Tool to scan edX courses for various errors",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/jolyonb/olxcleaner",

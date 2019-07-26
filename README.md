@@ -7,10 +7,10 @@ This library aims to perform two functions:
 * Parse the XML code for an edX course, loading it into python objects
 * Validate the objects for errors
 
-Based on this, two programs are provided that leverage the library:
+Based on this, two scripts are provided that leverage the library:
 
-* edx-cleaner.py constructs an error report, course tree and course statistics
-* edx-reporter.py constructs a LaTeX file representation of the course structure
+* `edx-cleaner` constructs an error report, course tree and course statistics
+* `edx-reporter` constructs a LaTeX file representation of the course structure
 
 Version 0.1.0
 
@@ -26,7 +26,7 @@ Copyright (C) 2018-2019 Jolyon Bloomfield
 
 ## Installation
 
-This package may be installed from PYPI using `pip install olxcleaner`.
+This package may be installed from PYPI using `pip install olxcleaner`. It requires python 3.6 or later.
 
 ### Local Installation 
 
