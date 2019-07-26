@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-edx-cleaner.py
+edxcleaner.py
 
 edX XML code validator, based on a very light wrapper around
 the olxcleaner library. Despite the light touch, it
@@ -9,8 +9,8 @@ exposes all of the capabilities of the library.
 import sys
 import argparse
 
-from olxcleaner.__version__ import version
 from olxcleaner import validate
+from olxcleaner.__version__ import version
 from olxcleaner.reporting import construct_tree, report_errors, report_error_summary, report_statistics
 
 def handle_arguments():
@@ -58,51 +58,54 @@ def handle_arguments():
     # Parse the command line
     return parser.parse_args()
 
-# Read the command line arguments
-args = handle_arguments()
 
-if not args.quiet:
-    print(f'edX XML cleaner {version} -- A validator for XML edX courses')
-    print(f'Loading...')
+def main():
+    """Entry point for command line instantiation"""
+    # Read the command line arguments
+    args = handle_arguments()
 
-# Validate the course
-course, errorstore, url_names = validate(args.course, args.steps, args.ignore)
-
-if not args.quiet:
-    print(f'Loaded from {course.fullpath}')
-
-# Output reports
-if not args.quiet:
-    if not args.noerrors:
-        print()
-        for line in report_errors(errorstore):
-            print(line)
-    if not args.nosummary:
-        print()
-        for line in report_error_summary(errorstore):
-            print(line)
-    if not args.nostats:
-        print()
-        for line in report_statistics(course):
-            print(line)
-
-# Output the structure to file
-if args.tree and course is not None:
     if not args.quiet:
-        print()
-        print(f"Writing structure to {args.tree}")
-    with open(args.tree, 'w') as f:
-        for line in construct_tree(course, args.level):
-            f.write(line + "\n")
+        print(f'edX XML cleaner {version} -- A validator for XML edX courses')
+        print(f'Loading...')
 
-# Exit with the appropriate error level
-if errorstore.return_error(args.failure):
+    # Validate the course
+    course, errorstore, url_names = validate(args.course, args.steps, args.ignore)
+
     if not args.quiet:
-        print()
-        print(f"Done! Exiting with code 1")
-    sys.exit(1)
-else:
+        print(f'Loaded from {course.fullpath}')
+
+    # Output reports
     if not args.quiet:
-        print()
-        print(f"Done! Exiting with code 0")
-    sys.exit(0)
+        if not args.noerrors:
+            print()
+            for line in report_errors(errorstore):
+                print(line)
+        if not args.nosummary:
+            print()
+            for line in report_error_summary(errorstore):
+                print(line)
+        if not args.nostats:
+            print()
+            for line in report_statistics(course):
+                print(line)
+
+    # Output the structure to file
+    if args.tree and course is not None:
+        if not args.quiet:
+            print()
+            print(f"Writing structure to {args.tree}")
+        with open(args.tree, 'w') as f:
+            for line in construct_tree(course, args.level):
+                f.write(line + "\n")
+
+    # Exit with the appropriate error level
+    if errorstore.return_error(args.failure):
+        if not args.quiet:
+            print()
+            print(f"Done! Exiting with code 1")
+        sys.exit(1)
+    else:
+        if not args.quiet:
+            print()
+            print(f"Done! Exiting with code 0")
+        sys.exit(0)

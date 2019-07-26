@@ -18,11 +18,28 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/jolyonb/olxcleaner",
-    packages=setuptools.find_packages(),
+    license='LICENSE',
+    packages=setuptools.find_packages(exclude=['tests']),
     classifiers=[
+        "Intended Audience :: Education",
+        "Topic :: Education :: Computer Aided Instruction (CAI)",
+        "Development Status :: 4 - Beta",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent",
     ],
+    keywords='edx',
+    install_requires=[
+       'lxml',
+       'python-dateutil',
+       'pytz'
+    ],
+    python_requires='~=3.6',
+    entry_points={
+        'console_scripts': [
+            'edx-cleaner=olxcleaner.entries.edxcleaner:main',
+            'edx-reporter=olxcleaner.entries.edxreporter:main'
+        ],
+    }
 )
