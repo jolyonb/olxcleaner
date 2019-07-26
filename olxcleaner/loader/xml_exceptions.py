@@ -4,7 +4,7 @@ xml_exceptions.py
 
 Contains exception definitions for XML loading
 """
-from edx_xml_clean.exceptions import CourseError, ErrorLevel
+from olxcleaner.exceptions import CourseError, ErrorLevel
 
 class CourseXMLDoesNotExist(CourseError):
     """The supplied `course.xml` file does not exist (or could not be opened)."""

@@ -4,8 +4,8 @@ lti_consumer.py
 
 Object description for an OLX lti_consumer tag
 """
-from edx_xml_clean.objects.common import EdxObject
-from edx_xml_clean.parser.parser_exceptions import LTIError
+from olxcleaner.objects.common import EdxObject
+from olxcleaner.parser.parser_exceptions import LTIError
 
 class EdxLtiConsumer(EdxObject):
     """edX lti_consumer object"""

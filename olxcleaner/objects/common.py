@@ -7,7 +7,7 @@ Contains abstract base classes to describe various edX objects
 from abc import ABC, ABCMeta, abstractmethod
 import dateutil.parser
 import pytz
-from edx_xml_clean.parser.parser_exceptions import InvalidSetting, DateOrdering
+from olxcleaner.parser.parser_exceptions import InvalidSetting, DateOrdering
 
 class EdxObject(ABC):
     """Abstract base class for edX structure objects"""

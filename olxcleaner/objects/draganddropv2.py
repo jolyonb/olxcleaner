@@ -5,8 +5,8 @@ draganddropv2.py
 Object description for the "new" drag and drop interface
 """
 import json
-from edx_xml_clean.objects.common import EdxObject
-from edx_xml_clean.parser.parser_exceptions import InvalidSetting
+from olxcleaner.objects.common import EdxObject
+from olxcleaner.parser.parser_exceptions import InvalidSetting
 
 class EdxDragAndDropV2(EdxObject):
     """edX drag-and-drop-v2 object"""

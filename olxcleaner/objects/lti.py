@@ -4,8 +4,8 @@ lti.py
 
 Object description for an OLX lti tag
 """
-from edx_xml_clean.objects.common import EdxObject
-from edx_xml_clean.parser.parser_exceptions import Obsolete, LTIError
+from olxcleaner.objects.common import EdxObject
+from olxcleaner.parser.parser_exceptions import Obsolete, LTIError
 
 class EdxLti(EdxObject):
     """edX lti object (obsolete)"""

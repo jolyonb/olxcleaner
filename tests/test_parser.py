@@ -5,10 +5,10 @@ Test course parsing routines
 """
 from tests.helpers import assert_error, assert_caught_all_errors
 
-from edx_xml_clean.errorstore import ErrorStore
-from edx_xml_clean.loader import load_policy, load_course
-from edx_xml_clean.parser.policy import find_url_names, merge_policy, validate_grading_policy
-from edx_xml_clean.parser.parser_exceptions import (
+from olxcleaner.errorstore import ErrorStore
+from olxcleaner.loader import load_policy, load_course
+from olxcleaner.parser.policy import find_url_names, merge_policy, validate_grading_policy
+from olxcleaner.parser.parser_exceptions import (
     MissingURLName,
     DuplicateURLName,
     BadPolicyFormat,

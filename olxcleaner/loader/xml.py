@@ -9,8 +9,8 @@ from os.path import isfile
 from lxml import etree
 from lxml.etree import XMLSyntaxError
 
-from edx_xml_clean.objects import EdxObject
-from edx_xml_clean.loader.xml_exceptions import (
+from olxcleaner.objects import EdxObject
+from olxcleaner.loader.xml_exceptions import (
     CourseXMLDoesNotExist,
     InvalidXML,
     CourseXMLName,

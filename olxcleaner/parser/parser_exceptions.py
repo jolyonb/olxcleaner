@@ -4,7 +4,7 @@ parsing_exceptions.py
 
 Contains exception definitions for global course parsing
 """
-from edx_xml_clean.exceptions import CourseError, ErrorLevel
+from olxcleaner.exceptions import CourseError, ErrorLevel
 
 class MissingURLName(CourseError):
     """A tag is missing the `url_name` attribute. edX will provide a garbage 32-character name for you, but everything is cleaner if you provide a nice name yourself."""

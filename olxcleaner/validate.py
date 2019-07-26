@@ -5,12 +5,12 @@ validate.py
 Workhorse function that validates an OLX course
 """
 import os
-from edx_xml_clean.errorstore import ErrorStore
-from edx_xml_clean.loader import load_course, load_policy
-from edx_xml_clean.parser.policy import find_url_names, merge_policy, validate_grading_policy
-from edx_xml_clean.parser.validators import GlobalValidator
-from edx_xml_clean.parser.slowvalidators import SlowValidator
-from edx_xml_clean.utils import traverse
+from olxcleaner.errorstore import ErrorStore
+from olxcleaner.loader import load_course, load_policy
+from olxcleaner.parser.policy import find_url_names, merge_policy, validate_grading_policy
+from olxcleaner.parser.validators import GlobalValidator
+from olxcleaner.parser.slowvalidators import SlowValidator
+from olxcleaner.utils import traverse
 
 def validate(filename, steps=8, ignore=None):
     """

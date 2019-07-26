@@ -1,27 +1,20 @@
 # -*- coding: utf-8 -*-
 """
-vertical.py
+chapter.py
 
-Object description for an OLX vertical tag
+Object description for an OLX chapter tag
 """
-from edx_xml_clean.objects.common import EdxObject, show_answer_list, randomize_list, show_correctness_list
+from olxcleaner.objects.common import EdxObject, show_answer_list, randomize_list, show_correctness_list
 
-class EdxVertical(EdxObject):
-    """edX vertical object"""
-    type = "vertical"
-    depth = 3
+class EdxChapter(EdxObject):
+    """edX chapter object"""
+    type = 'chapter'
+    depth = 1
     display_name = True
 
     @property
     def allowed_children(self):
-        return ['html',
-                'video',
-                'discussion',
-                'problem',
-                'lti',
-                'lti_consumer',
-                'drag-and-drop-v2',
-                'openassessment']
+        return ['sequential']
 
     def validate(self, course, errorstore):
         """

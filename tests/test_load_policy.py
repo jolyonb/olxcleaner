@@ -5,9 +5,9 @@ Tests for XML policy loading
 """
 from tests.helpers import assert_error, assert_caught_all_errors
 
-from edx_xml_clean.errorstore import ErrorStore
-from edx_xml_clean.loader import load_policy, load_course
-from edx_xml_clean.loader.policy_exceptions import (
+from olxcleaner.errorstore import ErrorStore
+from olxcleaner.loader import load_policy, load_course
+from olxcleaner.loader.policy_exceptions import (
     NoRunName,
     PolicyNotFound,
     BadPolicy

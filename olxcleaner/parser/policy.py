@@ -4,8 +4,8 @@ policy.py
 
 Validation routines related to the policy file
 """
-from edx_xml_clean.utils import traverse
-from edx_xml_clean.parser.parser_exceptions import (
+from olxcleaner.utils import traverse
+from olxcleaner.parser.parser_exceptions import (
     MissingURLName,
     DuplicateURLName,
     BadPolicyFormat,

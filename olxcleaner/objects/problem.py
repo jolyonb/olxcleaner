@@ -4,8 +4,8 @@ problem.py
 
 Object description for an OLX problem tag
 """
-from edx_xml_clean.objects.common import EdxContent, show_answer_list, randomize_list, show_correctness_list
-from edx_xml_clean.parser.parser_exceptions import InvalidSetting
+from olxcleaner.objects.common import EdxContent, show_answer_list, randomize_list, show_correctness_list
+from olxcleaner.parser.parser_exceptions import InvalidSetting
 
 response_types = ['coderesponse', 'numericalresponse', 'formularesponse', 'customresponse', 'schematicresponse',
                   'externalresponse', 'imageresponse', 'optionresponse', 'symbolicresponse', 'stringresponse',

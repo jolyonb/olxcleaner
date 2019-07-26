@@ -3,14 +3,14 @@ test_validators.py
 
 Tests for validators and slow validators
 """
-from edx_xml_clean import validate
-from edx_xml_clean.loader.xml_exceptions import TagMismatch
-from edx_xml_clean.parser.validators import CheckDisplayNames, CheckDiscussionIDs
-from edx_xml_clean.parser.slowvalidators import CheckLinks
+from olxcleaner import validate
+from olxcleaner.loader.xml_exceptions import TagMismatch
+from olxcleaner.parser.validators import CheckDisplayNames, CheckDiscussionIDs
+from olxcleaner.parser.slowvalidators import CheckLinks
 from tests.helpers import assert_caught_all_errors, assert_error
-from edx_xml_clean.parser.parser_exceptions import (MissingDisplayName, ExtraDisplayName,
-                                                    DuplicateID, BadJumpToLink, MissingFile, BadCourseLink)
-from edx_xml_clean.utils import find_links, traverse
+from olxcleaner.parser.parser_exceptions import (MissingDisplayName, ExtraDisplayName,
+                                                 DuplicateID, BadJumpToLink, MissingFile, BadCourseLink)
+from olxcleaner.utils import find_links, traverse
 
 def test_display_names():
     # Perform all steps on course 10 up to validation steps

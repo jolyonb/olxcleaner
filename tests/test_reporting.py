@@ -3,11 +3,11 @@ test_reporting.py
 
 Test the reporting routines by running them over the test courses
 """
-from edx_xml_clean.validate import validate
-from edx_xml_clean.reporting import (construct_tree,
-                                     report_statistics,
-                                     report_error_summary,
-                                     report_errors)
+from olxcleaner.validate import validate
+from olxcleaner.reporting import (construct_tree,
+                                  report_statistics,
+                                  report_error_summary,
+                                  report_errors)
 
 def test_construct_tree():
     course, _, _ = validate("testcourses/testcourse1")

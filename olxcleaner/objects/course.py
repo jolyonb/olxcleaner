@@ -4,9 +4,9 @@ course.py
 
 Object description for an OLX course tag
 """
-from edx_xml_clean.objects.common import EdxObject, show_answer_list, randomize_list, show_correctness_list
-from edx_xml_clean.parser.parser_exceptions import MissingFile, InvalidSetting
-from edx_xml_clean.utils import check_static_file_exists, validate_graceperiod
+from olxcleaner.objects.common import EdxObject, show_answer_list, randomize_list, show_correctness_list
+from olxcleaner.parser.parser_exceptions import MissingFile, InvalidSetting
+from olxcleaner.utils import check_static_file_exists, validate_graceperiod
 
 class EdxCourse(EdxObject):
     """edX course object"""

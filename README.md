@@ -1,6 +1,6 @@
-# edx-xml-clean
+# OLX Cleaner
 
-[![Build Status](https://api.travis-ci.org/jolyonb/edx-xml-clean.svg?branch=master)](https://travis-ci.org/jolyonb/edx-xml-clean) [![Coverage Status](https://codecov.io/gh/jolyonb/edx-xml-clean/branch/master/graphs/badge.svg)](https://codecov.io/gh/jolyonb/edx-xml-clean)
+[![Build Status](https://api.travis-ci.org/jolyonb/olxcleaner.svg?branch=master)](https://travis-ci.org/jolyonb/olxcleaner) [![Coverage Status](https://codecov.io/gh/jolyonb/olxcleaner/branch/master/graphs/badge.svg)](https://codecov.io/gh/jolyonb/olxcleaner)
 
 This library aims to perform two functions:
 

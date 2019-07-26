@@ -5,10 +5,10 @@ slowvalidators.py
 Validation routines that act on the course as a whole,
 but may require significant time to carry out
 """
-from edx_xml_clean.objects import EdxDragAndDropV2, EdxVertical
-from edx_xml_clean.parser.validators import GlobalValidator
-from edx_xml_clean.utils import traverse, find_links, check_static_file_exists
-from edx_xml_clean.parser.parser_exceptions import BadJumpToLink, BadCourseLink, MissingFile
+from olxcleaner.objects import EdxDragAndDropV2, EdxVertical
+from olxcleaner.parser.validators import GlobalValidator
+from olxcleaner.utils import traverse, find_links, check_static_file_exists
+from olxcleaner.parser.parser_exceptions import BadJumpToLink, BadCourseLink, MissingFile
 
 class SlowValidator(GlobalValidator):
     """Abstract base class for time-consuming validators"""

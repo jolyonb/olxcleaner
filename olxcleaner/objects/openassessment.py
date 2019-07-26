@@ -4,7 +4,7 @@ openassessment.py
 
 Object description for ORA assessments
 """
-from edx_xml_clean.objects.common import EdxContent
+from olxcleaner.objects.common import EdxContent
 
 class EdxORA(EdxContent):
     """edX openassessment object"""

@@ -1,21 +1,27 @@
 # -*- coding: utf-8 -*-
 """
-sequential.py
+vertical.py
 
-Object description for an OLX sequential tag
+Object description for an OLX vertical tag
 """
-from edx_xml_clean.objects.common import EdxObject, show_answer_list, randomize_list, show_correctness_list
-from edx_xml_clean.parser.parser_exceptions import InvalidSetting
+from olxcleaner.objects.common import EdxObject, show_answer_list, randomize_list, show_correctness_list
 
-class EdxSequential(EdxObject):
-    """edX sequential object"""
-    type = "sequential"
-    depth = 2
+class EdxVertical(EdxObject):
+    """edX vertical object"""
+    type = "vertical"
+    depth = 3
     display_name = True
 
     @property
     def allowed_children(self):
-        return ['vertical']
+        return ['html',
+                'video',
+                'discussion',
+                'problem',
+                'lti',
+                'lti_consumer',
+                'drag-and-drop-v2',
+                'openassessment']
 
     def validate(self, course, errorstore):
         """
@@ -56,17 +62,3 @@ class EdxSequential(EdxObject):
                                errorstore,
                                same_ok=True,
                                error_msg="due date must be before course end date")
-
-        # If this is a timed exam, make sure it's enabled in the policy
-        if self.is_exam:
-            if not course.attributes.get('enable_timed_exams'):
-                msg = f"The tag {self} is a timed exam, but the course policy does not have 'enable_timed_exams=true'."
-                errorstore.add_error(InvalidSetting(self.filenames[-1], msg=msg))
-
-    @property
-    def is_exam(self):
-        """Helper routine that determines whether or not this is a timed exam"""
-        entry = self.attributes.get('is_time_limited')
-        if entry == "true":
-            return True
-        return False

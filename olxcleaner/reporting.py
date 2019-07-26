@@ -5,9 +5,9 @@ reporting.py
 Contains methods used to report on an analyzed course
 """
 from collections import Counter
-from edx_xml_clean.utils import traverse
-from edx_xml_clean.objects import EdxProblem, EdxSequential
-from edx_xml_clean.exceptions import ErrorLevel
+from olxcleaner.utils import traverse
+from olxcleaner.objects import EdxProblem, EdxSequential
+from olxcleaner.exceptions import ErrorLevel
 
 def report_statistics(course):
     """Report course statistics, formatted in a list."""

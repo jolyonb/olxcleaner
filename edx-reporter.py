@@ -23,7 +23,7 @@ import datetime
 import re
 from pylatexenc.latexencode import utf8tolatex
 
-from edx_xml_clean import validate
+from olxcleaner import validate
 
 def handle_arguments():
     """Look after all command-line arguments"""

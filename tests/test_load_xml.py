@@ -6,9 +6,9 @@ Tests for XML course loading
 from lxml import etree
 from tests.helpers import assert_error, assert_caught_all_errors
 
-from edx_xml_clean.loader.xml import load_course
-from edx_xml_clean.errorstore import ErrorStore
-from edx_xml_clean.loader.xml_exceptions import (
+from olxcleaner.loader.xml import load_course
+from olxcleaner.errorstore import ErrorStore
+from olxcleaner.loader.xml_exceptions import (
     CourseXMLDoesNotExist,
     InvalidXML,
     CourseXMLName,

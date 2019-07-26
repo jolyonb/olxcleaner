@@ -5,7 +5,7 @@ generate.py
 
 Script to generate errors.md
 """
-from edx_xml_clean.exceptions import CourseError
+from olxcleaner.exceptions import CourseError
 
 names = ["Debug", "Information", "Warnings", "Errors"]
 errors = [[], [], [], []]

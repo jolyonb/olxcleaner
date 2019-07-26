@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-edx-xml-clean.py
+edx-clenaer.py
 
 edX XML code validator, based on a very light wrapper around
-the edx_xml_clean library. Despite the light touch, it
+the olxcleaner library. Despite the light touch, it
 exposes all of the capabilities of the library.
 """
 import sys
 import argparse
 
-from edx_xml_clean.__version__ import version
-from edx_xml_clean import validate
-from edx_xml_clean.reporting import construct_tree, report_errors, report_error_summary, report_statistics
+from olxcleaner.__version__ import version
+from olxcleaner import validate
+from olxcleaner.reporting import construct_tree, report_errors, report_error_summary, report_statistics
 
 def handle_arguments():
     """Look after all command-line arguments"""

@@ -1,20 +1,21 @@
 # -*- coding: utf-8 -*-
 """
-chapter.py
+sequential.py
 
-Object description for an OLX chapter tag
+Object description for an OLX sequential tag
 """
-from edx_xml_clean.objects.common import EdxObject, show_answer_list, randomize_list, show_correctness_list
+from olxcleaner.objects.common import EdxObject, show_answer_list, randomize_list, show_correctness_list
+from olxcleaner.parser.parser_exceptions import InvalidSetting
 
-class EdxChapter(EdxObject):
-    """edX chapter object"""
-    type = 'chapter'
-    depth = 1
+class EdxSequential(EdxObject):
+    """edX sequential object"""
+    type = "sequential"
+    depth = 2
     display_name = True
 
     @property
     def allowed_children(self):
-        return ['sequential']
+        return ['vertical']
 
     def validate(self, course, errorstore):
         """
@@ -55,3 +56,17 @@ class EdxChapter(EdxObject):
                                errorstore,
                                same_ok=True,
                                error_msg="due date must be before course end date")
+
+        # If this is a timed exam, make sure it's enabled in the policy
+        if self.is_exam:
+            if not course.attributes.get('enable_timed_exams'):
+                msg = f"The tag {self} is a timed exam, but the course policy does not have 'enable_timed_exams=true'."
+                errorstore.add_error(InvalidSetting(self.filenames[-1], msg=msg))
+
+    @property
+    def is_exam(self):
+        """Helper routine that determines whether or not this is a timed exam"""
+        entry = self.attributes.get('is_time_limited')
+        if entry == "true":
+            return True
+        return False

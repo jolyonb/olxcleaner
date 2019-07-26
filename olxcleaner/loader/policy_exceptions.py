@@ -4,7 +4,7 @@ policy_exceptions.py
 
 Contains exception definitions for policy file loading
 """
-from edx_xml_clean.exceptions import CourseError, ErrorLevel
+from olxcleaner.exceptions import CourseError, ErrorLevel
 
 class NoRunName(CourseError):
     """The course tag has no `url_name`, and hence no run name. This is a required parameter for a course."""

@@ -4,7 +4,7 @@ html.py
 
 Object description for an OLX html tag
 """
-from edx_xml_clean.objects.common import EdxContent
+from olxcleaner.objects.common import EdxContent
 
 class EdxHtml(EdxContent):
     """edX html object"""

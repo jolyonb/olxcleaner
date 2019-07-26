@@ -18,5 +18,5 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-from edx_xml_clean.validate import validate
-from edx_xml_clean.__version__ import version
+from olxcleaner.validate import validate
+from olxcleaner.__version__ import version

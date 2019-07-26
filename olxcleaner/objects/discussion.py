@@ -4,8 +4,8 @@ discussion.py
 
 Object description for an OLX discussion tag
 """
-from edx_xml_clean.objects.common import EdxObject
-from edx_xml_clean.parser.parser_exceptions import Obsolete
+from olxcleaner.objects.common import EdxObject
+from olxcleaner.parser.parser_exceptions import Obsolete
 
 class EdxDiscussion(EdxObject):
     """edX discussion object"""

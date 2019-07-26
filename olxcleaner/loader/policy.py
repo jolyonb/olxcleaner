@@ -7,7 +7,7 @@ Routines to load the policy files of an edX course
 import os
 from os.path import isfile
 import json
-from edx_xml_clean.loader.policy_exceptions import (
+from olxcleaner.loader.policy_exceptions import (
     NoRunName,
     PolicyNotFound,
     BadPolicy

@@ -4,7 +4,7 @@ video.py
 
 Object description for an OLX video tag
 """
-from edx_xml_clean.objects.common import EdxContent
+from olxcleaner.objects.common import EdxContent
 
 class EdxVideo(EdxContent):
     """edX video object"""

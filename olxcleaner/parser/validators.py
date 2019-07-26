@@ -6,9 +6,9 @@ Validation routines that act on the course as a whole
 """
 import inspect
 from abc import ABC, abstractmethod
-from edx_xml_clean.objects import EdxDiscussion
-from edx_xml_clean.utils import traverse
-from edx_xml_clean.parser.parser_exceptions import (
+from olxcleaner.objects import EdxDiscussion
+from olxcleaner.utils import traverse
+from olxcleaner.parser.parser_exceptions import (
     MissingDisplayName,
     ExtraDisplayName,
     DuplicateID
