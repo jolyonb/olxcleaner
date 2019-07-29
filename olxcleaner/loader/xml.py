@@ -60,14 +60,14 @@ def load_course(directory, filename, errorstore):
     course = EdxObject.get_object('course')
 
     # Load the course!
-    traverse_course(course, tree.getroot(), directory, filename, errorstore, {})
+    read_course(course, tree.getroot(), directory, filename, errorstore, {})
 
     # Save the course directory and full path in the course object
     course.savedir(directory, fullpath)
 
     return course
 
-def traverse_course(edxobj, node, directory, filename, errorstore, htmlfiles, pointer=False):
+def read_course(edxobj, node, directory, filename, errorstore, htmlfiles, pointer=False):
     """
     Takes in the current EdxObject, the current lxml element, and the
     current filename. Reads from the element into the object, creating
@@ -143,7 +143,7 @@ def traverse_course(edxobj, node, directory, filename, errorstore, htmlfiles, po
             edxobj.broken = True
             return
         else:
-            traverse_course(edxobj, new_node, directory, new_file, errorstore, htmlfiles, pointer=True)
+            read_course(edxobj, new_node, directory, new_file, errorstore, htmlfiles, pointer=True)
             return
 
     # Special case: HTML files can point to an actual HTML file with their 'filename' attribute
@@ -246,7 +246,7 @@ def traverse_course(edxobj, node, directory, filename, errorstore, htmlfiles, po
                 # Recurse on that node
                 newobj = EdxObject.get_object(child.tag)
                 edxobj.add_child(newobj)
-                traverse_course(newobj, child, directory, filename, errorstore, htmlfiles)
+                read_course(newobj, child, directory, filename, errorstore, htmlfiles)
             else:
                 errorstore.add_error(UnexpectedTag(filename,
                                                    tag=child.tag,

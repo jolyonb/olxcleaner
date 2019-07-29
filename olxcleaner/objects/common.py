@@ -54,6 +54,9 @@ class EdxObject(ABC):
     # Is this element broken (and hence needs no further errors reported?)
     broken = False
 
+    # Who is my parent?
+    parent = None
+
     @property
     def allowed_children(self):  # pragma: no cover
         """
@@ -65,6 +68,8 @@ class EdxObject(ABC):
     def add_child(self, node):
         """Adds a child to this object"""
         self.children.append(node)
+        # Mark the node's parent so that we can go up and down the chain of objects
+        node.parent = self
 
     def add_attribs(self, attribs):
         """Adds to the attributes for this object"""
