@@ -92,6 +92,8 @@ edx-reporter.py [-h]
 
 If you get an error like ``Character cannot be encoded into LaTeX: U+FEFF - `'``, then you have some bad unicode in your `display_name` entries. Look through the LaTeX output for `{\bfseries ?}`, which is what that character is converted into.
 
+Once you have generated a latex file, you can compile it into a PDF file by running `pdflatex latexfile.tex`. Note that the latex file can be modified with any text editor; its format should be self-explanatory.
+
 ## Library usage
 
 The workhorse of the library is `olxcleaner.validate`, which validates a course in a number of steps.
