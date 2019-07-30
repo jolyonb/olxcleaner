@@ -4,4 +4,4 @@ __version__.py
 
 Contains the project version
 """
-version = "0.1.0"
+version = "0.1.1"

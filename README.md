@@ -12,7 +12,7 @@ Based on this, two scripts are provided that leverage the library:
 * `edx-cleaner` constructs an error report, course tree and course statistics
 * `edx-reporter` constructs a LaTeX file representation of the course structure
 
-Version 0.1.0
+Version 0.1.1
 
 Copyright (C) 2018-2019 Jolyon Bloomfield
 
@@ -66,7 +66,7 @@ edx-cleaner [-h]
 * `-q`: Quiet mode. Does not output anything to the screen.
 * `-e`: Suppress error listing. Implied by `-q`.
 * `-s`: Suppress summary of errors. Implied by `-q`.
-* `-S`: Suppress course statistics. Implied by `-q`.
+* `-S`: Display course statistics (off by default). Overridden by `-q`.
 * `-f`: Select the error level at which to exit with an error code. 0 = DEBUG, 1 = INFO, 2 = WARNING, 3 = ERROR (default), 4 = NEVER. Exit code is set to `1` if an error at the specified level or higher is present.
 * `-i`: Specify a space-separated list of error names to ignore. See [Error Listing](errors.md).
 

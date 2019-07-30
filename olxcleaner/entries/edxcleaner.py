@@ -39,7 +39,7 @@ def handle_arguments():
     parser.add_argument("-s", "--nosummary", help="Suppress error summary", action="store_true")
 
     # Error summary
-    parser.add_argument("-S", "--nostats", help="Suppress course statistics", action="store_true")
+    parser.add_argument("-S", "--stats", help="Output course statistics", action="store_true")
 
     # Failure level
     parser.add_argument("-f", "--failure", default=3, choices=[0, 1, 2, 3, 4], type=int,
@@ -76,14 +76,16 @@ def main():
         print(f'Loaded from {course.fullpath}')
 
         if not args.noerrors:
-            print()
-            for line in report_errors(errorstore):
-                print(line)
+            error_report = report_errors(errorstore)
+            if error_report:
+                print()
+                for line in error_report:
+                    print(line)
         if not args.nosummary:
             print()
             for line in report_error_summary(errorstore):
                 print(line)
-        if not args.nostats:
+        if args.stats:
             print()
             for line in report_statistics(course):
                 print(line)
