@@ -13,6 +13,7 @@ from olxcleaner import validate
 from olxcleaner.__version__ import version
 from olxcleaner.reporting import construct_tree, report_errors, report_error_summary, report_statistics
 
+
 def handle_arguments():
     """Look after all command-line arguments"""
     parser = argparse.ArgumentParser(description="edX XML cleaner -- A validator for XML edX courses")

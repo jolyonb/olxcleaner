@@ -3,7 +3,7 @@
         "start": "Feb 20, 2019, 17:00",
         "end": "July 3, 2019, 20:00",
         "advanced_modules": ["lti_consumer"],
-        "lti_passports": ["yay"],
+        "lti_passports": ["yay:something:here"],
         "graceperiod": null,
         "course_image": "image.png"
     }
