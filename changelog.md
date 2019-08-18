@@ -2,6 +2,10 @@
 
 ## Version 0.1
 
+### Version 0.1.3
+
+* Fixed the installation to include the `pylatexenc` package.
+
 ### Version 0.1.2
 
 * Fixed a bug in LTI passport detection.

@@ -12,7 +12,7 @@ Based on this, two scripts are provided that leverage the library:
 * `edx-cleaner` constructs an error report, course tree and course statistics
 * `edx-reporter` constructs a LaTeX file representation of the course structure
 
-Version 0.1.2
+Version 0.1.3
 
 Copyright (C) 2018-2019 Jolyon Bloomfield
 

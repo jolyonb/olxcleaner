@@ -175,7 +175,7 @@ def read_course(edxobj, node, directory, filename, errorstore, htmlfiles, pointe
                 with open(os.path.join(directory, new_file)) as f:
                     html = f.read()
                 parser = etree.HTMLParser(recover=False)
-                etree.fromstring(html, parser)
+                content = etree.fromstring(html, parser)
             except Exception as e:
                 errorstore.add_error(InvalidHTML(new_file, error=e.args[0]))
                 edxobj.broken = True
@@ -187,7 +187,7 @@ def read_course(edxobj, node, directory, filename, errorstore, htmlfiles, pointe
                                                            htmlfilename=new_file))
                 else:
                     htmlfiles[new_filename] = filename
-                edxobj.content = html
+                edxobj.content = content
                 edxobj.html_content = True
                 return
 
@@ -222,7 +222,7 @@ def read_course(edxobj, node, directory, filename, errorstore, htmlfiles, pointe
 
     if edxobj.content_store:
         # Store content from content tags
-        edxobj.content = node  # Can convert to test with etree.tostring(node, pretty_print=True)
+        edxobj.content = node  # Can convert to text with etree.tostring(node, pretty_print=True)
     else:
         # Check for content in non-content tag
         if node.text and node.text.strip():

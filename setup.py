@@ -11,7 +11,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="olxcleaner",
-    version="0.1.2",
+    version="0.1.3",
     author="Jolyon Bloomfield",
     author_email="jolyon@mit.edu",
     description="Tool to scan edX courses for various errors",
@@ -33,7 +33,8 @@ setuptools.setup(
     install_requires=[
        'lxml',
        'python-dateutil',
-       'pytz'
+       'pytz',
+       'pylatexenc'
     ],
     python_requires='~=3.6',
     entry_points={
