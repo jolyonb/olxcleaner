@@ -5,6 +5,7 @@
 ### Version 0.1.3
 
 * Fixed the installation to include the `pylatexenc` package.
+* Fixed a bug where html files were being imported as text instead of as xml trees.
 
 ### Version 0.1.2
 
