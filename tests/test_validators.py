@@ -8,9 +8,9 @@ from olxcleaner.loader.xml_exceptions import TagMismatch
 from olxcleaner.parser.validators import CheckDisplayNames, CheckDiscussionIDs
 from olxcleaner.parser.slowvalidators import CheckLinks
 from tests.helpers import assert_caught_all_errors, assert_error
-from olxcleaner.parser.parser_exceptions import (MissingDisplayName, ExtraDisplayName,
+from olxcleaner.parser.parser_exceptions import (MissingDisplayName, ExtraDisplayName, Obsolete,
                                                  DuplicateID, BadJumpToLink, MissingFile, BadCourseLink)
-from olxcleaner.utils import find_links, traverse
+from olxcleaner.utils import find_links
 
 def test_display_names():
     # Perform all steps on course 10 up to validation steps
@@ -28,6 +28,7 @@ def test_display_names():
 
 def handle_general_errors_in_10(errorstore):
     assert_error(errorstore, TagMismatch, 'chapter/broken_chapter.xml', "The file is of type <chapter> but opens with a <sequential> tag")
+    assert_error(errorstore, Obsolete, 'vertical/dndvert.xml', "The tag <lti url_name='lti2' display_name='something'> should be converted to the newer lti_consumer Xblock.")
 
 def handle_display_name_errors_in_10(errorstore):
     assert_error(errorstore, MissingDisplayName, 'course/mycourseurl.xml', "The tag <course url_name='mycourseurl'> is missing the display_name attribute.")

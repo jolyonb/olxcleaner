@@ -21,7 +21,7 @@ a = 1 + 2
   </choicegroup>
 </multiplechoiceresponse>
 <customresponse cfn="grader" inline="1" expect="1/l^2*(-2*psi(n*l)+psi((n+1)*l)+psi((n-1)*l))">
-  <textline size="45" correct_answer="1/l^2*(-2*psi(n*l)+psi((n+1)*l)+psi((n-1)*l))" inline="1" math="1" preprocessorClassName="MJxPrep" preprocessorSrc="/static/MJxPrep.js"/>
+  <textline size="45" correct_answer="1/l^2*(-2*psi(n*l)+psi((n+1)*l)+psi((n-1)*l))" inline="1" math="1" preprocessorClassName="MJxPrep" preprocessorSrc="/static/MJxPrepp.js"/>
 </customresponse>
 <solution>
   Yay!

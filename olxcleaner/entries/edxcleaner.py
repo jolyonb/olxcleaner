@@ -12,6 +12,7 @@ import argparse
 from olxcleaner import validate
 from olxcleaner.__version__ import version
 from olxcleaner.reporting import construct_tree, report_errors, report_error_summary, report_statistics
+from olxcleaner.loader.xml_exceptions import CourseXMLDoesNotExist
 
 
 def handle_arguments():
@@ -71,6 +72,11 @@ def main():
 
     # Validate the course
     course, errorstore, url_names = validate(args.course, args.steps, args.ignore)
+    
+    # Check that the course exists
+    if len(errorstore.errors) > 0 and isinstance(errorstore.errors[0], CourseXMLDoesNotExist):
+        print(f"Error: {errorstore.errors[0].description}")
+        sys.exit(1)
 
     # Output reports
     if not args.quiet:
@@ -111,3 +117,6 @@ def main():
             print()
             print(f"Done! Exiting with code 0")
         sys.exit(0)
+
+if __name__ == '__main__':
+    main()

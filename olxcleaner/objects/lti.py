@@ -24,7 +24,7 @@ class EdxLti(EdxObject):
         """
         # Flag as obsolete
         msg = f"The tag {self} should be converted to the newer lti_consumer Xblock."
-        errorstore.add_error(Obsolete(self.filenames[1], msg=msg))
+        errorstore.add_error(Obsolete(self.filenames[-1], msg=msg))
 
         # Check that required fields are present
         self.require_setting("lti_id", errorstore)
