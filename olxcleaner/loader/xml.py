@@ -6,37 +6,32 @@ Routines to load the XML of an edX course into a structure
 """
 import os
 from os.path import isfile
+
 from lxml import etree
 from lxml.etree import XMLSyntaxError
 
+from olxcleaner.exceptions import ClassDoesNotExist
+from olxcleaner.loader.xml_exceptions import (CourseXMLDoesNotExist,
+                                              CourseXMLName, DuplicateHTMLName,
+                                              EmptyTag, ExtraURLName,
+                                              FileDoesNotExist, InvalidHTML,
+                                              InvalidPointer, InvalidXML,
+                                              NonFlatFilename, NonFlatURLName,
+                                              PossibleHTMLPointer,
+                                              PossiblePointer, SelfPointer,
+                                              TagMismatch, UnexpectedContent,
+                                              UnexpectedTag)
 from olxcleaner.objects import EdxObject
-from olxcleaner.loader.xml_exceptions import (
-    CourseXMLDoesNotExist,
-    InvalidXML,
-    CourseXMLName,
-    TagMismatch,
-    SelfPointer,
-    FileDoesNotExist,
-    NonFlatURLName,
-    NonFlatFilename,
-    InvalidPointer,
-    UnexpectedTag,
-    InvalidHTML,
-    ExtraURLName,
-    UnexpectedContent,
-    EmptyTag,
-    PossiblePointer,
-    PossibleHTMLPointer,
-    DuplicateHTMLName
-)
 
-def load_course(directory, filename, errorstore):
+
+def load_course(directory, filename, errorstore, allowed_xblocks=None):
     """
     Loads a course, given a filename for the appropriate course.xml file.
 
     :param directory: Path for course.xml (or equivalent)
     :param filename: Filename for course.xml (or equivalent)
     :param errorstore: ErrorStore object to store errors
+    :param allowed_xblocks: ErrorStore object to store errors
     :return: EdxCourse object, or None on failure
     """
     # Ensure the file exists
@@ -60,14 +55,15 @@ def load_course(directory, filename, errorstore):
     course = EdxObject.get_object('course')
 
     # Load the course!
-    read_course(course, tree.getroot(), directory, filename, errorstore, {})
+    read_course(course, tree.getroot(), directory, filename, errorstore, {}, allowed_xblocks=allowed_xblocks)
 
     # Save the course directory and full path in the course object
     course.savedir(directory, fullpath)
 
     return course
 
-def read_course(edxobj, node, directory, filename, errorstore, htmlfiles, pointer=False):
+
+def read_course(edxobj, node, directory, filename, errorstore, htmlfiles, pointer=False, allowed_xblocks=None):
     """
     Takes in the current EdxObject, the current lxml element, and the
     current filename. Reads from the element into the object, creating
@@ -80,6 +76,7 @@ def read_course(edxobj, node, directory, filename, errorstore, htmlfiles, pointe
     :param errorstore: An ErrorStore object that is collecting errors
     :param htmlfiles: A dictionary of XML filenames (value) that reference a given HTML filename (key)
     :param pointer: True if we've arrived at this node due to a pointer tag
+    :param allowed_xblocks: True if we've arrived at this node due to a pointer tag
     :return: None
     """
     # Make sure that the node matches the edxobj type
@@ -143,7 +140,8 @@ def read_course(edxobj, node, directory, filename, errorstore, htmlfiles, pointe
             edxobj.broken = True
             return
         else:
-            read_course(edxobj, new_node, directory, new_file, errorstore, htmlfiles, pointer=True)
+            read_course(edxobj, new_node, directory, new_file, errorstore, htmlfiles, pointer=True,
+                        allowed_xblocks=allowed_xblocks)
             return
 
     # Special case: HTML files can point to an actual HTML file with their 'filename' attribute
@@ -239,15 +237,36 @@ def read_course(edxobj, node, directory, filename, errorstore, htmlfiles, pointe
 
         # Recurse into each child
         for child in node:
-            if child.tag is etree.Comment:
-                # Ignore comments
-                pass
-            elif child.tag in edxobj.allowed_children:
-                # Recurse on that node
-                newobj = EdxObject.get_object(child.tag)
-                edxobj.add_child(newobj)
-                read_course(newobj, child, directory, filename, errorstore, htmlfiles)
+            child_tag = child.tag
+            tag_is_allowed = check_tag_is_allowed(child_tag, edxobj.allowed_children, allowed_xblocks)
+            tag_is_comment = child_tag is etree.Comment  # Ignore comments
+            if tag_is_comment:
+                continue
+            elif tag_is_allowed:
+                try:
+                    newobj = EdxObject.get_object(child_tag)
+                    edxobj.add_child(newobj)
+                    read_course(newobj, child, directory, filename, errorstore, htmlfiles,
+                                allowed_xblocks=allowed_xblocks)
+                except ClassDoesNotExist:
+                    # Do not do anything if an xblock is allowed but currently
+                    # not supported by the library
+                    pass
             else:
-                errorstore.add_error(UnexpectedTag(filename,
-                                                   tag=child.tag,
-                                                   edxobj=edxobj))
+                errorstore.add_error(
+                    UnexpectedTag(filename, tag=child_tag, edxobj=edxobj)
+                )
+
+
+def check_tag_is_allowed(tag, allowed_children, allowed_xblocks):
+    """
+    Checks if a tag is valid or not.
+
+    :param tag: str name of the lxml element
+    :param allowed_children: list of xblocks which this tag can have
+    :param allowed_xblocks: list of all allowed xblocks which may or may not be supported currently.
+    """
+    tag_is_allowed = allowed_xblocks is not None and tag in allowed_xblocks
+    if allowed_xblocks is None:
+        tag_is_allowed = tag in allowed_children
+    return tag_is_allowed

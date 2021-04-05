@@ -1,0 +1,4 @@
+<course advanced_modules="[&quot;recommender&quot;, &quot;edx_sga&quot;, &quot;crowdsourcehinter&quot;, &quot;done&quot;, &quot;word_cloud&quot;]" allow_unsupported_xblocks="true" display_name="[Test] RecommenderXBlock" start="2030-01-01T00:00:00+00:00">
+  <chapter url_name="chapter_1"/>
+  <wiki slug="MIT.RecommenderXBlock.2015"/>
+</course>

@@ -5,14 +5,17 @@ validate.py
 Workhorse function that validates an OLX course
 """
 import os
+
 from olxcleaner.errorstore import ErrorStore
 from olxcleaner.loader import load_course, load_policy
-from olxcleaner.parser.policy import find_url_names, merge_policy, validate_grading_policy
-from olxcleaner.parser.validators import GlobalValidator
+from olxcleaner.parser.policy import (find_url_names, merge_policy,
+                                      validate_grading_policy)
 from olxcleaner.parser.slowvalidators import SlowValidator
+from olxcleaner.parser.validators import GlobalValidator
 from olxcleaner.utils import traverse
 
-def validate(filename, steps=8, ignore=None):
+
+def validate(filename, steps=8, ignore=None, allowed_xblocks=None):
     """
     Validate an OLX course by performing the given number of steps:
 
@@ -28,8 +31,18 @@ def validate(filename, steps=8, ignore=None):
     :param filename: Location of course xml file or directory
     :param steps: Number of validation steps to take (1 = first only, 8 = all)
     :param ignore: List of errors to ignore
+    :param allowed_xblocks: List of allowed xblocks to run validation for.
     :return: course object, errorstore object, url_names dictionary (or None if steps < 3)
     """
+    # allowed_xblocks = [
+    #     'poll', 'survey', 'drag-and-drop-v2', 'staffgradedxblock', 'recommender', 'openassessment', 'lti_consumer',
+    #     'edx_sga', 'crowdsourcehinter', 'acid', 'acid_parent', 'done', 'rate', 'google-calendar', 'google-document',
+    #     'discussion', 'about', 'annotatable', 'book', 'chapter', 'conditional', 'course', 'course_info',
+    #     'custom_tag_template', 'customtag', 'discuss', 'error', 'hidden', 'html', 'image', 'library', 'library_content',
+    #     'library_sourced', 'lti', 'nonstaff_error', 'poll_question', 'problem', 'problemset', 'randomize', 'sequential',
+    #     'slides', 'split_test', 'static_tab', 'unit', 'vertical', 'video', 'videoalpha', 'videodev', 'videosequence',
+    #     'word_cloud', 'wrapper'] + ['wiki']
+
     # Create an error store
     if ignore is None:
         ignore = []
@@ -41,7 +54,8 @@ def validate(filename, steps=8, ignore=None):
         file = "course.xml"
     else:
         directory, file = os.path.split(filename)
-    course = load_course(directory, file, errorstore)
+
+    course = load_course(directory, file, errorstore, allowed_xblocks)
     if not course:
         return None, errorstore, None
 

@@ -1,0 +1,9 @@
+<vertical display_name="Unit">
+  <recommender url_name="7843fc30b140466b8b05b682e9f88a00" intro_enabled="true" disable_dev_ux="true" entries_per_page="5" page_span="2">
+    <resources>{}</resources>
+  </recommender>
+  <crowdsourcehinter url_name="e08267e290794b3a9483be7e6a6084c5" xblock-family="xblock.v1"/>
+  <edx_sga url_name="b711ac90242f42d6b6ab9e4c9c6d78ce" xblock-family="xblock.v1"/>
+  <done url_name="d886c58f2e6c46638241964f1ae1ff81" xblock-family="xblock.v1"/>
+  <word_cloud url_name="word_cloud_1"/>
+</vertical>

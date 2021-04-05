@@ -1,0 +1,21 @@
+{
+    "course/2015": {
+        "advanced_modules": [
+            "recommender",
+            "edx_sga",
+            "crowdsourcehinter",
+            "done",
+            "word_cloud"
+        ],
+        "allow_unsupported_xblocks": true,
+        "display_name": "[Test] RecommenderXBlock",
+        "course_image": "course_image_small.jpg",
+        "start": "2030-01-01T00:00:00Z",
+        "xml_attributes": {
+            "filename": [
+                "course/course.xml",
+                "course/course.xml"
+            ]
+        }
+    }
+}
