@@ -127,6 +127,19 @@ class EdxObject(ABC):
     _subclasses = []
 
     @staticmethod
+    def get_subclasses():
+        """Get a list of all subclasses"""
+        subclasses = set()
+        work = [EdxObject]
+        while work:
+            parent = work.pop()
+            for child in parent.__subclasses__():
+                if child not in subclasses:
+                    subclasses.add(child)
+                    work.append(child)
+        return list(subclasses)
+
+    @staticmethod
     def get_object(object_type):
         """
         Returns a class instance that has type object_type
@@ -136,15 +149,7 @@ class EdxObject(ABC):
         """
         # If it doesn't already exist, construct the list of subclasses
         if not EdxObject._subclasses:
-            subclasses = set()
-            work = [EdxObject]
-            while work:
-                parent = work.pop()
-                for child in parent.__subclasses__():
-                    if child not in subclasses:
-                        subclasses.add(child)
-                        work.append(child)
-            EdxObject._subclasses = list(subclasses)
+            EdxObject._subclasses = EdxObject.get_subclasses()
 
         for cls in EdxObject._subclasses:
             if cls.type == object_type:

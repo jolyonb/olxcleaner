@@ -268,4 +268,4 @@ def check_tag_is_allowed(tag, allowed_children, allowed_xblocks):
     """
     if allowed_xblocks is None:
         return tag in allowed_children
-    return tag in allowed_xblocks
+    return tag in allowed_xblocks or tag in allowed_children
