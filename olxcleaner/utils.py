@@ -8,6 +8,8 @@ import os
 from os.path import isfile
 import re
 
+BASIC_OLX_COMPONENTS = {'chapter', 'sequential', 'vertical'}
+
 def traverse(edxobj):
     """
     Returns a generator that traverses a given object and all its children recursively

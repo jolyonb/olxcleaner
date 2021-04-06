@@ -14,6 +14,8 @@ from olxcleaner.parser.slowvalidators import SlowValidator
 from olxcleaner.parser.validators import GlobalValidator
 from olxcleaner.utils import traverse
 
+from olxcleaner.utils import BASIC_OLX_COMPONENTS
+
 
 def validate(filename, steps=8, ignore=None, allowed_xblocks=None):
     """
@@ -35,6 +37,9 @@ def validate(filename, steps=8, ignore=None, allowed_xblocks=None):
     :return: course object, errorstore object, url_names dictionary (or None if steps < 3)
     """
     # Create an error store
+    if allowed_xblocks is not None:
+        allowed_xblocks = set(allowed_xblocks).union(BASIC_OLX_COMPONENTS)
+
     if ignore is None:
         ignore = []
     errorstore = ErrorStore(ignore)

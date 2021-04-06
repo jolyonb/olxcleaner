@@ -263,10 +263,9 @@ def check_tag_is_allowed(tag, allowed_children, allowed_xblocks):
     Checks if a tag is valid or not.
 
     :param tag: Tag name of the lxml element
-    :param allowed_children: List of xblocks which this tag can have
-    :param allowed_xblocks: List of all allowed xblocks which may or may not be supported currently.
+    :param allowed_children: List of children/xblocks allowed by the olxcleaner
+    :param allowed_xblocks: List of Xblocks that are allowed but may not be supported by the olxcleaner for validation
     """
-    tag_is_allowed = allowed_xblocks is not None and tag in allowed_xblocks
     if allowed_xblocks is None:
-        tag_is_allowed = tag in allowed_children
-    return tag_is_allowed
+        return tag in allowed_children
+    return tag in allowed_xblocks

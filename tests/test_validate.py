@@ -142,9 +142,6 @@ def test_validate_course11():
     could fail the validate call.
     """
     allowed_xblocks = [
-        'chapter',
-        'sequential',
-        'vertical',
         "recommender",
         "edx_sga",
         "crowdsourcehinter",
@@ -152,11 +149,15 @@ def test_validate_course11():
         "word_cloud",
         "wiki"
     ]
+    total_errors = len(allowed_xblocks)
     validate_kwargs = dict(filename="testcourses/testcourse11", steps=1)
     # wiki, recommender, edx_sga, crowdsourcehinter, done, word_cloud
     course, errorstore, url_names = validate(**validate_kwargs)
-    assert len(errorstore.errors) == 6
+    assert len(errorstore.errors) == total_errors
 
-    # Do not throw error when passing allowed_xblocks.
-    course, errorstore, url_names = validate(**validate_kwargs, allowed_xblocks=allowed_xblocks)
-    assert len(errorstore.errors) == 0
+    current_allowed_xblocks = []
+    for xblock in allowed_xblocks:
+        current_allowed_xblocks.append(xblock)
+        # Do not throw error when an xblock is allowed.
+        course, errorstore, url_names = validate(**validate_kwargs, allowed_xblocks=current_allowed_xblocks)
+        assert len(errorstore.errors) == total_errors - len(current_allowed_xblocks)
