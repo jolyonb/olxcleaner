@@ -137,6 +137,9 @@ def test_validate_course10():
 def test_validate_course11():
     """
     Tests validate when given a set of allowed xblocks.
+
+    The test course uses currently unsupported xblocks which
+    could fail the validate call.
     """
     allowed_xblocks = [
         'chapter',
@@ -149,5 +152,11 @@ def test_validate_course11():
         "word_cloud",
         "wiki"
     ]
-    course, errorstore, url_names = validate("testcourses/testcourse11", steps=2, allowed_xblocks=allowed_xblocks)
+    validate_kwargs = dict(filename="testcourses/testcourse11", steps=1)
+    # wiki, recommender, edx_sga, crowdsourcehinter, done, word_cloud
+    course, errorstore, url_names = validate(**validate_kwargs)
+    assert len(errorstore.errors) == 6
+
+    # Do not throw error when passing allowed_xblocks.
+    course, errorstore, url_names = validate(**validate_kwargs, allowed_xblocks=allowed_xblocks)
     assert len(errorstore.errors) == 0

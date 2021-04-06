@@ -31,7 +31,7 @@ def load_course(directory, filename, errorstore, allowed_xblocks=None):
     :param directory: Path for course.xml (or equivalent)
     :param filename: Filename for course.xml (or equivalent)
     :param errorstore: ErrorStore object to store errors
-    :param allowed_xblocks: ErrorStore object to store errors
+    :param allowed_xblocks: List of all allowed xblocks.
     :return: EdxCourse object, or None on failure
     """
     # Ensure the file exists
@@ -76,7 +76,7 @@ def read_course(edxobj, node, directory, filename, errorstore, htmlfiles, pointe
     :param errorstore: An ErrorStore object that is collecting errors
     :param htmlfiles: A dictionary of XML filenames (value) that reference a given HTML filename (key)
     :param pointer: True if we've arrived at this node due to a pointer tag
-    :param allowed_xblocks: True if we've arrived at this node due to a pointer tag
+    :param allowed_xblocks: List of all allowed xblocks.
     :return: None
     """
     # Make sure that the node matches the edxobj type
@@ -262,9 +262,9 @@ def check_tag_is_allowed(tag, allowed_children, allowed_xblocks):
     """
     Checks if a tag is valid or not.
 
-    :param tag: str name of the lxml element
-    :param allowed_children: list of xblocks which this tag can have
-    :param allowed_xblocks: list of all allowed xblocks which may or may not be supported currently.
+    :param tag: Tag name of the lxml element
+    :param allowed_children: List of xblocks which this tag can have
+    :param allowed_xblocks: List of all allowed xblocks which may or may not be supported currently.
     """
     tag_is_allowed = allowed_xblocks is not None and tag in allowed_xblocks
     if allowed_xblocks is None:

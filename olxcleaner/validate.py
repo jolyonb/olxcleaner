@@ -31,18 +31,9 @@ def validate(filename, steps=8, ignore=None, allowed_xblocks=None):
     :param filename: Location of course xml file or directory
     :param steps: Number of validation steps to take (1 = first only, 8 = all)
     :param ignore: List of errors to ignore
-    :param allowed_xblocks: List of allowed xblocks to run validation for.
+    :param allowed_xblocks: List of all allowed xblocks.
     :return: course object, errorstore object, url_names dictionary (or None if steps < 3)
     """
-    # allowed_xblocks = [
-    #     'poll', 'survey', 'drag-and-drop-v2', 'staffgradedxblock', 'recommender', 'openassessment', 'lti_consumer',
-    #     'edx_sga', 'crowdsourcehinter', 'acid', 'acid_parent', 'done', 'rate', 'google-calendar', 'google-document',
-    #     'discussion', 'about', 'annotatable', 'book', 'chapter', 'conditional', 'course', 'course_info',
-    #     'custom_tag_template', 'customtag', 'discuss', 'error', 'hidden', 'html', 'image', 'library', 'library_content',
-    #     'library_sourced', 'lti', 'nonstaff_error', 'poll_question', 'problem', 'problemset', 'randomize', 'sequential',
-    #     'slides', 'split_test', 'static_tab', 'unit', 'vertical', 'video', 'videoalpha', 'videodev', 'videosequence',
-    #     'word_cloud', 'wrapper'] + ['wiki']
-
     # Create an error store
     if ignore is None:
         ignore = []

@@ -64,4 +64,4 @@ class CourseError(ABC):
 
 
 class ClassDoesNotExist(ValueError):
-    """Error raised when we support an xblock but it's support is not available in library."""
+    """Error raised when an xblock is allowed but not supported by the library"""
