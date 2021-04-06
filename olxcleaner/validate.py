@@ -5,14 +5,19 @@ validate.py
 Workhorse function that validates an OLX course
 """
 import os
+
 from olxcleaner.errorstore import ErrorStore
 from olxcleaner.loader import load_course, load_policy
-from olxcleaner.parser.policy import find_url_names, merge_policy, validate_grading_policy
-from olxcleaner.parser.validators import GlobalValidator
+from olxcleaner.parser.policy import (find_url_names, merge_policy,
+                                      validate_grading_policy)
 from olxcleaner.parser.slowvalidators import SlowValidator
+from olxcleaner.parser.validators import GlobalValidator
 from olxcleaner.utils import traverse
 
-def validate(filename, steps=8, ignore=None):
+from olxcleaner.objects.common import EdxObject
+
+
+def validate(filename, steps=8, ignore=None, allowed_xblocks=None):
     """
     Validate an OLX course by performing the given number of steps:
 
@@ -28,8 +33,13 @@ def validate(filename, steps=8, ignore=None):
     :param filename: Location of course xml file or directory
     :param steps: Number of validation steps to take (1 = first only, 8 = all)
     :param ignore: List of errors to ignore
+    :param allowed_xblocks: List of all allowed xblocks.
     :return: course object, errorstore object, url_names dictionary (or None if steps < 3)
     """
+    if allowed_xblocks is not None:
+        supported_xblocks = {cls.type for cls in EdxObject.get_subclasses()}
+        allowed_xblocks = set(allowed_xblocks) - supported_xblocks
+
     # Create an error store
     if ignore is None:
         ignore = []
@@ -41,7 +51,8 @@ def validate(filename, steps=8, ignore=None):
         file = "course.xml"
     else:
         directory, file = os.path.split(filename)
-    course = load_course(directory, file, errorstore)
+
+    course = load_course(directory, file, errorstore, allowed_xblocks)
     if not course:
         return None, errorstore, None
 

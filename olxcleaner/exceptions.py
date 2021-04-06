@@ -7,12 +7,14 @@ Contains base classes and supporting structures for describing errors
 from abc import ABC, abstractmethod
 from enum import Enum
 
+
 class ErrorLevel(Enum):
     """Levels of errors"""
     DEBUG = 0
     INFO = 1
     WARNING = 2
     ERROR = 3
+
 
 class CourseError(ABC):
     """
@@ -21,8 +23,8 @@ class CourseError(ABC):
     They should use their __init__ method to construct the error description.
     """
     _level = ErrorLevel.DEBUG
-    _filename = ""        # To be set in init
-    _description = ""     # To be set in init
+    _filename = ""  # To be set in init
+    _description = ""  # To be set in init
 
     def __repr__(self):  # pragma: no cover
         return f"<{self.__class__.__name__} error in {self.filename}>"
@@ -59,3 +61,7 @@ class CourseError(ABC):
     @property
     def about(self):  # pragma: no cover
         return type(self).__doc__
+
+
+class ClassDoesNotExist(ValueError):
+    """Error raised when an xblock is allowed but not supported by the library"""
