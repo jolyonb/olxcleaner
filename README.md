@@ -99,7 +99,7 @@ Once you have generated a latex file, you can compile it into a PDF file by runn
 The workhorse of the library is `olxcleaner.validate`, which validates a course in a number of steps.
 
 ```python
-olxcleaner.validate(filename, steps=8, ignore=None)
+olxcleaner.validate(filename, steps=8, ignore=None, allowed_xblocks=None)
 ```
 
 * `filename`: Pass in either the course directory or the path of `course.xml` for the course you wish to validate.
@@ -113,6 +113,7 @@ olxcleaner.validate(filename, steps=8, ignore=None)
     * 7: Parse the course for global errors
     * 8: Parse the course for global errors that may be time-consuming to detect
 * `ignore`: A list of error names to ignore
+* `allowed_xblocks`: A list of all allowed xblocks that course olx may contain.
 
 Returns `EdxCourse`, `ErrorStore`, `url_names` (dictionary `{'url_name': EdxObject}`, or `None` if `steps < 3`)
 
