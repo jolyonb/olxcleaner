@@ -46,6 +46,7 @@ def test_validate_course2_wiki_xblock_is_supported():
     assert_not_error(errorstore, UnexpectedTag, 'course/mycourseurl.xml',
                  "A <wiki> tag was unexpectedly found inside the <course url_name='mycourseurl'> tag")
 
+
 def test_validate_course7():
     course, errorstore, url_names = validate("testcourses/testcourse7/course.xml", 5)
     handle_course7_errors(errorstore)
